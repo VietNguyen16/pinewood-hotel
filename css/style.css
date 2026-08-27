@@ -266,3 +266,9 @@ img { display: block; max-width: 100%; }
   .hotel-experience-section { padding: 34px 0; }
   .experience-poster { border-radius: var(--radius-lg); }
 }
+
+
+/* Contact email */
+.contact-email { display: block; width: fit-content; max-width: 100%; margin: 10px auto 20px; color: var(--pine-green); font-size: 15px; line-height: 1.5; text-decoration: none; overflow-wrap: anywhere; border-bottom: 1px solid rgba(15,49,27,.24); }
+.contact-email:hover { color: var(--pine-brown); border-bottom-color: currentColor; }
+@media (max-width: 720px) { .contact-email { font-size: 14px; margin-bottom: 18px; } }
