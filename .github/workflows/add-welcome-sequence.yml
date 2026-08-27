@@ -1,0 +1,106 @@
+name: Add Pinewood welcome sequence
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/add-welcome-sequence.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Add contact then welcome flow
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          index = Path('index.html')
+          main = Path('js/main.js')
+          css = Path('css/style.css')
+
+          # 1) Welcome letter dialog markup.
+          h = index.read_text()
+          if 'id="welcome-dialog"' not in h:
+              anchor = '''  </dialog>\n\n  <svg class="svg-sprite"'''
+              welcome = '''  </dialog>\n\n  <dialog class="welcome-dialog" id="welcome-dialog" aria-labelledby="welcome-dialog-title">\n    <div class="welcome-letter-frame">\n      <button class="welcome-dialog-close" type="button" id="welcome-dialog-close" aria-label="Close">×</button>\n      <div class="welcome-letter-header">\n        <img src="assets/logo/pinewood-logo.svg" alt="Pinewood Hotel" width="108" height="118">\n        <h2 id="welcome-dialog-title"></h2>\n        <div class="welcome-letter-ornament" aria-hidden="true"><span></span></div>\n      </div>\n      <div class="welcome-letter-copy">\n        <p class="welcome-letter-greeting" id="welcome-dialog-greeting"></p>\n        <div id="welcome-dialog-body"></div>\n        <p class="welcome-letter-closing" id="welcome-dialog-closing"></p>\n        <p class="welcome-letter-signature" id="welcome-dialog-signature"></p>\n      </div>\n      <div class="welcome-letter-actions">\n        <button class="button button-primary" type="button" id="welcome-dialog-contact"></button>\n      </div>\n    </div>\n  </dialog>\n\n  <svg class="svg-sprite"'''
+              if anchor not in h:
+                  raise SystemExit('Could not find dialog insertion anchor in index.html')
+              h = h.replace(anchor, welcome, 1)
+              index.write_text(h)
+
+          # 2) JS: dialog content + sequential first-visit behavior.
+          m = main.read_text()
+          if "const welcomeDialog = document.getElementById('welcome-dialog');" not in m:
+              m = m.replace(
+                  "  const dialog = document.getElementById('assistance-dialog');\n",
+                  "  const dialog = document.getElementById('assistance-dialog');\n  const welcomeDialog = document.getElementById('welcome-dialog');\n  let welcomePendingAfterAssistance = false;\n",
+                  1
+              )
+
+          if 'function renderWelcomeLetterDialog(c)' not in m:
+              anchor = '''  function render() {\n    const c = CONTENT[state.lang];'''
+              func = '''  function renderWelcomeLetterDialog(c) {\n    const w = c.welcome;\n    document.getElementById('welcome-dialog-title').textContent = w.title;\n    document.getElementById('welcome-dialog-greeting').textContent = w.greeting;\n    document.getElementById('welcome-dialog-body').innerHTML = w.paragraphs.map(p => `<p>${esc(p)}</p>`).join('');\n    document.getElementById('welcome-dialog-closing').textContent = w.closing;\n    document.getElementById('welcome-dialog-signature').textContent = w.signature;\n    document.getElementById('welcome-dialog-contact').textContent = state.lang === 'vi' ? 'Liên hệ' : 'Contact';\n    document.getElementById('welcome-dialog-close').setAttribute('aria-label', c.ui.close);\n  }\n\n  function openWelcomeLetter() {\n    if (typeof welcomeDialog.showModal === 'function' && !welcomeDialog.open) welcomeDialog.showModal();\n  }\n\n  function render() {\n    const c = CONTENT[state.lang];'''
+              if anchor not in m:
+                  raise SystemExit('Could not find render anchor in main.js')
+              m = m.replace(anchor, func, 1)
+
+          if 'renderWelcomeLetterDialog(c);' not in m:
+              m = m.replace(
+                  "    document.getElementById('dialog-close').setAttribute('aria-label', c.ui.close);\n",
+                  "    document.getElementById('dialog-close').setAttribute('aria-label', c.ui.close);\n    renderWelcomeLetterDialog(c);\n",
+                  1
+              )
+
+          # Add welcome-dialog actions just after existing assistance close binding.
+          if "document.getElementById('welcome-dialog-close').addEventListener" not in m:
+              close_anchor = "  document.getElementById('dialog-close').addEventListener('click', () => dialog.close());\n"
+              close_code = "  document.getElementById('dialog-close').addEventListener('click', () => dialog.close());\n  document.getElementById('welcome-dialog-close').addEventListener('click', () => welcomeDialog.close());\n  document.getElementById('welcome-dialog-contact').addEventListener('click', () => {\n    welcomeDialog.close();\n    window.setTimeout(openSupport, 120);\n  });\n  welcomeDialog.addEventListener('click', event => {\n    const rect = welcomeDialog.getBoundingClientRect();\n    const outside = event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom;\n    if (outside) welcomeDialog.close();\n  });\n  dialog.addEventListener('close', () => {\n    if (!welcomePendingAfterAssistance) return;\n    welcomePendingAfterAssistance = false;\n    window.setTimeout(openWelcomeLetter, 220);\n  });\n"
+              if close_anchor not in m:
+                  raise SystemExit('Could not find assistance close binding in main.js')
+              m = m.replace(close_anchor, close_code, 1)
+
+          # Replace old first-session contact-only trigger with a versioned contact -> welcome sequence.
+          old_trigger = "  if (!sessionStorage.getItem('pinewood-assistance-seen')) {\n    sessionStorage.setItem('pinewood-assistance-seen', '1');\n    window.setTimeout(openSupport, 700);\n  }"
+          new_trigger = "  if (!sessionStorage.getItem('pinewood-intro-sequence-v1')) {\n    sessionStorage.setItem('pinewood-intro-sequence-v1', '1');\n    sessionStorage.setItem('pinewood-assistance-seen', '1');\n    welcomePendingAfterAssistance = true;\n    window.setTimeout(openSupport, 700);\n  }"
+          if old_trigger in m:
+              m = m.replace(old_trigger, new_trigger, 1)
+          elif "pinewood-intro-sequence-v1" not in m:
+              raise SystemExit('Could not find first-session assistance trigger in main.js')
+
+          main.write_text(m)
+
+          # 3) Styling inspired by provided welcome-letter reference, using Pinewood brand variables.
+          st = css.read_text()
+          marker = '/* Pinewood welcome letter dialog */'
+          if marker not in st:
+              st += '''\n\n/* Pinewood welcome letter dialog */\n.welcome-dialog {\n  width: min(940px, calc(100vw - 32px));\n  max-width: 940px;\n  max-height: calc(100dvh - 28px);\n  padding: 0;\n  border: 0;\n  border-radius: 26px;\n  overflow: auto;\n  background: #f8f7f3;\n  color: #5b3d2a;\n  box-shadow: 0 28px 80px rgba(12,53,34,.24);\n}\n.welcome-dialog::backdrop { background: rgba(9,35,23,.58); backdrop-filter: blur(5px); }\n.welcome-letter-frame {\n  position: relative;\n  margin: 10px;\n  padding: 46px clamp(28px, 6vw, 72px) 34px;\n  border: 1px solid var(--pine-brown);\n  outline: 1px solid rgba(178,142,105,.82);\n  outline-offset: -6px;\n  border-radius: 18px;\n  background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(248,247,243,.96));\n}\n.welcome-dialog-close {\n  position: absolute;\n  top: 18px;\n  right: 18px;\n  width: 42px;\n  height: 42px;\n  display: grid;\n  place-items: center;\n  border: 1px solid rgba(178,142,105,.42);\n  border-radius: 12px;\n  background: rgba(255,255,255,.82);\n  color: var(--pine-charcoal);\n  font-size: 28px;\n  line-height: 1;\n  cursor: pointer;\n}\n.welcome-letter-header { text-align: center; }\n.welcome-letter-header img { width: 112px; height: auto; margin: 0 auto 24px; }\n.welcome-letter-header h2 {\n  margin: 0;\n  color: var(--pine-green);\n  font-size: clamp(32px, 4.6vw, 48px);\n  font-weight: 600;\n  line-height: 1.1;\n  letter-spacing: .025em;\n}\n.welcome-letter-ornament { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 24px auto 30px; color: var(--pine-brown); }\n.welcome-letter-ornament::before, .welcome-letter-ornament::after { content: ''; width: 18px; height: 1px; background: currentColor; }\n.welcome-letter-ornament span { width: 8px; height: 8px; border: 1px solid currentColor; transform: rotate(45deg); }\n.welcome-letter-copy { max-width: 790px; margin: 0 auto; }\n.welcome-letter-copy p { margin: 0 0 22px; color: #65452f; font-size: 15px; line-height: 1.85; }\n.welcome-letter-greeting { font-weight: 600; }\n.welcome-letter-closing { margin-top: 30px !important; font-weight: 700; }\n.welcome-letter-signature { margin: 42px 0 0 !important; text-align: center; color: var(--pine-brown) !important; font-weight: 700; text-transform: uppercase; letter-spacing: .035em; }\n.welcome-letter-actions { display: flex; justify-content: flex-end; margin-top: 34px; }\n.welcome-letter-actions .button { min-width: 124px; }\n@media (max-width: 720px) {\n  .welcome-dialog { width: calc(100vw - 18px); max-height: calc(100dvh - 18px); border-radius: 20px; }\n  .welcome-letter-frame { margin: 6px; padding: 38px 22px 26px; border-radius: 16px; }\n  .welcome-dialog-close { top: 12px; right: 12px; width: 38px; height: 38px; font-size: 24px; }\n  .welcome-letter-header img { width: 88px; margin-bottom: 20px; }\n  .welcome-letter-header h2 { font-size: 30px; padding-inline: 26px; }\n  .welcome-letter-ornament { margin: 20px auto 24px; }\n  .welcome-letter-copy p { font-size: 14px; line-height: 1.75; margin-bottom: 18px; }\n  .welcome-letter-signature { margin-top: 30px !important; }\n  .welcome-letter-actions { margin-top: 26px; }\n  .welcome-letter-actions .button { width: 100%; }\n}\n'''
+              css.write_text(st)
+          PY
+
+          node --check js/main.js
+
+      - name: Commit welcome flow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html js/main.js css/style.css
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Add contact then welcome letter sequence"
+            git push origin main
+          fi
