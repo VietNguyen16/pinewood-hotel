@@ -1,0 +1,120 @@
+name: Patch contact and bilingual slogan
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/patch-contact-slogan.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update contact, slogan and experience link
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          config = Path('js/config.js')
+          content = Path('js/content.js')
+          main = Path('js/main.js')
+          index = Path('index.html')
+          css = Path('css/style.css')
+
+          # 1) Bilingual hotel slogan + experience image path.
+          s = config.read_text()
+          s = s.replace(
+              '  slogan: "Sleep Well - Stay Warm - Feel Dalat",\n',
+              '  slogan: {\n    vi: "Ngủ ngon - Ấm áp - Đậm chất Đà Lạt",\n    en: "Sleep Well - Stay Warm - Feel Dalat"\n  },\n  experienceImage: "assets/images/pinewood-experience.webp",\n',
+              1
+          )
+          config.write_text(s)
+
+          # 2) Rename Contact Reception card to Contact in both languages.
+          s = content.read_text()
+          s = s.replace(
+              '{ key: "contact", title: "LIÊN HỆ LỄ TÂN", subtitle: "Gọi điện hoặc kết nối Zalo", route: "/lien-he", icon: "phone" }',
+              '{ key: "contact", title: "LIÊN HỆ", subtitle: "Điện thoại, email hoặc Zalo", route: "/lien-he", icon: "phone" }',
+              1
+          )
+          s = s.replace(
+              '{ key: "contact", title: "CONTACT RECEPTION", subtitle: "Call or connect via Zalo", route: "/en/contact", icon: "phone" }',
+              '{ key: "contact", title: "CONTACT", subtitle: "Phone, email or Zalo", route: "/en/contact", icon: "phone" }',
+              1
+          )
+          content.write_text(s)
+
+          # 3) Contact page heading + clickable email + language-specific footer slogan.
+          s = main.read_text()
+          s = s.replace(
+              "pageHero(state.lang === 'vi' ? 'LIÊN HỆ LỄ TÂN' : 'CONTACT RECEPTION', c.ui.assistanceText)",
+              "pageHero(state.lang === 'vi' ? 'LIÊN HỆ' : 'CONTACT', c.ui.assistanceText)",
+              1
+          )
+          s = s.replace(
+              '<a class="phone-number" href="tel:${CONFIG.phoneTel}">${esc(CONFIG.phoneDisplay)}</a><br><a class="button button-primary" href="tel:${CONFIG.phoneTel}">${esc(c.ui.callReception)}</a>',
+              '<a class="phone-number" href="tel:${CONFIG.phoneTel}">${esc(CONFIG.phoneDisplay)}</a><a class="contact-email" href="mailto:${CONFIG.email}">${esc(CONFIG.email)}</a><a class="button button-primary" href="tel:${CONFIG.phoneTel}">${esc(c.ui.callReception)}</a>',
+              1
+          )
+          s = s.replace(
+              "document.getElementById('footer-line').textContent = CONFIG.slogan;",
+              "document.getElementById('footer-line').textContent = CONFIG.slogan[state.lang];\n    document.getElementById('footer-line').setAttribute('aria-label', state.lang === 'vi' ? 'Xem trải nghiệm Ngủ ngon - Ấm áp - Đậm chất Đà Lạt' : 'View Sleep Well - Stay Warm - Feel Dalat experience');",
+              1
+          )
+          main.write_text(s)
+
+          # 4) Slogan becomes a jump link to the supplied hotel experience poster.
+          s = index.read_text()
+          s = s.replace(
+              '<p id="footer-line"></p>',
+              '<a id="footer-line" class="footer-slogan-link" href="#hotel-experience"></a>',
+              1
+          )
+          if 'id="hotel-experience"' not in s:
+              s = s.replace(
+                  '  <main id="main-content" tabindex="-1"></main>\n',
+                  '  <main id="main-content" tabindex="-1"></main>\n\n  <section class="hotel-experience-section" id="hotel-experience" aria-label="Pinewood Hotel experience">\n    <div class="shell experience-shell">\n      <img class="experience-poster" src="assets/images/pinewood-experience.webp" alt="Pinewood Hotel Dalat - Sleep Well, Stay Warm, Feel Dalat" loading="lazy">\n    </div>\n  </section>\n',
+                  1
+              )
+          index.write_text(s)
+
+          # 5) Styling for email, interactive slogan and poster section.
+          s = css.read_text()
+          marker = '/* Pinewood contact + bilingual slogan experience */'
+          if marker not in s:
+              s += '''\n\n/* Pinewood contact + bilingual slogan experience */\n.contact-email { display: block; width: fit-content; max-width: 100%; margin: -2px auto 20px; color: var(--pine-green); font-size: 14px; font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }\n.contact-email:hover { color: var(--pine-brown); text-decoration: underline; text-underline-offset: 4px; }\n.footer-slogan-link { display: inline-block; margin-top: 5px; color: rgba(255,255,255,.82); font-size: 13px; font-weight: 600; letter-spacing: .035em; line-height: 1.55; text-decoration: none; cursor: pointer; }\n.footer-slogan-link:hover, .footer-slogan-link:focus-visible { color: #fff; text-decoration: underline; text-underline-offset: 5px; }\n.hotel-experience-section { padding: 64px 0; background: linear-gradient(180deg, #f7f5f0 0%, var(--pine-offwhite) 100%); border-top: 1px solid var(--line); scroll-margin-top: calc(var(--header-h) + 18px); }\n.experience-shell { display: flex; justify-content: center; }\n.experience-poster { width: min(760px, 100%); height: auto; border: 1px solid var(--line); border-radius: var(--radius-xl); box-shadow: var(--shadow); }\n@media (max-width: 720px) {\n  .contact-email { font-size: 13px; margin-bottom: 18px; }\n  .footer-slogan-link { font-size: 12px; }\n  .hotel-experience-section { padding: 34px 0; }\n  .experience-poster { border-radius: var(--radius-lg); }\n}\n'''
+          css.write_text(s)
+
+          # Remove temporary staging chunks used while preparing the poster.
+          for p in Path('tmp').glob('experience.part*') if Path('tmp').exists() else []:
+              p.unlink()
+          PY
+
+          node --check js/config.js
+          node --check js/content.js
+          node --check js/main.js
+
+      - name: Commit updates
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Update Contact and bilingual Pinewood slogan experience"
+            git push origin main
+          fi
