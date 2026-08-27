@@ -1,0 +1,70 @@
+name: Simplify Pinewood WiFi
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/simplify-wifi.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Simplify Wi-Fi UI
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('js/main.js')
+          text = path.read_text(encoding='utf-8')
+
+          wifi = r'''  function renderWifi(c) {
+            const wifiService = c.serviceGroups[0].items.find(i => i.icon === 'wifi');
+            const qrHint = state.lang === 'vi' ? 'Quét mã QR bằng camera điện thoại để kết nối Wi-Fi Pinewood Hotel Dalat.' : 'Scan the QR code with your phone camera to connect to Pinewood Hotel Dalat Wi-Fi.';
+            return pageHero('WI-FI', wifiService.text) + `<section class="page-section"><div class="shell info-feature"><div class="feature-panel accent">${icon('wifi')}<h2>${esc(state.lang === 'vi' ? 'Wi-Fi miễn phí' : 'Complimentary Wi-Fi')}</h2><p>${esc(wifiService.text)}</p></div><div class="feature-panel wifi-access-panel"><p class="eyebrow">FREE WI-FI</p><h2>${esc(c.ui.quickAccess)}</h2><div class="wifi-boxes"><div class="wifi-box"><span>${esc(c.ui.network)}</span><strong>${esc(CONFIG.wifi.ssid)}</strong></div><div class="wifi-box"><span>${esc(c.ui.password)}</span><strong>${esc(CONFIG.wifi.password)}</strong></div></div><div class="wifi-qr-panel"><img src="assets/qr/wifi-pinewood.svg" alt="Wi-Fi QR - Pinewood Hotel Dalat"><strong>${esc(CONFIG.wifi.ssid)}</strong><p>${esc(qrHint)}</p></div></div></div></section>`;
+          }'''
+
+          text, n = re.subn(
+              r"  function renderWifi\(c\) \{.*?\n  \}\n\n  function renderBreakfast",
+              wifi + "\n\n  function renderBreakfast",
+              text,
+              count=1,
+              flags=re.S,
+          )
+          if n != 1:
+              raise SystemExit(f'renderWifi replacement count: {n}')
+
+          bind = r'''  function bindDynamicActions() {
+            document.querySelectorAll('[data-open-support]').forEach(btn => btn.addEventListener('click', openSupport));
+          }'''
+
+          text, n = re.subn(
+              r"  function copyText\(value\) \{.*?\n  \}\n\n  function openSupport",
+              bind + "\n\n  function openSupport",
+              text,
+              count=1,
+              flags=re.S,
+          )
+          if n != 1:
+              raise SystemExit(f'Wi-Fi action cleanup count: {n}')
+
+          path.write_text(text, encoding='utf-8')
+          PY
+      - name: Commit Wi-Fi changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add js/main.js
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Simplify Wi-Fi QR experience"
+          git push
