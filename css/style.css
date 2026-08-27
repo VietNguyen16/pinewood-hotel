@@ -96,11 +96,9 @@ img { display: block; max-width: 100%; }
 .directory-card p { margin: 0; font-size: 12px; line-height: 1.45; color: var(--muted); }
 .card-arrow { color: var(--pine-brown); font-size: 23px; line-height: 1; }
 
-.benefits { border-top: 1px solid var(--line); margin-top: 16px; padding: 16px 8px 2px; display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
-.benefit { display: flex; align-items: center; gap: 10px; padding: 8px; }
-.benefit .icon { color: var(--pine-green); width: 24px; height: 24px; flex: none; }
-.benefit strong { display: block; font-size: 11px; letter-spacing: .03em; color: var(--pine-green); }
-.benefit span { display: block; margin-top: 2px; font-size: 10px; color: var(--muted); line-height: 1.4; }
+.hotel-address { border-top: 1px solid var(--line); margin-top: 16px; padding: 18px 12px 4px; text-align: center; }
+.hotel-address strong { display: block; color: var(--pine-green); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+.hotel-address address { margin-top: 7px; color: var(--muted); font-size: 12px; line-height: 1.6; font-style: normal; }
 
 .page-hero { background: linear-gradient(180deg, rgba(236,237,233,.85), rgba(255,255,255,.96)); border-bottom: 1px solid var(--line); }
 .page-hero-inner { min-height: 245px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 52px 20px; }
@@ -184,7 +182,6 @@ img { display: block; max-width: 100%; }
   .brand { margin-right: auto; }
   .service-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .directory-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
-  .benefits { grid-template-columns: repeat(2,1fr); }
 }
 
 @media (max-width: 720px) {
@@ -207,11 +204,9 @@ img { display: block; max-width: 100%; }
   .directory-card h2 { font-size: 11px; }
   .directory-card p { font-size: 10px; }
   .card-arrow { display: none; }
-  .benefits { grid-template-columns: repeat(2,1fr); gap: 3px; padding-inline: 0; }
-  .benefit { align-items: flex-start; gap: 7px; padding: 8px 6px; }
-  .benefit .icon { width: 20px; height: 20px; }
-  .benefit strong { font-size: 9px; }
-  .benefit span { font-size: 9px; }
+  .hotel-address { margin-top: 10px; padding: 14px 8px 4px; }
+  .hotel-address strong { font-size: 9px; }
+  .hotel-address address { font-size: 10px; }
   .page-hero-inner { min-height: 210px; padding: 42px 16px; }
   .page-section { padding: 32px 0 50px; }
   .rule-list, .service-grid, .info-feature, .contact-grid, .environment-grid { grid-template-columns: 1fr; }

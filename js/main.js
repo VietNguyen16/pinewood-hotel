@@ -1,6 +1,7 @@
 (() => {
   const CONFIG = window.HOTEL_CONFIG;
   const CONTENT = window.PINEWOOD_CONTENT;
+  const ZALO_QR = window.PINEWOOD_ZALO_QR || 'assets/qr/zalo-pinewood.jpg';
   const main = document.getElementById('main-content');
   const dialog = document.getElementById('assistance-dialog');
   const menuButton = document.getElementById('menu-button');
@@ -80,19 +81,8 @@
   }
 
   function renderHome(c) {
-    const benefits = state.lang === 'vi'
-      ? [
-          ['info','DỄ DÀNG TRUY CẬP','Thông tin rõ ràng, dễ tìm kiếm'],
-          ['clock','TIẾT KIỆM THỜI GIAN','Cập nhật nhanh chóng, chính xác'],
-          ['phone','LUÔN KẾT NỐI','Kết nối với Lễ tân mọi lúc'],
-          ['leaf','TRẢI NGHIỆM CAO CẤP','Tinh tế, chỉn chu trong từng chi tiết']
-        ]
-      : [
-          ['info','EASY ACCESS','Clear information, easy to find'],
-          ['clock','SAVE TIME','Fast, accurate information'],
-          ['phone','STAY CONNECTED','Reach Reception whenever needed'],
-          ['leaf','PREMIUM EXPERIENCE','Refined attention to every detail']
-        ];
+    const addressLabel = state.lang === 'vi' ? 'ĐỊA CHỈ KHÁCH SẠN' : 'HOTEL ADDRESS';
+    const address = state.lang === 'vi' ? CONFIG.address.vi : CONFIG.address.en;
 
     return `
       <section class="hero">
@@ -111,8 +101,9 @@
           <div class="directory-grid">
             ${c.homeCards.map(card => `<a class="directory-card" href="${card.route}" data-route>${icon(card.icon)}<h2>${esc(card.title)}</h2><p>${esc(card.subtitle)}</p><span class="card-arrow" aria-hidden="true">→</span></a>`).join('')}
           </div>
-          <div class="benefits">
-            ${benefits.map(([ico,title,text]) => `<div class="benefit">${icon(ico)}<div><strong>${esc(title)}</strong><span>${esc(text)}</span></div></div>`).join('')}
+          <div class="hotel-address">
+            <strong>${esc(addressLabel)}</strong>
+            <address>${esc(address)}</address>
           </div>
         </div>
       </section>`;
@@ -148,7 +139,7 @@
   }
 
   function renderContact(c) {
-    return pageHero(state.lang === 'vi' ? 'LIÊN HỆ LỄ TÂN' : 'CONTACT RECEPTION', c.ui.assistanceText) + `<section class="page-section"><div class="shell contact-grid"><div class="contact-panel">${icon('phone')}<h2>${esc(c.ui.callReception)}</h2><p>${esc(c.ui.receptionDial)}</p><a class="phone-number" href="tel:${CONFIG.phoneTel}">${esc(CONFIG.phoneDisplay)}</a><br><a class="button button-primary" href="tel:${CONFIG.phoneTel}">${esc(c.ui.callReception)}</a></div><div class="contact-panel"><h2>ZALO</h2><img class="zalo-qr" src="assets/qr/zalo-pinewood.jpg" alt="QR Zalo Pinewood Hotel Dalat"><p>${esc(c.ui.scanZalo)}</p></div></div></section>`;
+    return pageHero(state.lang === 'vi' ? 'LIÊN HỆ LỄ TÂN' : 'CONTACT RECEPTION', c.ui.assistanceText) + `<section class="page-section"><div class="shell contact-grid"><div class="contact-panel">${icon('phone')}<h2>${esc(c.ui.callReception)}</h2><p>${esc(c.ui.receptionDial)}</p><a class="phone-number" href="tel:${CONFIG.phoneTel}">${esc(CONFIG.phoneDisplay)}</a><br><a class="button button-primary" href="tel:${CONFIG.phoneTel}">${esc(c.ui.callReception)}</a></div><div class="contact-panel"><h2>ZALO</h2><img class="zalo-qr" alt="QR Zalo Pinewood Hotel Dalat"><p>${esc(c.ui.scanZalo)}</p></div></div></section>`;
   }
 
   function renderEnvironment(c) {
@@ -183,7 +174,14 @@
       services: renderServices, safety: renderSafety, contact: renderContact, environment: renderEnvironment, fullInfo: renderFullInfo
     }[state.key] || renderHome;
     main.innerHTML = renderer(c);
+    setQrSources();
     bindDynamicActions();
+  }
+
+  function setQrSources() {
+    document.querySelectorAll('.zalo-qr').forEach(img => {
+      img.src = ZALO_QR;
+    });
   }
 
   function bindDynamicActions() {
