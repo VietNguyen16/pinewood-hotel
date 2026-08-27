@@ -4,7 +4,7 @@ window.HOTEL_CONFIG = Object.freeze({
   domain: "https://pinewoodhotel.vn/",
   websiteLabel: "pinewoodhotel.vn",
   email: "info@pinewoodhotel.vn",
-  zaloUrl: "https://zaloapp.com/qr/p/1nqcsndxc8b70",
+  zaloUrl: "https://zalo.me/0785098686",
   slogan: {
     vi: "Ngủ ngon - Ấm áp - Đậm chất Đà Lạt",
     en: "Sleep Well - Stay Warm - Feel Dalat"
