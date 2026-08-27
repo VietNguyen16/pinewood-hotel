@@ -106,6 +106,7 @@
           <div class="hotel-address">
             <strong>${esc(addressLabel)}</strong>
             <address>${esc(address)}</address>
+            <a class="hotel-directions-link" href="https://www.google.com/maps/dir/?api=1&destination=Pinewood%20Hotel%20Dalat%2C%2054%20%C4%90%C6%B0%E1%BB%9Dng%20V%C3%B5%20Tr%C6%B0%E1%BB%9Dng%20To%E1%BA%A3n%2C%20%C4%90%C3%A0%20L%E1%BA%A1t%2C%20L%C3%A2m%20%C4%90%E1%BB%93ng%2C%20Vi%E1%BB%87t%20Nam" target="_blank" rel="noopener noreferrer">${esc(state.lang === 'vi' ? 'Chỉ đường trên Google Maps' : 'Get directions on Google Maps')}</a>
           </div>
         </div>
       </section>`;
@@ -141,7 +142,31 @@
   }
 
   function renderContact(c) {
-    return pageHero(state.lang === 'vi' ? 'LIÊN HỆ' : 'CONTACT', c.ui.assistanceText) + `<section class="page-section"><div class="shell contact-grid"><div class="contact-panel">${icon('phone')}<h2>${esc(c.ui.callReception)}</h2><p>${esc(c.ui.receptionDial)}</p><a class="phone-number" href="tel:${CONFIG.phoneTel}">${esc(CONFIG.phoneDisplay)}</a><a class="contact-email" href="mailto:${CONFIG.email}">${esc(CONFIG.email)}</a><a class="button button-primary" href="tel:${CONFIG.phoneTel}">${esc(c.ui.callReception)}</a></div><div class="contact-panel"><h2>ZALO</h2><img class="zalo-qr" alt="QR Zalo Pinewood Hotel Dalat"><p>${esc(c.ui.scanZalo)}</p></div></div></section>`;
+    const address = state.lang === 'vi' ? CONFIG.address.vi : CONFIG.address.en;
+    const locationTitle = state.lang === 'vi' ? 'VỊ TRÍ KHÁCH SẠN' : 'HOTEL LOCATION';
+    const directionsLabel = state.lang === 'vi' ? 'Chỉ đường' : 'Get Directions';
+    const locationIntro = state.lang === 'vi' ? 'Mở Google Maps để được hướng dẫn đường đi trực tiếp đến Pinewood Hotel Dalat.' : 'Open Google Maps for turn-by-turn directions to Pinewood Hotel Dalat.';
+    return pageHero(state.lang === 'vi' ? 'LIÊN HỆ' : 'CONTACT', c.ui.assistanceText) + `
+      <section class="page-section">
+        <div class="shell">
+          <div class="contact-grid">
+            <div class="contact-panel">${icon('phone')}<h2>${esc(c.ui.callReception)}</h2><p>${esc(c.ui.receptionDial)}</p><a class="phone-number" href="tel:${CONFIG.phoneTel}">${esc(CONFIG.phoneDisplay)}</a><a class="contact-email" href="mailto:${CONFIG.email}">${esc(CONFIG.email)}</a><a class="button button-primary" href="tel:${CONFIG.phoneTel}">${esc(c.ui.callReception)}</a></div>
+            <div class="contact-panel"><h2>ZALO</h2><img class="zalo-qr" alt="QR Zalo Pinewood Hotel Dalat"><p>${esc(c.ui.scanZalo)}</p></div>
+          </div>
+          <section class="contact-location" aria-label="${esc(locationTitle)}">
+            <div class="contact-map-wrap">
+              <iframe class="contact-map" src="https://www.google.com/maps?q=Pinewood%20Hotel%20Dalat%2C%2054%20%C4%90%C6%B0%E1%BB%9Dng%20V%C3%B5%20Tr%C6%B0%E1%BB%9Dng%20To%E1%BA%A3n%2C%20%C4%90%C3%A0%20L%E1%BA%A1t%2C%20L%C3%A2m%20%C4%90%E1%BB%93ng%2C%20Vi%E1%BB%87t%20Nam&output=embed" title="Google Maps - Pinewood Hotel Dalat" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div class="contact-location-copy">
+              <p class="eyebrow">GOOGLE MAPS</p>
+              <h2>${esc(locationTitle)}</h2>
+              <address>${esc(address)}</address>
+              <p>${esc(locationIntro)}</p>
+              <a class="button button-primary directions-button" href="https://www.google.com/maps/dir/?api=1&destination=Pinewood%20Hotel%20Dalat%2C%2054%20%C4%90%C6%B0%E1%BB%9Dng%20V%C3%B5%20Tr%C6%B0%E1%BB%9Dng%20To%E1%BA%A3n%2C%20%C4%90%C3%A0%20L%E1%BA%A1t%2C%20L%C3%A2m%20%C4%90%E1%BB%93ng%2C%20Vi%E1%BB%87t%20Nam" target="_blank" rel="noopener noreferrer">${esc(directionsLabel)} →</a>
+            </div>
+          </section>
+        </div>
+      </section>`;
   }
 
   function renderEnvironment(c) {
