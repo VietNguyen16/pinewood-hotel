@@ -1,0 +1,51 @@
+name: Unpack Pinewood source
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'pinewood-hotel-github-pages.zip'
+      - '.github/workflows/unpack-source.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  unpack:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Unpack website source
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/pinewood-src
+          mkdir -p /tmp/pinewood-src
+          unzip -q pinewood-hotel-github-pages.zip -d /tmp/pinewood-src
+          cp -a /tmp/pinewood-src/pinewood-hotel/. ./
+
+          # Make asset paths work both on the GitHub Pages preview URL
+          # and later on https://pinewoodhotel.vn/.
+          sed -i "s#url('/assets/images/forest-hero.svg')#url('../assets/images/forest-hero.svg')#" css/style.css
+          sed -i 's#src="/assets/qr/zalo-pinewood.jpg"#src="assets/qr/zalo-pinewood.jpg"#' js/main.js
+
+          rm -f pinewood-hotel-github-pages.zip
+
+      - name: Commit unpacked source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No source changes to commit."
+          else
+            git commit -m "Unpack Pinewood website source"
+            git push origin main
+          fi
