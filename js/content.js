@@ -41,7 +41,7 @@ window.PINEWOOD_CONTENT = {
       { key: "breakfast", title: "BỮA SÁNG", subtitle: "Giờ phục vụ bữa sáng", route: "/bua-sang", icon: "coffee" },
       { key: "services", title: "DỊCH VỤ & TIỆN NGHI", subtitle: "Thông tin dịch vụ trong kỳ nghỉ", route: "/dich-vu", icon: "bell" },
       { key: "safety", title: "AN TOÀN & KHẨN CẤP", subtitle: "Hướng dẫn khi cần hỗ trợ", route: "/an-toan", icon: "shield" },
-      { key: "contact", title: "LIÊN HỆ LỄ TÂN", subtitle: "Gọi điện hoặc kết nối Zalo", route: "/lien-he", icon: "phone" },
+      { key: "contact", title: "LIÊN HỆ", subtitle: "Điện thoại, email hoặc Zalo", route: "/lien-he", icon: "phone" },
       { key: "environment", title: "BẢO VỆ MÔI TRƯỜNG", subtitle: "Cùng Pinewood gìn giữ môi trường", route: "/moi-truong", icon: "leaf" },
       { key: "fullInfo", title: "THÔNG TIN ĐẦY ĐỦ", subtitle: "Xem toàn bộ thông tin khách sạn", route: "/thong-tin", icon: "info" }
     ],
@@ -163,7 +163,7 @@ window.PINEWOOD_CONTENT = {
       { key: "breakfast", title: "BREAKFAST", subtitle: "Breakfast serving hours", route: "/en/breakfast", icon: "coffee" },
       { key: "services", title: "HOTEL SERVICES", subtitle: "Services and amenities during your stay", route: "/en/services", icon: "bell" },
       { key: "safety", title: "SAFETY & EMERGENCY", subtitle: "Guidance when assistance is needed", route: "/en/safety", icon: "shield" },
-      { key: "contact", title: "CONTACT RECEPTION", subtitle: "Call or connect via Zalo", route: "/en/contact", icon: "phone" },
+      { key: "contact", title: "CONTACT", subtitle: "Phone, email or Zalo", route: "/en/contact", icon: "phone" },
       { key: "environment", title: "ENVIRONMENT", subtitle: "Help Pinewood protect the environment", route: "/en/environment", icon: "leaf" },
       { key: "fullInfo", title: "FULL HOTEL INFORMATION", subtitle: "View all hotel information", route: "/en/hotel-information", icon: "info" }
     ],

@@ -250,3 +250,19 @@ img { display: block; max-width: 100%; }
   .footer-contact + .footer-contact { margin-left: 0; padding-left: 0; border-left: 0; }
   .footer-contact { font-size: 11px; }
 }
+
+
+/* Pinewood contact + bilingual slogan experience */
+.contact-email { display: block; width: fit-content; max-width: 100%; margin: -2px auto 20px; color: var(--pine-green); font-size: 14px; font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
+.contact-email:hover { color: var(--pine-brown); text-decoration: underline; text-underline-offset: 4px; }
+.footer-slogan-link { display: inline-block; margin-top: 5px; color: rgba(255,255,255,.82); font-size: 13px; font-weight: 600; letter-spacing: .035em; line-height: 1.55; text-decoration: none; cursor: pointer; }
+.footer-slogan-link:hover, .footer-slogan-link:focus-visible { color: #fff; text-decoration: underline; text-underline-offset: 5px; }
+.hotel-experience-section { padding: 64px 0; background: linear-gradient(180deg, #f7f5f0 0%, var(--pine-offwhite) 100%); border-top: 1px solid var(--line); scroll-margin-top: calc(var(--header-h) + 18px); }
+.experience-shell { display: flex; justify-content: center; }
+.experience-poster { width: min(760px, 100%); height: auto; border: 1px solid var(--line); border-radius: var(--radius-xl); box-shadow: var(--shadow); }
+@media (max-width: 720px) {
+  .contact-email { font-size: 13px; margin-bottom: 18px; }
+  .footer-slogan-link { font-size: 12px; }
+  .hotel-experience-section { padding: 34px 0; }
+  .experience-poster { border-radius: var(--radius-lg); }
+}

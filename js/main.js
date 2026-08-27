@@ -139,7 +139,7 @@
   }
 
   function renderContact(c) {
-    return pageHero(state.lang === 'vi' ? 'LIÊN HỆ LỄ TÂN' : 'CONTACT RECEPTION', c.ui.assistanceText) + `<section class="page-section"><div class="shell contact-grid"><div class="contact-panel">${icon('phone')}<h2>${esc(c.ui.callReception)}</h2><p>${esc(c.ui.receptionDial)}</p><a class="phone-number" href="tel:${CONFIG.phoneTel}">${esc(CONFIG.phoneDisplay)}</a><br><a class="button button-primary" href="tel:${CONFIG.phoneTel}">${esc(c.ui.callReception)}</a></div><div class="contact-panel"><h2>ZALO</h2><img class="zalo-qr" alt="QR Zalo Pinewood Hotel Dalat"><p>${esc(c.ui.scanZalo)}</p></div></div></section>`;
+    return pageHero(state.lang === 'vi' ? 'LIÊN HỆ' : 'CONTACT', c.ui.assistanceText) + `<section class="page-section"><div class="shell contact-grid"><div class="contact-panel">${icon('phone')}<h2>${esc(c.ui.callReception)}</h2><p>${esc(c.ui.receptionDial)}</p><a class="phone-number" href="tel:${CONFIG.phoneTel}">${esc(CONFIG.phoneDisplay)}</a><a class="contact-email" href="mailto:${CONFIG.email}">${esc(CONFIG.email)}</a><a class="button button-primary" href="tel:${CONFIG.phoneTel}">${esc(c.ui.callReception)}</a></div><div class="contact-panel"><h2>ZALO</h2><img class="zalo-qr" alt="QR Zalo Pinewood Hotel Dalat"><p>${esc(c.ui.scanZalo)}</p></div></div></section>`;
   }
 
   function renderEnvironment(c) {
@@ -160,7 +160,8 @@
     document.querySelector('meta[name="description"]').setAttribute('content', c.metaDescription);
     renderNav();
     document.querySelectorAll('[data-lang]').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === state.lang));
-    document.getElementById('footer-line').textContent = CONFIG.slogan;
+    document.getElementById('footer-line').textContent = CONFIG.slogan[state.lang];
+    document.getElementById('footer-line').setAttribute('aria-label', state.lang === 'vi' ? 'Xem trải nghiệm Ngủ ngon - Ấm áp - Đậm chất Đà Lạt' : 'View Sleep Well - Stay Warm - Feel Dalat experience');
     document.getElementById('footer-support').textContent = c.ui.needAssistance;
     document.getElementById('assistance-title').textContent = c.ui.needAssistance;
     document.getElementById('assistance-text').textContent = c.ui.assistanceText;
