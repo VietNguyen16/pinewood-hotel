@@ -160,7 +160,7 @@
     document.querySelector('meta[name="description"]').setAttribute('content', c.metaDescription);
     renderNav();
     document.querySelectorAll('[data-lang]').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === state.lang));
-    document.getElementById('footer-line').textContent = c.ui.footerLine;
+    document.getElementById('footer-line').textContent = CONFIG.slogan;
     document.getElementById('footer-support').textContent = c.ui.needAssistance;
     document.getElementById('assistance-title').textContent = c.ui.needAssistance;
     document.getElementById('assistance-text').textContent = c.ui.assistanceText;

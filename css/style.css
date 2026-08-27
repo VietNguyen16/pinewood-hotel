@@ -234,3 +234,19 @@ img { display: block; max-width: 100%; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
 }
+
+
+/* Pinewood footer slogan and contact strip */
+.footer-copy { min-width: 0; }
+#footer-line { margin-top: 5px; color: rgba(255,255,255,.82); font-size: 13px; font-weight: 600; letter-spacing: .035em; }
+.footer-contacts { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 0; margin-top: 12px; }
+.footer-contact { display: inline-flex; align-items: center; gap: 8px; color: rgba(255,255,255,.76); text-decoration: none; font-size: 11px; line-height: 1.35; transition: color .2s ease; }
+.footer-contact:hover { color: #fff; }
+.footer-contact + .footer-contact { margin-left: 20px; padding-left: 20px; border-left: 1px solid rgba(255,255,255,.25); }
+.footer-contact svg { width: 18px; height: 18px; flex: none; fill: none; stroke: var(--pine-brown); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+@media (max-width: 720px) {
+  #footer-line { font-size: 12px; }
+  .footer-contacts { align-items: flex-start; flex-direction: column; gap: 8px; }
+  .footer-contact + .footer-contact { margin-left: 0; padding-left: 0; border-left: 0; }
+  .footer-contact { font-size: 11px; }
+}
