@@ -4,7 +4,6 @@ window.HOTEL_CONFIG = Object.freeze({
   domain: "https://pinewoodhotel.vn/",
   websiteLabel: "pinewoodhotel.vn",
   email: "info@pinewoodhotel.vn",
-  slogan: "Sleep Well - Stay Warm - Feel Dalat",
   slogan: {
     vi: "Ngủ ngon - Ấm áp - Đậm chất Đà Lạt",
     en: "Sleep Well - Stay Warm - Feel Dalat"
