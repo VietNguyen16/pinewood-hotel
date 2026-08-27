@@ -1,0 +1,112 @@
+name: Patch Pinewood UI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/patch-pinewood-ui.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Patch QR, home strip, and address
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          main = Path('js/main.js')
+          config = Path('js/config.js')
+          css = Path('css/style.css')
+
+          s = main.read_text()
+          if "const ZALO_QR =" not in s:
+              s = s.replace(
+                  "  const CONTENT = window.PINEWOOD_CONTENT;\n",
+                  "  const CONTENT = window.PINEWOOD_CONTENT;\n  const ZALO_QR = window.PINEWOOD_ZALO_QR || 'assets/qr/zalo-pinewood.jpg';\n"
+              )
+
+          s = re.sub(
+              r"  function renderHome\(c\) \{\n    const benefits = state\.lang === 'vi'.*?\n\n    return `\n",
+              "  function renderHome(c) {\n    const addressLabel = state.lang === 'vi' ? 'ĐỊA CHỈ KHÁCH SẠN' : 'HOTEL ADDRESS';\n    const address = state.lang === 'vi' ? CONFIG.address.vi : CONFIG.address.en;\n\n    return `\n",
+              s,
+              count=1,
+              flags=re.S,
+          )
+
+          s = re.sub(
+              r'          <div class="benefits">\n.*?          </div>\n',
+              '          <div class="hotel-address">\n            <strong>${esc(addressLabel)}</strong>\n            <address>${esc(address)}</address>\n          </div>\n',
+              s,
+              count=1,
+              flags=re.S,
+          )
+
+          s = s.replace(
+              '<img class="zalo-qr" src="assets/qr/zalo-pinewood.jpg" alt="QR Zalo Pinewood Hotel Dalat">',
+              '<img class="zalo-qr" alt="QR Zalo Pinewood Hotel Dalat">'
+          )
+          s = s.replace(
+              '<img class="zalo-qr" src="/assets/qr/zalo-pinewood.jpg" alt="QR Zalo Pinewood Hotel Dalat">',
+              '<img class="zalo-qr" alt="QR Zalo Pinewood Hotel Dalat">'
+          )
+
+          if 'function setQrSources()' not in s:
+              s = s.replace(
+                  "    main.innerHTML = renderer(c);\n    bindDynamicActions();\n  }\n\n  function bindDynamicActions() {\n",
+                  "    main.innerHTML = renderer(c);\n    setQrSources();\n    bindDynamicActions();\n  }\n\n  function setQrSources() {\n    document.querySelectorAll('.zalo-qr').forEach(img => {\n      img.src = ZALO_QR;\n    });\n  }\n\n  function bindDynamicActions() {\n"
+              )
+
+          main.write_text(s)
+
+          c = config.read_text()
+          if 'address: {' not in c:
+              c = c.replace(
+                  '  roomDial: "0",\n',
+                  '  roomDial: "0",\n  address: {\n    vi: "54 Đường Võ Trường Toản, Lâm Viên - Đà Lạt, Lâm Đồng, Việt Nam",\n    en: "54 Vo Truong Toan Street, Lam Vien - Da Lat, Lam Dong, Vietnam"\n  },\n'
+              )
+          config.write_text(c)
+
+          st = css.read_text()
+          st = re.sub(
+              r'\.benefits \{.*?\.benefit span \{.*?\}\n',
+              '.hotel-address { border-top: 1px solid var(--line); margin-top: 16px; padding: 18px 12px 4px; text-align: center; }\n.hotel-address strong { display: block; color: var(--pine-green); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }\n.hotel-address address { margin-top: 7px; color: var(--muted); font-size: 12px; line-height: 1.6; font-style: normal; }\n',
+              st,
+              count=1,
+              flags=re.S,
+          )
+          st = st.replace('  .benefits { grid-template-columns: repeat(2,1fr); }\n', '')
+          st = st.replace(
+              '  .benefits { grid-template-columns: repeat(2,1fr); gap: 3px; padding-inline: 0; }\n  .benefit { align-items: flex-start; gap: 7px; padding: 8px 6px; }\n  .benefit .icon { width: 20px; height: 20px; }\n  .benefit strong { font-size: 9px; }\n  .benefit span { font-size: 9px; }\n',
+              '  .hotel-address { margin-top: 10px; padding: 14px 8px 4px; }\n  .hotel-address strong { font-size: 9px; }\n  .hotel-address address { font-size: 10px; }\n'
+          )
+          css.write_text(st)
+          PY
+
+          node --check js/main.js
+          node --check js/config.js
+
+      - name: Commit fixes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add js/main.js js/config.js css/style.css
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Fix Zalo QR and update hotel address"
+            git push origin main
+          fi
