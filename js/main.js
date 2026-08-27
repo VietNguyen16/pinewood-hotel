@@ -128,7 +128,12 @@
 
   function renderWifi(c) {
     const wifiService = c.serviceGroups[0].items.find(i => i.icon === 'wifi');
-    return pageHero('WI-FI', wifiService.text) + `<section class="page-section"><div class="shell info-feature"><div class="feature-panel accent">${icon('wifi')}<h2>${esc(state.lang === 'vi' ? 'Wi-Fi miễn phí' : 'Complimentary Wi-Fi')}</h2><p>${esc(wifiService.text)}</p></div><div class="feature-panel"><p class="eyebrow">FREE WI-FI</p><h2>${esc(c.ui.quickAccess)}</h2><div class="wifi-boxes"><div class="wifi-box"><span>${esc(c.ui.network)}</span><strong>${esc(CONFIG.wifi.ssid)}</strong></div><div class="wifi-box"><span>${esc(c.ui.password)}</span><strong>${esc(CONFIG.wifi.password)}</strong></div></div></div></div></section>`;
+    const connectLabel = state.lang === 'vi' ? 'KẾT NỐI WI-FI' : 'CONNECT TO WI-FI';
+    const connectHint = state.lang === 'vi' ? 'Nhấn để kết nối nhanh' : 'Click here to connect';
+    const copyLabel = state.lang === 'vi' ? 'Sao chép mật khẩu' : 'Copy password';
+    const qrLabel = state.lang === 'vi' ? 'Hiển thị QR Wi-Fi' : 'Show Wi-Fi QR';
+    const qrHint = state.lang === 'vi' ? 'Quét bằng thiết bị khác để kết nối nhanh với Wi-Fi khách sạn.' : 'Scan with another device for quick access to the hotel Wi-Fi.';
+    return pageHero('WI-FI', wifiService.text) + `<section class="page-section"><div class="shell info-feature"><div class="feature-panel accent">${icon('wifi')}<h2>${esc(state.lang === 'vi' ? 'Wi-Fi miễn phí' : 'Complimentary Wi-Fi')}</h2><p>${esc(wifiService.text)}</p></div><div class="feature-panel wifi-access-panel"><p class="eyebrow">FREE WI-FI</p><h2>${esc(c.ui.quickAccess)}</h2><button class="wifi-connect-button" type="button" data-wifi-connect>${icon('wifi')}<span><strong>${esc(connectLabel)}</strong><small>${esc(connectHint)}</small></span></button><div class="wifi-boxes"><div class="wifi-box"><span>${esc(c.ui.network)}</span><strong>${esc(CONFIG.wifi.ssid)}</strong></div><div class="wifi-box"><span>${esc(c.ui.password)}</span><strong>${esc(CONFIG.wifi.password)}</strong></div></div><div class="wifi-actions"><button class="button wifi-secondary-button" type="button" data-wifi-copy>${esc(copyLabel)}</button><button class="button wifi-secondary-button" type="button" data-wifi-qr>${esc(qrLabel)}</button></div><p class="wifi-status" data-wifi-status hidden></p><div class="wifi-qr-panel" data-wifi-qr-panel hidden><img src="assets/qr/wifi-pinewood.svg" alt="Wi-Fi QR - Pinewood Hotel Dalat"><strong>${esc(CONFIG.wifi.ssid)}</strong><p>${esc(qrHint)}</p></div></div></div></section>`;
   }
 
   function renderBreakfast(c) {
@@ -203,6 +208,7 @@
     renderNav();
     document.querySelectorAll('[data-lang]').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === state.lang));
     document.getElementById('footer-line').textContent = CONFIG.slogan[state.lang];
+    document.getElementById('footer-address').textContent = CONFIG.address[state.lang];
     document.getElementById('footer-line').setAttribute('aria-label', state.lang === 'vi' ? 'Xem trải nghiệm Ngủ ngon - Ấm áp - Đậm chất Đà Lạt' : 'View Sleep Well - Stay Warm - Feel Dalat experience');
     document.getElementById('footer-support').textContent = c.ui.needAssistance;
     document.getElementById('assistance-title').textContent = c.ui.needAssistance;
@@ -225,11 +231,53 @@
   function setQrSources() {
     document.querySelectorAll('.zalo-qr').forEach(img => {
       img.src = ZALO_QR;
+      img.setAttribute('role', 'link');
+      img.setAttribute('tabindex', '0');
+      img.setAttribute('aria-label', state.lang === 'vi' ? 'Mở Zalo Pinewood Hotel Dalat' : 'Open Pinewood Hotel Dalat on Zalo');
+      img.setAttribute('title', state.lang === 'vi' ? 'Chạm để mở Zalo' : 'Tap to open Zalo');
     });
+  }
+
+  function copyText(value) {
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(value);
+    const area = document.createElement('textarea');
+    area.value = value;
+    area.setAttribute('readonly', '');
+    area.style.position = 'fixed';
+    area.style.opacity = '0';
+    document.body.appendChild(area);
+    area.select();
+    document.execCommand('copy');
+    area.remove();
+    return Promise.resolve();
+  }
+
+  function showWifiStatus() {
+    const status = document.querySelector('[data-wifi-status]');
+    if (!status) return;
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    let message;
+    if (state.lang === 'vi') {
+      message = isIOS ? `Mật khẩu đã được sao chép. Mở Cài đặt → Wi-Fi, chọn “${CONFIG.wifi.ssid}” và dán mật khẩu.` : isAndroid ? `Mật khẩu đã được sao chép. Mở Wi-Fi, chọn “${CONFIG.wifi.ssid}” và dán mật khẩu.` : `Mật khẩu đã được sao chép. Chọn mạng “${CONFIG.wifi.ssid}” để kết nối.`;
+    } else {
+      message = isIOS ? `Password copied. Open Settings → Wi-Fi, choose “${CONFIG.wifi.ssid}” and paste the password.` : isAndroid ? `Password copied. Open Wi-Fi, choose “${CONFIG.wifi.ssid}” and paste the password.` : `Password copied. Choose “${CONFIG.wifi.ssid}” to connect.`;
+    }
+    status.textContent = message;
+    status.hidden = false;
   }
 
   function bindDynamicActions() {
     document.querySelectorAll('[data-open-support]').forEach(btn => btn.addEventListener('click', openSupport));
+    document.querySelectorAll('[data-wifi-connect], [data-wifi-copy]').forEach(btn => btn.addEventListener('click', () => {
+      copyText(CONFIG.wifi.password).then(showWifiStatus).catch(showWifiStatus);
+    }));
+    document.querySelectorAll('[data-wifi-qr]').forEach(btn => btn.addEventListener('click', () => {
+      const panel = document.querySelector('[data-wifi-qr-panel]');
+      if (!panel) return;
+      panel.hidden = !panel.hidden;
+      if (!panel.hidden) panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }));
   }
 
   function openSupport() {
@@ -250,6 +298,12 @@
   });
 
   document.addEventListener('click', event => {
+    const zaloQr = event.target.closest('.zalo-qr');
+    if (zaloQr) {
+      event.preventDefault();
+      window.open(CONFIG.zaloUrl, '_blank', 'noopener,noreferrer');
+      return;
+    }
     const route = event.target.closest('[data-route]');
     if (route) {
       const url = new URL(route.href, window.location.origin);
@@ -260,6 +314,15 @@
     }
     const langButton = event.target.closest('[data-lang]');
     if (langButton) setLanguage(langButton.dataset.lang);
+    if (!mobileMenu.hidden && !event.target.closest('#mobile-menu') && !event.target.closest('#menu-button')) closeMenu();
+  });
+
+  document.addEventListener('keydown', event => {
+    if ((event.key === 'Enter' || event.key === ' ') && event.target.classList.contains('zalo-qr')) {
+      event.preventDefault();
+      window.open(CONFIG.zaloUrl, '_blank', 'noopener,noreferrer');
+    }
+    if (event.key === 'Escape' && !mobileMenu.hidden) closeMenu();
   });
 
   document.getElementById('dialog-close').addEventListener('click', () => dialog.close());
