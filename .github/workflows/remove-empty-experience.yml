@@ -1,0 +1,50 @@
+name: Remove empty Pinewood experience section
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/remove-empty-experience.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Remove unused empty experience section
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          index = Path('index.html')
+          h = index.read_text()
+
+          block = '''\n  <section class="hotel-experience-section" id="hotel-experience" aria-label="Pinewood Hotel experience">\n    <div class="shell experience-shell">\n      <img class="experience-poster" src="assets/images/pinewood-experience.webp" alt="Pinewood Hotel Dalat - Sleep Well, Stay Warm, Feel Dalat" loading="lazy">\n    </div>\n  </section>\n'''
+          h = h.replace(block, '\n')
+          h = h.replace('<a id="footer-line" class="footer-slogan-link" href="#hotel-experience"></a>', '<p id="footer-line" class="footer-slogan-link"></p>')
+          index.write_text(h)
+          PY
+
+      - name: Commit update
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Remove empty experience section"
+            git push origin main
+          fi
