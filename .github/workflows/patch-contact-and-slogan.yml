@@ -1,0 +1,84 @@
+name: Patch Pinewood contact and slogan
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/patch-contact-and-slogan.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update contact labels, email and slogan
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          main = Path('js/main.js')
+          content = Path('js/content.js')
+          config = Path('js/config.js')
+          css = Path('css/style.css')
+
+          # Ensure config contains the canonical slogan and email.
+          c = config.read_text()
+          if 'email: "info@pinewoodhotel.vn"' not in c:
+              c = c.replace('  domain: "https://pinewoodhotel.vn/",\n', '  domain: "https://pinewoodhotel.vn/",\n  email: "info@pinewoodhotel.vn",\n')
+          if 'slogan: "Sleep Well - Stay Warm - Feel Dalat"' not in c:
+              c = c.replace('  email: "info@pinewoodhotel.vn",\n', '  email: "info@pinewoodhotel.vn",\n  slogan: "Sleep Well - Stay Warm - Feel Dalat",\n')
+          config.write_text(c)
+
+          # Rename Contact Reception card labels to Contact in both languages.
+          t = content.read_text()
+          t = t.replace('title: "LIÊN HỆ LỄ TÂN", subtitle: "Gọi điện hoặc kết nối Zalo"', 'title: "LIÊN HỆ", subtitle: "Điện thoại, email hoặc kết nối Zalo"')
+          t = t.replace('title: "CONTACT RECEPTION", subtitle: "Call or connect via Zalo"', 'title: "CONTACT", subtitle: "Phone, email or connect via Zalo"')
+          content.write_text(t)
+
+          # Contact page heading + email; footer must always display the hotel slogan.
+          m = main.read_text()
+          m = m.replace("pageHero(state.lang === 'vi' ? 'LIÊN HỆ LỄ TÂN' : 'CONTACT RECEPTION'", "pageHero(state.lang === 'vi' ? 'LIÊN HỆ' : 'CONTACT'")
+          m = m.replace("document.getElementById('footer-line').textContent = c.ui.footerLine;", "document.getElementById('footer-line').textContent = CONFIG.slogan;")
+
+          old = '<a class="phone-number" href="tel:${CONFIG.phoneTel}">${esc(CONFIG.phoneDisplay)}</a><br><a class="button button-primary" href="tel:${CONFIG.phoneTel}">${esc(c.ui.callReception)}</a>'
+          new = '<a class="phone-number" href="tel:${CONFIG.phoneTel}">${esc(CONFIG.phoneDisplay)}</a><a class="contact-email" href="mailto:${CONFIG.email}">${esc(CONFIG.email)}</a><a class="button button-primary" href="tel:${CONFIG.phoneTel}">${esc(c.ui.callReception)}</a>'
+          if old in m:
+              m = m.replace(old, new, 1)
+          elif 'class="contact-email"' not in m:
+              needle = '<a class="phone-number" href="tel:${CONFIG.phoneTel}">${esc(CONFIG.phoneDisplay)}</a>'
+              m = m.replace(needle, needle + '<a class="contact-email" href="mailto:${CONFIG.email}">${esc(CONFIG.email)}</a>', 1)
+          main.write_text(m)
+
+          st = css.read_text()
+          marker = '/* Contact email */'
+          if marker not in st:
+              st += '''\n\n/* Contact email */\n.contact-email { display: block; width: fit-content; max-width: 100%; margin: 10px auto 20px; color: var(--pine-green); font-size: 15px; line-height: 1.5; text-decoration: none; overflow-wrap: anywhere; border-bottom: 1px solid rgba(15,49,27,.24); }\n.contact-email:hover { color: var(--pine-brown); border-bottom-color: currentColor; }\n@media (max-width: 720px) { .contact-email { font-size: 14px; margin-bottom: 18px; } }\n'''
+          css.write_text(st)
+          PY
+
+          node --check js/main.js
+          node --check js/config.js
+
+      - name: Commit updates
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add js/main.js js/content.js js/config.js css/style.css
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Update contact page and Pinewood slogan"
+            git push origin main
+          fi
