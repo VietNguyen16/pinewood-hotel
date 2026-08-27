@@ -1,0 +1,90 @@
+name: Patch Pinewood footer brand
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/patch-footer-brand.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Add slogan and contact information
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          index = Path('index.html')
+          config = Path('js/config.js')
+          main = Path('js/main.js')
+          css = Path('css/style.css')
+
+          # Config: keep the slogan/contact details in one source of truth.
+          c = config.read_text()
+          if 'slogan:' not in c:
+              c = c.replace(
+                  '  domain: "https://pinewoodhotel.vn/",\n',
+                  '  domain: "https://pinewoodhotel.vn/",\n  websiteLabel: "pinewoodhotel.vn",\n  email: "info@pinewoodhotel.vn",\n  slogan: "Sleep Well - Stay Warm - Feel Dalat",\n'
+              )
+          config.write_text(c)
+
+          # Footer markup: slogan + three contact links.
+          h = index.read_text()
+          old_footer = '''      <div>\n        <strong>Pinewood Hotel Dalat</strong>\n        <p id="footer-line"></p>\n      </div>\n      <button class="footer-support" type="button" id="footer-support"></button>'''
+          new_footer = '''      <div class="footer-copy">\n        <strong>Pinewood Hotel Dalat</strong>\n        <p id="footer-line"></p>\n        <div class="footer-contacts" aria-label="Pinewood Hotel contact information">\n          <a class="footer-contact" href="tel:+84785098686">\n            <svg aria-hidden="true"><use href="#i-phone"></use></svg>\n            <span>0785 098 686</span>\n          </a>\n          <a class="footer-contact" href="mailto:info@pinewoodhotel.vn">\n            <svg aria-hidden="true"><use href="#i-mail"></use></svg>\n            <span>info@pinewoodhotel.vn</span>\n          </a>\n          <a class="footer-contact" href="https://pinewoodhotel.vn/">\n            <svg aria-hidden="true"><use href="#i-globe"></use></svg>\n            <span>pinewoodhotel.vn</span>\n          </a>\n        </div>\n      </div>\n      <button class="footer-support" type="button" id="footer-support"></button>'''
+          if old_footer in h:
+              h = h.replace(old_footer, new_footer, 1)
+
+          if 'id="i-mail"' not in h:
+              h = h.replace(
+                  '    <symbol id="i-noSmoking" viewBox="0 0 24 24"><path d="M4 16h14v3H4zM19 16h2v3h-2M14 8c3 0 4 2 4 5M17 5c3 0 4 2 4 5M4 4l16 16"/></symbol>\n',
+                  '    <symbol id="i-noSmoking" viewBox="0 0 24 24"><path d="M4 16h14v3H4zM19 16h2v3h-2M14 8c3 0 4 2 4 5M17 5c3 0 4 2 4 5M4 4l16 16"/></symbol>\n    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>\n    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 4 6 4 9s-1 6-4 9M12 3c-3 3-4 6-4 9s1 6 4 9"/></symbol>\n',
+                  1
+              )
+          index.write_text(h)
+
+          # Replace old generic footer sentence with the hotel slogan.
+          m = main.read_text()
+          m = m.replace(
+              "    document.getElementById('footer-line').textContent = c.ui.footerLine;",
+              "    document.getElementById('footer-line').textContent = CONFIG.slogan;",
+              1
+          )
+          main.write_text(m)
+
+          # Footer visual treatment. Appended overrides keep the patch isolated and responsive.
+          st = css.read_text()
+          marker = '/* Pinewood footer slogan and contact strip */'
+          if marker not in st:
+              st += '''\n\n/* Pinewood footer slogan and contact strip */\n.footer-copy { min-width: 0; }\n#footer-line { margin-top: 5px; color: rgba(255,255,255,.82); font-size: 13px; font-weight: 600; letter-spacing: .035em; }\n.footer-contacts { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 0; margin-top: 12px; }\n.footer-contact { display: inline-flex; align-items: center; gap: 8px; color: rgba(255,255,255,.76); text-decoration: none; font-size: 11px; line-height: 1.35; transition: color .2s ease; }\n.footer-contact:hover { color: #fff; }\n.footer-contact + .footer-contact { margin-left: 20px; padding-left: 20px; border-left: 1px solid rgba(255,255,255,.25); }\n.footer-contact svg { width: 18px; height: 18px; flex: none; fill: none; stroke: var(--pine-brown); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }\n@media (max-width: 720px) {\n  #footer-line { font-size: 12px; }\n  .footer-contacts { align-items: flex-start; flex-direction: column; gap: 8px; }\n  .footer-contact + .footer-contact { margin-left: 0; padding-left: 0; border-left: 0; }\n  .footer-contact { font-size: 11px; }\n}\n'''
+          css.write_text(st)
+          PY
+
+          node --check js/main.js
+          node --check js/config.js
+
+      - name: Commit footer update
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html js/config.js js/main.js css/style.css
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Add Pinewood slogan and contact information"
+            git push origin main
+          fi
