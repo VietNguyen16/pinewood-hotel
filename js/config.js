@@ -17,8 +17,8 @@ window.HOTEL_CONFIG = Object.freeze({
     en: "54 Vo Truong Toan Street, Lam Vien - Da Lat, Lam Dong, Vietnam"
   },
   wifi: {
-    ssid: "[TO BE ADDED]",
-    password: "[TO BE ADDED]"
+    ssid: "Pinewood Hotel Dalat",
+    password: "***"
   },
   breakfast: {
     from: "06:30",
