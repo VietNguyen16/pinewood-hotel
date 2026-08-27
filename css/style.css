@@ -272,3 +272,77 @@ img { display: block; max-width: 100%; }
 .contact-email { display: block; width: fit-content; max-width: 100%; margin: 10px auto 20px; color: var(--pine-green); font-size: 15px; line-height: 1.5; text-decoration: none; overflow-wrap: anywhere; border-bottom: 1px solid rgba(15,49,27,.24); }
 .contact-email:hover { color: var(--pine-brown); border-bottom-color: currentColor; }
 @media (max-width: 720px) { .contact-email { font-size: 14px; margin-bottom: 18px; } }
+
+
+/* Pinewood welcome letter dialog */
+.welcome-dialog {
+  width: min(940px, calc(100vw - 32px));
+  max-width: 940px;
+  max-height: calc(100dvh - 28px);
+  padding: 0;
+  border: 0;
+  border-radius: 26px;
+  overflow: auto;
+  background: #f8f7f3;
+  color: #5b3d2a;
+  box-shadow: 0 28px 80px rgba(12,53,34,.24);
+}
+.welcome-dialog::backdrop { background: rgba(9,35,23,.58); backdrop-filter: blur(5px); }
+.welcome-letter-frame {
+  position: relative;
+  margin: 10px;
+  padding: 46px clamp(28px, 6vw, 72px) 34px;
+  border: 1px solid var(--pine-brown);
+  outline: 1px solid rgba(178,142,105,.82);
+  outline-offset: -6px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(248,247,243,.96));
+}
+.welcome-dialog-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(178,142,105,.42);
+  border-radius: 12px;
+  background: rgba(255,255,255,.82);
+  color: var(--pine-charcoal);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+.welcome-letter-header { text-align: center; }
+.welcome-letter-header img { width: 112px; height: auto; margin: 0 auto 24px; }
+.welcome-letter-header h2 {
+  margin: 0;
+  color: var(--pine-green);
+  font-size: clamp(32px, 4.6vw, 48px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: .025em;
+}
+.welcome-letter-ornament { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 24px auto 30px; color: var(--pine-brown); }
+.welcome-letter-ornament::before, .welcome-letter-ornament::after { content: ''; width: 18px; height: 1px; background: currentColor; }
+.welcome-letter-ornament span { width: 8px; height: 8px; border: 1px solid currentColor; transform: rotate(45deg); }
+.welcome-letter-copy { max-width: 790px; margin: 0 auto; }
+.welcome-letter-copy p { margin: 0 0 22px; color: #65452f; font-size: 15px; line-height: 1.85; }
+.welcome-letter-greeting { font-weight: 600; }
+.welcome-letter-closing { margin-top: 30px !important; font-weight: 700; }
+.welcome-letter-signature { margin: 42px 0 0 !important; text-align: center; color: var(--pine-brown) !important; font-weight: 700; text-transform: uppercase; letter-spacing: .035em; }
+.welcome-letter-actions { display: flex; justify-content: flex-end; margin-top: 34px; }
+.welcome-letter-actions .button { min-width: 124px; }
+@media (max-width: 720px) {
+  .welcome-dialog { width: calc(100vw - 18px); max-height: calc(100dvh - 18px); border-radius: 20px; }
+  .welcome-letter-frame { margin: 6px; padding: 38px 22px 26px; border-radius: 16px; }
+  .welcome-dialog-close { top: 12px; right: 12px; width: 38px; height: 38px; font-size: 24px; }
+  .welcome-letter-header img { width: 88px; margin-bottom: 20px; }
+  .welcome-letter-header h2 { font-size: 30px; padding-inline: 26px; }
+  .welcome-letter-ornament { margin: 20px auto 24px; }
+  .welcome-letter-copy p { font-size: 14px; line-height: 1.75; margin-bottom: 18px; }
+  .welcome-letter-signature { margin-top: 30px !important; }
+  .welcome-letter-actions { margin-top: 26px; }
+  .welcome-letter-actions .button { width: 100%; }
+}

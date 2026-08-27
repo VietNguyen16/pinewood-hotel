@@ -4,6 +4,8 @@
   const ZALO_QR = window.PINEWOOD_ZALO_QR || 'assets/qr/zalo-pinewood.jpg';
   const main = document.getElementById('main-content');
   const dialog = document.getElementById('assistance-dialog');
+  const welcomeDialog = document.getElementById('welcome-dialog');
+  let welcomePendingAfterAssistance = false;
   const menuButton = document.getElementById('menu-button');
   const mobileMenu = document.getElementById('mobile-menu');
 
@@ -153,6 +155,21 @@
     return pageHero(state.lang === 'vi' ? 'THÔNG TIN KHÁCH SẠN' : 'HOTEL INFORMATION', c.ui.sourceNotice) + `<section class="page-section full-info"><div class="shell"><details open><summary>${esc(w.title)}</summary><div class="detail-body prose"><p class="greeting">${esc(w.greeting)}</p>${w.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}<p class="closing">${esc(w.closing)}</p><p class="signature">${esc(w.signature)}</p></div></details><details><summary>${esc(c.serviceGroups[0].title)}</summary><div class="detail-body service-grid">${c.serviceGroups[0].items.map(item=>`<article class="service-card">${icon(item.icon)}<h2>${esc(item.title)}</h2><p>${esc(item.text)}</p></article>`).join('')}</div></details><details><summary>${esc(state.lang === 'vi' ? 'QUY ĐỊNH KHÁCH SẠN' : 'HOTEL RULES')}</summary><div class="detail-body rule-list">${c.rules.map((r,i)=>`<article class="rule-card"><div class="rule-number">${String(i+1).padStart(2,'0')}</div><h2>${esc(r.title)}</h2><p>${esc(r.text)}</p></article>`).join('')}</div></details><details><summary>${esc(c.environment.title)}</summary><div class="detail-body environment-grid"><div><h2>${esc(c.environment.guestTitle)}</h2><ol class="number-list">${c.environment.guestItems.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div><div><h2>${esc(c.environment.hotelTitle)}</h2><ol class="number-list">${c.environment.hotelItems.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div></div></details></div></section>`;
   }
 
+  function renderWelcomeLetterDialog(c) {
+    const w = c.welcome;
+    document.getElementById('welcome-dialog-title').textContent = w.title;
+    document.getElementById('welcome-dialog-greeting').textContent = w.greeting;
+    document.getElementById('welcome-dialog-body').innerHTML = w.paragraphs.map(p => `<p>${esc(p)}</p>`).join('');
+    document.getElementById('welcome-dialog-closing').textContent = w.closing;
+    document.getElementById('welcome-dialog-signature').textContent = w.signature;
+    document.getElementById('welcome-dialog-contact').textContent = state.lang === 'vi' ? 'Liên hệ' : 'Contact';
+    document.getElementById('welcome-dialog-close').setAttribute('aria-label', c.ui.close);
+  }
+
+  function openWelcomeLetter() {
+    if (typeof welcomeDialog.showModal === 'function' && !welcomeDialog.open) welcomeDialog.showModal();
+  }
+
   function render() {
     const c = CONTENT[state.lang];
     document.documentElement.lang = state.lang;
@@ -169,6 +186,7 @@
     document.getElementById('scan-zalo').textContent = c.ui.scanZalo;
     menuButton.setAttribute('aria-label', c.ui.menu);
     document.getElementById('dialog-close').setAttribute('aria-label', c.ui.close);
+    renderWelcomeLetterDialog(c);
 
     const renderer = {
       home: renderHome, welcome: renderWelcome, rules: renderRules, wifi: renderWifi, breakfast: renderBreakfast,
@@ -220,6 +238,21 @@
   });
 
   document.getElementById('dialog-close').addEventListener('click', () => dialog.close());
+  document.getElementById('welcome-dialog-close').addEventListener('click', () => welcomeDialog.close());
+  document.getElementById('welcome-dialog-contact').addEventListener('click', () => {
+    welcomeDialog.close();
+    window.setTimeout(openSupport, 120);
+  });
+  welcomeDialog.addEventListener('click', event => {
+    const rect = welcomeDialog.getBoundingClientRect();
+    const outside = event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom;
+    if (outside) welcomeDialog.close();
+  });
+  dialog.addEventListener('close', () => {
+    if (!welcomePendingAfterAssistance) return;
+    welcomePendingAfterAssistance = false;
+    window.setTimeout(openWelcomeLetter, 220);
+  });
   document.getElementById('footer-support').addEventListener('click', openSupport);
   dialog.addEventListener('click', event => {
     const rect = dialog.getBoundingClientRect();
@@ -237,8 +270,10 @@
 
   render();
 
-  if (!sessionStorage.getItem('pinewood-assistance-seen')) {
+  if (!sessionStorage.getItem('pinewood-intro-sequence-v1')) {
+    sessionStorage.setItem('pinewood-intro-sequence-v1', '1');
     sessionStorage.setItem('pinewood-assistance-seen', '1');
+    welcomePendingAfterAssistance = true;
     window.setTimeout(openSupport, 700);
   }
 })();

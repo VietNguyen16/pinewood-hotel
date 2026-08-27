@@ -79,6 +79,26 @@
     <p class="qr-caption" id="scan-zalo"></p>
   </dialog>
 
+  <dialog class="welcome-dialog" id="welcome-dialog" aria-labelledby="welcome-dialog-title">
+    <div class="welcome-letter-frame">
+      <button class="welcome-dialog-close" type="button" id="welcome-dialog-close" aria-label="Close">×</button>
+      <div class="welcome-letter-header">
+        <img src="assets/logo/pinewood-logo.svg" alt="Pinewood Hotel" width="108" height="118">
+        <h2 id="welcome-dialog-title"></h2>
+        <div class="welcome-letter-ornament" aria-hidden="true"><span></span></div>
+      </div>
+      <div class="welcome-letter-copy">
+        <p class="welcome-letter-greeting" id="welcome-dialog-greeting"></p>
+        <div id="welcome-dialog-body"></div>
+        <p class="welcome-letter-closing" id="welcome-dialog-closing"></p>
+        <p class="welcome-letter-signature" id="welcome-dialog-signature"></p>
+      </div>
+      <div class="welcome-letter-actions">
+        <button class="button button-primary" type="button" id="welcome-dialog-contact"></button>
+      </div>
+    </div>
+  </dialog>
+
   <svg class="svg-sprite" aria-hidden="true" focusable="false">
     <symbol id="i-rules" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M14 3v4h4M9 11h6M9 15h6"/></symbol>
     <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M3 9a14 14 0 0 1 18 0M6 13a9 9 0 0 1 12 0M9.5 17a4 4 0 0 1 5 0"/><circle cx="12" cy="20" r="1"/></symbol>
