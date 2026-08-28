@@ -180,14 +180,23 @@
   }
 
   function renderBreakfast(c) {
-    const breakfast = c.serviceGroups[0].items[0];
-    return pageHero(state.lang === 'vi' ? 'BỮA SÁNG' : 'BREAKFAST', breakfast.text) + `<section class="page-section"><div class="shell info-feature"><div class="feature-panel"><p class="eyebrow">${esc(c.ui.daily)}</p><div class="big-time">${CONFIG.breakfast.from} — ${CONFIG.breakfast.to}</div><p>${esc(breakfast.text)}</p></div><div class="feature-panel accent">${icon('coffee')}<h2>${esc(c.ui.restaurant)}</h2><p>${esc(state.lang === 'vi' ? 'Bữa sáng được phục vụ tại nhà hàng hằng ngày.' : 'Breakfast is served at the restaurant every day.')}</p></div></div></section>`;
-  }
+  const intro = state.lang === 'vi'
+    ? 'Thời gian và địa điểm phục vụ bữa sáng dành cho khách lưu trú.'
+    : 'Breakfast service hours and location for staying guests.';
+  const venueText = state.lang === 'vi'
+    ? 'Bữa sáng được phục vụ tại nhà hàng của khách sạn mỗi ngày.'
+    : 'Breakfast is served daily at the hotel restaurant.';
+  const timeNote = state.lang === 'vi' ? 'Phục vụ hằng ngày' : 'Served daily';
+  return pageHero(state.lang === 'vi' ? 'BỮA SÁNG' : 'BREAKFAST', intro) + `<section class="page-section"><div class="shell info-feature"><div class="feature-panel accent">${icon('coffee')}<h2>${esc(c.ui.restaurant)}</h2><p>${esc(venueText)}</p></div><div class="feature-panel"><p class="eyebrow">${esc(c.ui.daily)}</p><div class="big-time">${CONFIG.breakfast.from} — ${CONFIG.breakfast.to}</div><p>${esc(timeNote)}</p></div></div></section>`;
+}
 
   function renderSafety(c) {
-    const emergency = c.serviceGroups[0].items.find(i => i.title.includes(state.lang === 'vi' ? 'CHÁY' : 'FIRE'));
-    return pageHero(state.lang === 'vi' ? 'AN TOÀN & KHẨN CẤP' : 'SAFETY & EMERGENCY', emergency.text) + `<section class="page-section"><div class="shell info-feature"><div class="feature-panel accent">${icon('shield')}<h2>${esc(state.lang === 'vi' ? 'Khi phát hiện cháy hoặc khói' : 'If you detect fire or smoke')}</h2><p>${esc(emergency.text)}</p></div><div class="feature-panel"><p class="eyebrow">RECEPTION</p><div class="big-time">${esc(state.lang === 'vi' ? 'NHẤN 0' : 'DIAL 0')}</div><p>${esc(c.ui.receptionDial)}</p><button class="button button-primary" type="button" data-open-support>${esc(c.ui.needAssistance)}</button></div></div></section>`;
-  }
+  const emergency = c.serviceGroups[0].items.find(i => i.title.includes(state.lang === 'vi' ? 'CHÁY' : 'FIRE'));
+  const intro = state.lang === 'vi'
+    ? 'Thông tin an toàn và hướng dẫn khẩn cấp dành cho khách lưu trú.'
+    : 'Safety information and emergency guidance for staying guests.';
+  return pageHero(state.lang === 'vi' ? 'AN TOÀN & KHẨN CẤP' : 'SAFETY & EMERGENCY', intro) + `<section class="page-section"><div class="shell info-feature"><div class="feature-panel accent">${icon('shield')}<h2>${esc(state.lang === 'vi' ? 'Khi phát hiện cháy hoặc khói' : 'If you detect fire or smoke')}</h2><p>${esc(emergency.text)}</p></div><div class="feature-panel"><p class="eyebrow">RECEPTION</p><div class="big-time">${esc(state.lang === 'vi' ? 'NHẤN 0' : 'DIAL 0')}</div><p>${esc(c.ui.receptionDial)}</p><button class="button button-primary" type="button" data-open-support>${esc(c.ui.needAssistance)}</button></div></div></section>`;
+}
 
   function renderContact(c) {
     const address = state.lang === 'vi' ? CONFIG.address.vi : CONFIG.address.en;
