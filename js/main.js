@@ -1,7 +1,7 @@
 (() => {
   const CONFIG = window.HOTEL_CONFIG;
   const CONTENT = window.PINEWOOD_CONTENT;
-  const ZALO_QR = window.PINEWOOD_ZALO_QR || 'assets/qr/zalo-pinewood.jpg';
+  const ZALO_QR = window.PINEWOOD_ZALO_QR || '/assets/qr/zalo-pinewood.svg';
   const main = document.getElementById('main-content');
   const dialog = document.getElementById('assistance-dialog');
   const welcomeDialog = document.getElementById('welcome-dialog');
@@ -129,7 +129,7 @@
   function renderWifi(c) {
   const wifiService = c.serviceGroups[0].items.find(i => i.icon === 'wifi');
   const qrHint = state.lang === 'vi' ? 'Quét mã QR bằng camera điện thoại để kết nối Wi-Fi Pinewood Hotel Dalat.' : 'Scan the QR code with your phone camera to connect to Pinewood Hotel Dalat Wi-Fi.';
-  return pageHero('WI-FI', wifiService.text) + `<section class="page-section"><div class="shell info-feature"><div class="feature-panel accent">${icon('wifi')}<h2>${esc(state.lang === 'vi' ? 'Wi-Fi miễn phí' : 'Complimentary Wi-Fi')}</h2><p>${esc(wifiService.text)}</p></div><div class="feature-panel wifi-access-panel"><p class="eyebrow">FREE WI-FI</p><h2>${esc(c.ui.quickAccess)}</h2><div class="wifi-boxes"><div class="wifi-box"><span>${esc(c.ui.network)}</span><strong>${esc(CONFIG.wifi.ssid)}</strong></div><div class="wifi-box"><span>${esc(c.ui.password)}</span><strong>${esc(CONFIG.wifi.password)}</strong></div></div><div class="wifi-qr-panel"><img src="assets/qr/wifi-pinewood.svg" alt="Wi-Fi QR - Pinewood Hotel Dalat"><strong>${esc(CONFIG.wifi.ssid)}</strong><p>${esc(qrHint)}</p></div></div></div></section>`;
+  return pageHero('WI-FI', wifiService.text) + `<section class="page-section"><div class="shell info-feature"><div class="feature-panel accent">${icon('wifi')}<h2>${esc(state.lang === 'vi' ? 'Wi-Fi miễn phí' : 'Complimentary Wi-Fi')}</h2><p>${esc(wifiService.text)}</p></div><div class="feature-panel wifi-access-panel"><p class="eyebrow">FREE WI-FI</p><h2>${esc(c.ui.quickAccess)}</h2><div class="wifi-boxes"><div class="wifi-box"><span>${esc(c.ui.network)}</span><strong>${esc(CONFIG.wifi.ssid)}</strong></div><div class="wifi-box"><span>${esc(c.ui.password)}</span><strong>${esc(CONFIG.wifi.password)}</strong></div></div><div class="wifi-qr-panel"><img src="/assets/qr/wifi-pinewood.svg" alt="Wi-Fi QR - Pinewood Hotel Dalat"><strong>${esc(CONFIG.wifi.ssid)}</strong><p>${esc(qrHint)}</p></div></div></div></section>`;
 }
 
   function renderBreakfast(c) {
@@ -202,6 +202,8 @@
     document.title = `${CONFIG.name} · ${state.key === 'home' ? c.ui.guestInformation : c.ui[state.key] || CONFIG.name}`;
     document.querySelector('meta[name="description"]').setAttribute('content', c.metaDescription);
     renderNav();
+    const brandLink = document.querySelector('.brand');
+    if (brandLink) brandLink.setAttribute('href', pathTable[state.lang].home);
     document.querySelectorAll('[data-lang]').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === state.lang));
     document.getElementById('footer-line').textContent = CONFIG.slogan[state.lang];
     document.getElementById('footer-address').textContent = CONFIG.address[state.lang];

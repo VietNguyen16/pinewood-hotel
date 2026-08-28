@@ -1,1 +1,1 @@
-window.PINEWOOD_ZALO_QR = 'assets/qr/zalo-pinewood.svg';
+window.PINEWOOD_ZALO_QR = '/assets/qr/zalo-pinewood.svg';
