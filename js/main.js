@@ -186,7 +186,9 @@
   const venueText = state.lang === 'vi'
     ? 'Bữa sáng được phục vụ tại nhà hàng của khách sạn mỗi ngày.'
     : 'Breakfast is served daily at the hotel restaurant.';
-  const timeNote = state.lang === 'vi' ? 'Phục vụ hằng ngày' : 'Served daily';
+  const timeNote = state.lang === 'vi'
+    ? 'Bữa sáng được phục vụ tại nhà hàng hằng ngày từ 06:30 đến 09:00.'
+    : 'Breakfast is served at the restaurant daily from 06:30 to 09:00.';
   return pageHero(state.lang === 'vi' ? 'BỮA SÁNG' : 'BREAKFAST', intro) + `<section class="page-section"><div class="shell info-feature"><div class="feature-panel accent">${icon('coffee')}<h2>${esc(c.ui.restaurant)}</h2><p>${esc(venueText)}</p></div><div class="feature-panel"><p class="eyebrow">${esc(c.ui.daily)}</p><div class="big-time">${CONFIG.breakfast.from} — ${CONFIG.breakfast.to}</div><p>${esc(timeNote)}</p></div></div></section>`;
 }
 
