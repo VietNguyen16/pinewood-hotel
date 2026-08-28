@@ -1,0 +1,34 @@
+name: Fix breakfast note
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-breakfast-note.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore full breakfast sentence
+        shell: python
+        run: |
+          from pathlib import Path
+          path = Path('js/main.js')
+          text = path.read_text(encoding='utf-8')
+          old = "const timeNote = state.lang === 'vi' ? 'Phục vụ hằng ngày' : 'Served daily';"
+          new = "const timeNote = state.lang === 'vi'\n    ? 'Bữa sáng được phục vụ tại nhà hàng hằng ngày từ 06:30 đến 09:00.'\n    : 'Breakfast is served at the restaurant daily from 06:30 to 09:00.';"
+          if old not in text:
+              raise SystemExit('Target breakfast note not found; no changes made.')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+      - name: Commit changes
+        run: |
+          git config user.name "VietNguyen16"
+          git config user.email "viet.ng106@gmail.com"
+          git add js/main.js
+          git commit -m "Restore full breakfast service sentence"
+          git push
