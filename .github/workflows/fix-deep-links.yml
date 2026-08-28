@@ -1,0 +1,51 @@
+name: Fix Pinewood deep links
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-deep-links.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add static route entry points and update Zalo caption
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          index = Path('index.html')
+          html = index.read_text(encoding='utf-8')
+
+          # Make local assets root-relative so the same app shell works at /wifi, /en/wifi, etc.
+          html = re.sub(r'(src|href)="((?:assets|css|js)/[^"#]+)"', r'\1="/\2"', html)
+          index.write_text(html, encoding='utf-8')
+
+          content = Path('js/content.js')
+          text = content.read_text(encoding='utf-8')
+          text = text.replace('scanZalo: "Quét mã để kết nối Zalo"', 'scanZalo: "Quét mã QR hoặc chạm vào mã để kết nối Zalo với Pinewood Hotel Dalat."')
+          text = text.replace('scanZalo: "Scan to connect on Zalo"', 'scanZalo: "Scan the QR code or tap it to connect with Pinewood Hotel Dalat on Zalo."')
+          content.write_text(text, encoding='utf-8')
+
+          routes = [
+            'thu-chao-mung', 'noi-quy', 'wifi', 'bua-sang', 'dich-vu', 'an-toan', 'lien-he', 'moi-truong', 'thong-tin',
+            'en', 'en/welcome', 'en/hotel-rules', 'en/wifi', 'en/breakfast', 'en/services', 'en/safety', 'en/contact', 'en/environment', 'en/hotel-information'
+          ]
+          for route in routes:
+            target = Path(route) / 'index.html'
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(html, encoding='utf-8')
+
+      - name: Commit route fixes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html js/content.js */index.html */*/index.html
+          git diff --cached --quiet || git commit -m "Fix direct route access and improve Zalo caption"
+          git push
