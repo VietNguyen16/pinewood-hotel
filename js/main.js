@@ -127,10 +127,57 @@
   }
 
   function renderWifi(c) {
-  const wifiService = c.serviceGroups[0].items.find(i => i.icon === 'wifi');
-  const qrHint = state.lang === 'vi' ? 'Quét mã QR bằng camera điện thoại để kết nối Wi-Fi Pinewood Hotel Dalat.' : 'Scan the QR code with your phone camera to connect to Pinewood Hotel Dalat Wi-Fi.';
-  return pageHero('WI-FI', wifiService.text) + `<section class="page-section"><div class="shell info-feature"><div class="feature-panel accent">${icon('wifi')}<h2>${esc(state.lang === 'vi' ? 'Wi-Fi miễn phí' : 'Complimentary Wi-Fi')}</h2><p>${esc(wifiService.text)}</p></div><div class="feature-panel wifi-access-panel"><p class="eyebrow">FREE WI-FI</p><h2>${esc(c.ui.quickAccess)}</h2><div class="wifi-boxes"><div class="wifi-box"><span>${esc(c.ui.network)}</span><strong>${esc(CONFIG.wifi.ssid)}</strong></div><div class="wifi-box"><span>${esc(c.ui.password)}</span><strong>${esc(CONFIG.wifi.password)}</strong></div></div><div class="wifi-qr-panel"><img src="/assets/qr/wifi-pinewood.svg" alt="Wi-Fi QR - Pinewood Hotel Dalat"><strong>${esc(CONFIG.wifi.ssid)}</strong><p>${esc(qrHint)}</p></div></div></div></section>`;
-}
+    const wifiService = c.serviceGroups[0].items.find(i => i.icon === 'wifi');
+    const isVi = state.lang === 'vi';
+    const freeTitle = isVi ? 'Wi-Fi miễn phí' : 'Complimentary Wi-Fi';
+    const inRoom = isVi ? 'Trong phòng' : 'In-room access';
+    const publicArea = isVi ? 'Khu vực công cộng' : 'Public areas';
+    const qrAccess = isVi ? 'Kết nối bằng QR' : 'Connect with QR';
+    const qrHint = isVi
+      ? 'Quét mã QR bằng camera điện thoại để kết nối Wi-Fi Pinewood Hotel Dalat.'
+      : 'Scan the QR code with your phone camera to connect to Pinewood Hotel Dalat Wi-Fi.';
+
+    return pageHero('WI-FI', wifiService.text) + `
+      <section class="page-section wifi-page-section">
+        <div class="shell wifi-showcase">
+          <article class="feature-panel accent wifi-intro-panel">
+            <div class="wifi-intro-icon">${icon('wifi')}</div>
+            <p class="eyebrow wifi-intro-eyebrow">PINEWOOD HOTEL DALAT</p>
+            <h2>${esc(freeTitle)}</h2>
+            <div class="wifi-intro-rule" aria-hidden="true"></div>
+            <p class="wifi-intro-copy">${esc(wifiService.text)}</p>
+            <div class="wifi-feature-list">
+              <div class="wifi-feature-item"><span class="wifi-feature-icon">${icon('bed')}</span><strong>${esc(inRoom)}</strong></div>
+              <div class="wifi-feature-item"><span class="wifi-feature-icon">${icon('globe')}</span><strong>${esc(publicArea)}</strong></div>
+              <div class="wifi-feature-item"><span class="wifi-feature-icon">${icon('wifi')}</span><strong>${esc(qrAccess)}</strong></div>
+            </div>
+          </article>
+          <article class="feature-panel wifi-access-panel wifi-option2-access">
+            <header class="wifi-access-heading">
+              <p class="eyebrow">FREE WI-FI</p>
+              <h2>${esc(c.ui.quickAccess)}</h2>
+            </header>
+            <div class="wifi-credentials">
+              <div class="wifi-credential-card">
+                <span class="wifi-credential-icon">${icon('wifi')}</span>
+                <div><span>${esc(c.ui.network)}</span><strong>${esc(CONFIG.wifi.ssid)}</strong></div>
+              </div>
+              <div class="wifi-credential-card">
+                <span class="wifi-credential-icon">${icon('shield')}</span>
+                <div><span>${esc(c.ui.password)}</span><strong>${esc(CONFIG.wifi.password)}</strong></div>
+              </div>
+            </div>
+            <div class="wifi-premium-qr-card">
+              <div class="wifi-logo-medallion" aria-hidden="true"><img src="/assets/logo/pinewood-logo.svg" alt=""></div>
+              <img class="wifi-page-qr" src="/assets/qr/wifi-pinewood.svg" alt="Wi-Fi QR - Pinewood Hotel Dalat">
+              <div class="wifi-qr-divider" aria-hidden="true"><span></span></div>
+              <strong>Pinewood Hotel Dalat</strong>
+              <p>${esc(qrHint)}</p>
+            </div>
+          </article>
+        </div>
+      </section>`;
+  }
 
   function renderBreakfast(c) {
     const breakfast = c.serviceGroups[0].items[0];
