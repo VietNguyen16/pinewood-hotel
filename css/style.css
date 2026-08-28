@@ -477,3 +477,26 @@ img { display: block; max-width: 100%; }
   .wifi-page-qr { width:min(230px,82%); margin-bottom:12px; }
 }
 /* === End Pinewood Wi-Fi Option 2 === */
+
+
+/* Breakfast single-line desktop layout */
+@media (min-width: 900px) {
+  .breakfast-info-feature { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .breakfast-time-panel { padding-inline: clamp(28px, 3vw, 38px); }
+  .breakfast-time {
+    white-space: nowrap;
+    font-size: clamp(50px, 4.3vw, 64px);
+    letter-spacing: -.04em;
+  }
+  .breakfast-time-note {
+    margin-top: 22px;
+    white-space: nowrap;
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+}
+
+@media (min-width: 721px) and (max-width: 899px) {
+  .breakfast-time { white-space: nowrap; font-size: clamp(42px, 6vw, 54px); }
+  .breakfast-time-note { font-size: 12px; }
+}
