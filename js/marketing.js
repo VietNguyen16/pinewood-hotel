@@ -2,6 +2,7 @@
   const normalize = value => (value || '/').replace(/\/+$/, '') || '/';
   const instagram = 'https://www.instagram.com/pinewooddalat/';
   const tiktok = 'https://www.tiktok.com/@dalat.pinewood';
+  const googleReviews = 'https://www.google.com/maps/place/Kh%C3%A1ch+s%E1%BA%A1n+Pinewood/@11.9611181,108.4486208,1207m/data=!3m1!1e3!4m11!3m10!1s0x3171130010cadc19:0xdcb299e4322ab577!5m2!4m1!1i2!8m2!3d11.9611181!4d108.4512011!9m1!1b1!16s%2Fg%2F11njdj19vf?entry=ttu&g_ep=EgoyMDI2MDgzMS4wIKXMDSoASAFQAw%3D%3D';
   const roomPhoto = '/assets/images/seo/pinewood-room.svg';
   const cafePhoto = '/assets/images/seo/pinewood-cafe.svg';
 
@@ -10,21 +11,21 @@
     return `
       <section class="hotel-photo-section" aria-labelledby="pinewood-photo-title">
         <header class="hotel-photo-head">
-          <p class="eyebrow">${en ? 'PINEWOOD HOTEL DALAT' : 'HÌNH ẢNH PINEWOOD'}</p>
-          <h2 id="pinewood-photo-title">${en ? 'A closer look at your stay in Da Lat' : 'Không gian thật tại Pinewood Hotel Dalat'}</h2>
-          <p>${en ? 'Explore real hotel spaces before your stay, from bright guest rooms to relaxed café moments.' : 'Khám phá hình ảnh thực tế của khách sạn tại Đà Lạt, từ phòng nghỉ thoáng sáng đến không gian café thư giãn.'}</p>
+          <p class="eyebrow">${en ? 'PINEWOOD IMAGES' : 'HÌNH ẢNH PINEWOOD'}</p>
+          <h2 id="pinewood-photo-title">${en ? 'A quick look before your stay' : 'Một thoáng Pinewood trước kỳ nghỉ'}</h2>
+          <p>${en ? 'A compact preview of the rooms and breakfast experience.' : 'Xem nhanh không gian phòng nghỉ và bữa sáng, không kéo dài trang chủ.'}</p>
         </header>
         <div class="hotel-photo-grid">
           <figure class="hotel-photo-card">
             <a href="${en ? '/en/rooms/' : '/phong/'}">
-              <img src="${roomPhoto}" width="600" height="450" loading="lazy" decoding="async" alt="${en ? 'Spacious twin room with balcony at Pinewood Hotel Dalat in Da Lat' : 'Phòng nghỉ hai giường rộng rãi có ban công tại Pinewood Hotel Dalat, Đà Lạt'}">
+              <img src="${roomPhoto}" width="600" height="450" loading="lazy" decoding="async" alt="${en ? 'Spacious room at Pinewood Hotel Dalat in Da Lat' : 'Phòng nghỉ rộng rãi tại Pinewood Hotel Dalat, Đà Lạt'}">
               <figcaption><strong>${en ? 'Rooms & suites' : 'Phòng nghỉ & suite'}</strong>${en ? 'Bright, spacious accommodation with a warm modern interior.' : 'Không gian rộng rãi, nhiều ánh sáng và nội thất ấm áp.'}</figcaption>
             </a>
           </figure>
           <figure class="hotel-photo-card">
             <a href="${en ? '/en/services/' : '/dich-vu/'}">
-              <img src="${cafePhoto}" width="600" height="314" loading="lazy" decoding="async" alt="${en ? 'Coffee and pastries at Pinewood Hotel Dalat cafe in Da Lat' : 'Cà phê và bánh tại quầy café Pinewood Hotel Dalat ở Đà Lạt'}">
-              <figcaption><strong>${en ? 'Café & breakfast' : 'Café & bữa sáng'}</strong>${en ? 'Coffee, pastries and relaxed moments as part of the Pinewood stay.' : 'Cà phê, bánh và những khoảng nghỉ thư giãn trong hành trình tại Pinewood.'}</figcaption>
+              <img src="${cafePhoto}" width="600" height="314" loading="lazy" decoding="async" alt="${en ? 'Breakfast and cafe at Pinewood Hotel Dalat in Da Lat' : 'Bữa sáng và café tại Pinewood Hotel Dalat ở Đà Lạt'}">
+              <figcaption><strong>${en ? 'Breakfast & café' : 'Bữa sáng & café'}</strong>${en ? 'A relaxed morning experience during your Pinewood stay.' : 'Một trải nghiệm buổi sáng thư giãn trong kỳ lưu trú tại Pinewood.'}</figcaption>
             </a>
           </figure>
         </div>
@@ -38,39 +39,16 @@
         <div class="shell">
           <header class="seo-marketing-head">
             <p class="eyebrow">PINEWOOD HOTEL DALAT</p>
-            <h2 id="seo-home-title">${en ? 'A comfortable hotel stay in Da Lat with direct support' : 'Khách sạn tại Đà Lạt cho kỳ nghỉ thoải mái và thuận tiện'}</h2>
+            <h2 id="seo-home-title">${en ? 'A warm Da Lat stay, kept simple' : 'Một kỳ nghỉ Đà Lạt ấm áp, gọn gàng'}</h2>
             <p>${en
-              ? 'Pinewood Hotel Dalat at 54 Vo Truong Toan Street offers 50 spacious rooms and suites with natural light, practical guest services and direct hotel support for your Da Lat stay.'
-              : 'Pinewood Hotel Dalat tại 54 Võ Trường Toản có 50 phòng nghỉ và suite rộng rãi, nhiều ánh sáng tự nhiên, dịch vụ thiết thực và hỗ trợ trực tiếp cho hành trình khám phá Đà Lạt.'}</p>
+              ? 'Explore the essentials in one place: rooms, location, direct contact and real guest impressions from Google Maps.'
+              : 'Trang chủ chỉ giữ những điểm cần thiết: phòng nghỉ, vị trí, liên hệ trực tiếp và đánh giá thực tế trên Google Maps.'}</p>
+            <div class="seo-social-strip" aria-label="${en ? 'Main hotel actions' : 'Thao tác chính'}">
+              <a href="${en ? '/en/rooms/' : '/phong/'}">${en ? 'View rooms' : 'Xem phòng'}</a>
+              <a href="${en ? '/en/contact/' : '/lien-he/'}">${en ? 'Contact hotel' : 'Liên hệ khách sạn'}</a>
+              <a href="${googleReviews}" target="_blank" rel="noopener noreferrer">${en ? 'Google Maps reviews' : 'Đánh giá Google Maps'}</a>
+            </div>
           </header>
-
-          <div class="seo-marketing-grid">
-            <article class="seo-marketing-card">
-              <p class="eyebrow">${en ? 'ROOMS & SUITES' : 'PHÒNG & SUITE'}</p>
-              <h3>${en ? 'Explore your stay' : 'Khám phá không gian lưu trú'}</h3>
-              <p>${en ? 'See Pinewood’s accommodation, check-in information and direct contact options for current room availability.' : 'Xem không gian phòng nghỉ của Pinewood, giờ nhận phòng và cách liên hệ trực tiếp để kiểm tra tình trạng phòng.'}</p>
-              <a href="${en ? '/en/rooms/' : '/phong/'}">${en ? 'View rooms →' : 'Xem phòng nghỉ →'}</a>
-            </article>
-            <article class="seo-marketing-card">
-              <p class="eyebrow">${en ? 'LOCATION' : 'VỊ TRÍ'}</p>
-              <h3>${en ? 'Stay connected to Da Lat' : 'Thuận tiện khám phá Đà Lạt'}</h3>
-              <p>${en ? 'Find Pinewood at 54 Vo Truong Toan Street and plan routes to Da Lat University, Xuan Huong Lake and central Da Lat.' : 'Pinewood nằm tại 54 Võ Trường Toản, thuận tiện lên kế hoạch đến Đại học Đà Lạt, Hồ Xuân Hương và khu trung tâm.'}</p>
-              <a href="${en ? '/en/location/' : '/vi-tri/'}">${en ? 'Explore location →' : 'Xem vị trí →'}</a>
-            </article>
-            <article class="seo-marketing-card">
-              <p class="eyebrow">${en ? 'DIRECT CONTACT' : 'LIÊN HỆ TRỰC TIẾP'}</p>
-              <h3>${en ? 'Talk to Pinewood Hotel' : 'Kết nối với Pinewood Hotel'}</h3>
-              <p>${en ? 'Contact the hotel directly by phone, email or Zalo for room information and stay assistance.' : 'Liên hệ trực tiếp qua điện thoại, email hoặc Zalo để được hỗ trợ thông tin phòng và kỳ nghỉ.'}</p>
-              <a href="${en ? '/en/contact/' : '/lien-he/'}">${en ? 'Contact Pinewood →' : 'Liên hệ Pinewood →'}</a>
-            </article>
-          </div>
-
-          <div class="hotel-facts" aria-label="${en ? 'Hotel quick facts' : 'Thông tin nhanh'}">
-            <div class="hotel-fact"><strong>50</strong><span>${en ? 'Rooms & suites' : 'Phòng & suite'}</span></div>
-            <div class="hotel-fact"><strong>14:00</strong><span>${en ? 'Check-in' : 'Nhận phòng'}</span></div>
-            <div class="hotel-fact"><strong>12:00</strong><span>${en ? 'Check-out' : 'Trả phòng'}</span></div>
-            <div class="hotel-fact"><strong>06:30–09:00</strong><span>${en ? 'Breakfast' : 'Bữa sáng'}</span></div>
-          </div>
 
           ${photoGallery(lang)}
 
@@ -78,30 +56,43 @@
             <a href="${instagram}" target="_blank" rel="me noopener noreferrer">Instagram · @pinewooddalat</a>
             <a href="${tiktok}" target="_blank" rel="me noopener noreferrer">TikTok · @dalat.pinewood</a>
           </div>
-
-          <section class="seo-faq" aria-labelledby="seo-faq-title">
-            <h2 id="seo-faq-title">${en ? 'Frequently asked questions' : 'Câu hỏi thường gặp'}</h2>
-            <details><summary>${en ? 'Where is Pinewood Hotel Dalat located?' : 'Pinewood Hotel Dalat ở đâu?'}</summary><p>${en ? 'The hotel is at 54 Vo Truong Toan Street, Lam Vien - Da Lat, Lam Dong, Vietnam.' : 'Khách sạn nằm tại 54 Đường Võ Trường Toản, Lâm Viên - Đà Lạt, Lâm Đồng, Việt Nam.'}</p></details>
-            <details><summary>${en ? 'What time are check-in and check-out?' : 'Giờ nhận và trả phòng là khi nào?'}</summary><p>${en ? 'Standard check-in is 14:00 and standard check-out is 12:00. Contact Reception if you need assistance with a different schedule.' : 'Giờ nhận phòng tiêu chuẩn là 14:00 và giờ trả phòng là 12:00. Nếu cần lịch khác, Quý khách vui lòng liên hệ Lễ tân để kiểm tra khả năng hỗ trợ.'}</p></details>
-            <details><summary>${en ? 'Does Pinewood provide Wi-Fi?' : 'Pinewood có Wi-Fi không?'}</summary><p>${en ? 'Complimentary Wi-Fi is provided in guest rooms and public areas of the hotel.' : 'Wi-Fi miễn phí được cung cấp trong phòng và tại các khu vực công cộng của khách sạn.'}</p></details>
-            <details><summary>${en ? 'When is breakfast served?' : 'Bữa sáng được phục vụ lúc nào?'}</summary><p>${en ? 'Breakfast is served daily at the hotel restaurant from 06:30 to 09:00.' : 'Bữa sáng được phục vụ hằng ngày tại nhà hàng của khách sạn từ 06:30 đến 09:00.'}</p></details>
-          </section>
         </div>
       </section>`;
   }
 
   function servicePhotoMarkup(lang) {
     const en = lang === 'en';
-    return `<section class="service-photo-band" id="seo-service-photo"><div class="shell"><figure class="hotel-photo-card"><a href="${en ? '/en/rooms/' : '/phong/'}"><img src="${cafePhoto}" width="600" height="314" loading="lazy" decoding="async" alt="${en ? 'Coffee and fresh pastries at Pinewood Hotel Dalat in Da Lat' : 'Cà phê và bánh tươi tại Pinewood Hotel Dalat ở Đà Lạt'}"><figcaption><strong>${en ? 'A relaxed part of your Pinewood stay' : 'Một khoảng nghỉ thư giãn tại Pinewood'}</strong>${en ? 'Discover hotel services, breakfast and the café experience, then explore the rooms for your stay.' : 'Khám phá dịch vụ, bữa sáng và trải nghiệm café, sau đó xem không gian phòng nghỉ cho kỳ lưu trú.'}</figcaption></a></figure></div></section>`;
+    return `<section class="service-photo-band" id="seo-service-photo"><div class="shell"><figure class="hotel-photo-card"><a href="${en ? '/en/rooms/' : '/phong/'}"><img src="${cafePhoto}" width="600" height="314" loading="lazy" decoding="async" alt="${en ? 'Coffee, breakfast and fresh pastries at Pinewood Hotel Dalat in Da Lat' : 'Cà phê, bữa sáng và bánh tươi tại Pinewood Hotel Dalat ở Đà Lạt'}"><figcaption><strong>${en ? 'A relaxed part of your Pinewood stay' : 'Một khoảng nghỉ thư giãn tại Pinewood'}</strong>${en ? 'Discover hotel services, breakfast and the café experience, then explore the rooms for your stay.' : 'Khám phá dịch vụ, bữa sáng và trải nghiệm café, sau đó xem không gian phòng nghỉ cho kỳ lưu trú.'}</figcaption></a></figure></div></section>`;
   }
 
-  function injectFaqSchema(lang) {
+  function contactFaqMarkup(lang) {
     const en = lang === 'en';
-    let node = document.getElementById('seo-home-faq-schema');
+    return `
+      <section class="page-section" id="contact-faq" aria-labelledby="contact-faq-title">
+        <div class="shell">
+          <div class="seo-faq">
+            <h2 id="contact-faq-title">${en ? 'Frequently asked before contacting us' : 'Câu hỏi thường gặp trước khi liên hệ'}</h2>
+            <details><summary>${en ? 'Where is Pinewood Hotel Dalat located?' : 'Pinewood Hotel Dalat ở đâu?'}</summary><p>${en ? 'The hotel is at 54 Vo Truong Toan Street, Lam Vien - Da Lat, Lam Dong, Vietnam.' : 'Khách sạn nằm tại 54 Đường Võ Trường Toản, Lâm Viên - Đà Lạt, Lâm Đồng, Việt Nam.'}</p></details>
+            <details><summary>${en ? 'What time are check-in and check-out?' : 'Giờ nhận và trả phòng là khi nào?'}</summary><p>${en ? 'Standard check-in is 14:00 and standard check-out is 12:00. Contact Reception if you need support with a different schedule.' : 'Giờ nhận phòng tiêu chuẩn là 14:00 và giờ trả phòng là 12:00. Nếu cần lịch khác, Quý khách vui lòng liên hệ Lễ tân để kiểm tra khả năng hỗ trợ.'}</p></details>
+            <details><summary>${en ? 'When is breakfast served?' : 'Bữa sáng được phục vụ lúc nào?'}</summary><p>${en ? 'Breakfast is served daily at the hotel restaurant from 06:30 to 09:00.' : 'Bữa sáng được phục vụ hằng ngày tại nhà hàng của khách sạn từ 06:30 đến 09:00.'}</p></details>
+            <details><summary>${en ? 'Where can I read guest reviews?' : 'Xem đánh giá của khách ở đâu?'}</summary><p>${en ? 'You can open Pinewood Hotel Dalat on Google Maps to read recent guest reviews and ratings.' : 'Quý khách có thể mở Pinewood Hotel Dalat trên Google Maps để xem các đánh giá và nhận xét mới nhất của khách hàng.'}</p></details>
+          </div>
+          <div class="seo-social-strip" aria-label="${en ? 'Reviews and official social links' : 'Đánh giá và mạng xã hội chính thức'}">
+            <a href="${googleReviews}" target="_blank" rel="noopener noreferrer">${en ? 'View Google Maps reviews' : 'Xem đánh giá trên Google Maps'}</a>
+            <a href="${instagram}" target="_blank" rel="me noopener noreferrer">Instagram</a>
+            <a href="${tiktok}" target="_blank" rel="me noopener noreferrer">TikTok</a>
+          </div>
+        </div>
+      </section>`;
+  }
+
+  function injectContactFaqSchema(lang) {
+    const en = lang === 'en';
+    let node = document.getElementById('seo-contact-faq-schema');
     if (!node) {
       node = document.createElement('script');
       node.type = 'application/ld+json';
-      node.id = 'seo-home-faq-schema';
+      node.id = 'seo-contact-faq-schema';
       document.head.appendChild(node);
     }
     node.textContent = JSON.stringify({
@@ -110,10 +101,15 @@
       mainEntity: [
         { '@type': 'Question', name: en ? 'Where is Pinewood Hotel Dalat located?' : 'Pinewood Hotel Dalat ở đâu?', acceptedAnswer: { '@type': 'Answer', text: en ? '54 Vo Truong Toan Street, Lam Vien - Da Lat, Lam Dong, Vietnam.' : '54 Đường Võ Trường Toản, Lâm Viên - Đà Lạt, Lâm Đồng, Việt Nam.' } },
         { '@type': 'Question', name: en ? 'What time are check-in and check-out?' : 'Giờ nhận và trả phòng là khi nào?', acceptedAnswer: { '@type': 'Answer', text: en ? 'Standard check-in is 14:00 and standard check-out is 12:00.' : 'Giờ nhận phòng tiêu chuẩn là 14:00 và giờ trả phòng là 12:00.' } },
-        { '@type': 'Question', name: en ? 'Does Pinewood provide Wi-Fi?' : 'Pinewood có Wi-Fi không?', acceptedAnswer: { '@type': 'Answer', text: en ? 'Complimentary Wi-Fi is available in guest rooms and public areas.' : 'Wi-Fi miễn phí được cung cấp trong phòng và tại các khu vực công cộng.' } },
-        { '@type': 'Question', name: en ? 'When is breakfast served?' : 'Bữa sáng được phục vụ lúc nào?', acceptedAnswer: { '@type': 'Answer', text: en ? 'Breakfast is served daily from 06:30 to 09:00.' : 'Bữa sáng được phục vụ hằng ngày từ 06:30 đến 09:00.' } }
+        { '@type': 'Question', name: en ? 'When is breakfast served?' : 'Bữa sáng được phục vụ lúc nào?', acceptedAnswer: { '@type': 'Answer', text: en ? 'Breakfast is served daily from 06:30 to 09:00.' : 'Bữa sáng được phục vụ hằng ngày từ 06:30 đến 09:00.' } },
+        { '@type': 'Question', name: en ? 'Where can I read guest reviews?' : 'Xem đánh giá của khách ở đâu?', acceptedAnswer: { '@type': 'Answer', text: en ? 'Open Pinewood Hotel Dalat on Google Maps to read recent guest reviews and ratings.' : 'Mở Pinewood Hotel Dalat trên Google Maps để xem đánh giá và nhận xét mới nhất của khách hàng.' } }
       ]
     });
+  }
+
+  function clearFaqSchemas() {
+    document.getElementById('seo-home-faq-schema')?.remove();
+    document.getElementById('seo-contact-faq-schema')?.remove();
   }
 
   function enhance() {
@@ -122,10 +118,12 @@
     if (!main) return;
 
     const isHome = path === '/' || path === '/en';
+    const isContact = path === '/lien-he' || path === '/en/contact';
+
     if (isHome && !document.getElementById('seo-home-marketing')) {
       const lang = path === '/en' ? 'en' : 'vi';
       main.insertAdjacentHTML('beforeend', homeMarkup(lang));
-      injectFaqSchema(lang);
+      clearFaqSchemas();
       return;
     }
 
@@ -135,7 +133,14 @@
       main.insertAdjacentHTML('beforeend', servicePhotoMarkup('en'));
     }
 
-    if (!isHome) document.getElementById('seo-home-faq-schema')?.remove();
+    if (isContact) {
+      const lang = path === '/en/contact' ? 'en' : 'vi';
+      if (!document.getElementById('contact-faq')) main.insertAdjacentHTML('beforeend', contactFaqMarkup(lang));
+      injectContactFaqSchema(lang);
+    } else {
+      document.getElementById('seo-contact-faq-schema')?.remove();
+    }
+    document.getElementById('seo-home-faq-schema')?.remove();
   }
 
   const schedule = () => window.requestAnimationFrame(enhance);
