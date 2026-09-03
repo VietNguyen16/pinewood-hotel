@@ -1,53 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  <url>
-    <loc>https://pinewoodhotel.vn/</loc>
-    <lastmod>2026-09-03</lastmod>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://pinewoodhotel.vn/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://pinewoodhotel.vn/en/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://pinewoodhotel.vn/" />
-  </url>
-  <url>
-    <loc>https://pinewoodhotel.vn/en/</loc>
-    <lastmod>2026-09-03</lastmod>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://pinewoodhotel.vn/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://pinewoodhotel.vn/en/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://pinewoodhotel.vn/" />
-  </url>
-  <url>
-    <loc>https://pinewoodhotel.vn/dich-vu/</loc>
-    <lastmod>2026-09-03</lastmod>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://pinewoodhotel.vn/dich-vu/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://pinewoodhotel.vn/en/services/" />
-  </url>
-  <url>
-    <loc>https://pinewoodhotel.vn/en/services/</loc>
-    <lastmod>2026-09-03</lastmod>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://pinewoodhotel.vn/dich-vu/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://pinewoodhotel.vn/en/services/" />
-  </url>
-  <url>
-    <loc>https://pinewoodhotel.vn/lien-he/</loc>
-    <lastmod>2026-09-03</lastmod>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://pinewoodhotel.vn/lien-he/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://pinewoodhotel.vn/en/contact/" />
-  </url>
-  <url>
-    <loc>https://pinewoodhotel.vn/en/contact/</loc>
-    <lastmod>2026-09-03</lastmod>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://pinewoodhotel.vn/lien-he/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://pinewoodhotel.vn/en/contact/" />
-  </url>
-  <url>
-    <loc>https://pinewoodhotel.vn/moi-truong/</loc>
-    <lastmod>2026-09-03</lastmod>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://pinewoodhotel.vn/moi-truong/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://pinewoodhotel.vn/en/environment/" />
-  </url>
-  <url>
-    <loc>https://pinewoodhotel.vn/en/environment/</loc>
-    <lastmod>2026-09-03</lastmod>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://pinewoodhotel.vn/moi-truong/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://pinewoodhotel.vn/en/environment/" />
-  </url>
+  <url><loc>https://pinewoodhotel.vn/</loc><lastmod>2026-09-03</lastmod><xhtml:link rel="alternate" hreflang="vi" href="https://pinewoodhotel.vn/"/><xhtml:link rel="alternate" hreflang="en" href="https://pinewoodhotel.vn/en/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://pinewoodhotel.vn/"/></url>
+  <url><loc>https://pinewoodhotel.vn/en/</loc><lastmod>2026-09-03</lastmod><xhtml:link rel="alternate" hreflang="vi" href="https://pinewoodhotel.vn/"/><xhtml:link rel="alternate" hreflang="en" href="https://pinewoodhotel.vn/en/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://pinewoodhotel.vn/"/></url>
+
+  <url><loc>https://pinewoodhotel.vn/phong/</loc><lastmod>2026-09-03</lastmod><xhtml:link rel="alternate" hreflang="vi" href="https://pinewoodhotel.vn/phong/"/><xhtml:link rel="alternate" hreflang="en" href="https://pinewoodhotel.vn/en/rooms/"/></url>
+  <url><loc>https://pinewoodhotel.vn/en/rooms/</loc><lastmod>2026-09-03</lastmod><xhtml:link rel="alternate" hreflang="vi" href="https://pinewoodhotel.vn/phong/"/><xhtml:link rel="alternate" hreflang="en" href="https://pinewoodhotel.vn/en/rooms/"/></url>
+
+  <url><loc>https://pinewoodhotel.vn/vi-tri/</loc><lastmod>2026-09-03</lastmod><xhtml:link rel="alternate" hreflang="vi" href="https://pinewoodhotel.vn/vi-tri/"/><xhtml:link rel="alternate" hreflang="en" href="https://pinewoodhotel.vn/en/location/"/></url>
+  <url><loc>https://pinewoodhotel.vn/en/location/</loc><lastmod>2026-09-03</lastmod><xhtml:link rel="alternate" hreflang="vi" href="https://pinewoodhotel.vn/vi-tri/"/><xhtml:link rel="alternate" hreflang="en" href="https://pinewoodhotel.vn/en/location/"/></url>
+
+  <url><loc>https://pinewoodhotel.vn/dich-vu/</loc><lastmod>2026-09-03</lastmod><xhtml:link rel="alternate" hreflang="vi" href="https://pinewoodhotel.vn/dich-vu/"/><xhtml:link rel="alternate" hreflang="en" href="https://pinewoodhotel.vn/en/services/"/></url>
+  <url><loc>https://pinewoodhotel.vn/en/services/</loc><lastmod>2026-09-03</lastmod><xhtml:link rel="alternate" hreflang="vi" href="https://pinewoodhotel.vn/dich-vu/"/><xhtml:link rel="alternate" hreflang="en" href="https://pinewoodhotel.vn/en/services/"/></url>
+
+  <url><loc>https://pinewoodhotel.vn/lien-he/</loc><lastmod>2026-09-03</lastmod><xhtml:link rel="alternate" hreflang="vi" href="https://pinewoodhotel.vn/lien-he/"/><xhtml:link rel="alternate" hreflang="en" href="https://pinewoodhotel.vn/en/contact/"/></url>
+  <url><loc>https://pinewoodhotel.vn/en/contact/</loc><lastmod>2026-09-03</lastmod><xhtml:link rel="alternate" hreflang="vi" href="https://pinewoodhotel.vn/lien-he/"/><xhtml:link rel="alternate" hreflang="en" href="https://pinewoodhotel.vn/en/contact/"/></url>
+
+  <url><loc>https://pinewoodhotel.vn/moi-truong/</loc><lastmod>2026-09-03</lastmod><xhtml:link rel="alternate" hreflang="vi" href="https://pinewoodhotel.vn/moi-truong/"/><xhtml:link rel="alternate" hreflang="en" href="https://pinewoodhotel.vn/en/environment/"/></url>
+  <url><loc>https://pinewoodhotel.vn/en/environment/</loc><lastmod>2026-09-03</lastmod><xhtml:link rel="alternate" hreflang="vi" href="https://pinewoodhotel.vn/moi-truong/"/><xhtml:link rel="alternate" hreflang="en" href="https://pinewoodhotel.vn/en/environment/"/></url>
 </urlset>

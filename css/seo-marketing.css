@@ -1,0 +1,73 @@
+/* SEO and marketing extensions for Pinewood Hotel Dalat. */
+.seo-marketing-section { padding: 58px 0 72px; background: linear-gradient(180deg,#fff 0%,#f7f6f2 100%); border-top:1px solid var(--line); }
+.seo-marketing-head { max-width: 780px; margin: 0 auto 30px; text-align:center; }
+.seo-marketing-head h2 { margin:0; color:var(--pine-green); font-size:clamp(28px,4vw,42px); font-weight:500; line-height:1.18; }
+.seo-marketing-head p { margin:15px auto 0; color:var(--muted); line-height:1.75; }
+.seo-marketing-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.seo-marketing-card { display:flex; flex-direction:column; min-height:250px; padding:28px; background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); box-shadow:var(--shadow-soft); }
+.seo-marketing-card .eyebrow { margin-bottom:8px; }
+.seo-marketing-card h3 { margin:0 0 12px; color:var(--pine-green); font-size:21px; font-weight:600; }
+.seo-marketing-card p { margin:0 0 22px; color:var(--muted); line-height:1.7; }
+.seo-marketing-card a { margin-top:auto; width:fit-content; color:var(--pine-green); font-weight:700; text-decoration:none; border-bottom:1px solid rgba(12,53,34,.24); }
+.seo-marketing-card a:hover { color:var(--pine-brown); }
+.hotel-facts { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-top:18px; }
+.hotel-fact { padding:18px; text-align:center; border:1px solid var(--line); border-radius:15px; background:rgba(255,255,255,.82); }
+.hotel-fact strong { display:block; color:var(--pine-green); font-size:17px; }
+.hotel-fact span { display:block; margin-top:6px; color:var(--muted); font-size:11px; line-height:1.45; text-transform:uppercase; letter-spacing:.08em; }
+.seo-social-strip { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:10px; margin-top:26px; }
+.seo-social-strip a, .social-button { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:10px 17px; border:1px solid var(--line); border-radius:999px; background:#fff; color:var(--pine-green); font-size:12px; font-weight:700; text-decoration:none; }
+.seo-social-strip a:hover, .social-button:hover { border-color:rgba(178,142,105,.65); color:var(--pine-brown); }
+.seo-faq { max-width:880px; margin:34px auto 0; }
+.seo-faq h2 { text-align:center; color:var(--pine-green); font-size:27px; font-weight:500; }
+.seo-faq details { margin:10px 0; border:1px solid var(--line); border-radius:15px; background:#fff; overflow:hidden; }
+.seo-faq summary { cursor:pointer; padding:18px 20px; color:var(--pine-green); font-weight:700; }
+.seo-faq p { margin:0; padding:0 20px 20px; color:var(--muted); line-height:1.7; }
+.footer-social-links { display:flex; flex-wrap:wrap; gap:8px 14px; margin-top:10px; }
+.footer-social-links a { color:rgba(255,255,255,.78); font-size:11px; text-decoration:none; border-bottom:1px solid rgba(255,255,255,.22); }
+.footer-social-links a:hover { color:#fff; border-bottom-color:#fff; }
+.marketing-page { background:linear-gradient(180deg,#fff,#f7f6f2); }
+.marketing-static-nav { margin-left:auto; display:flex; align-items:center; flex-wrap:wrap; justify-content:flex-end; gap:4px; }
+.marketing-static-nav a { padding:10px 11px; border-radius:999px; color:var(--pine-charcoal); font-size:12px; font-weight:700; text-decoration:none; }
+.marketing-static-nav a:hover { color:var(--pine-green); background:rgba(162,184,115,.13); }
+.marketing-static-nav .marketing-lang-link { color:var(--pine-green); border:1px solid var(--line); }
+.marketing-hero { padding:72px 0 54px; background:linear-gradient(180deg,rgba(236,237,233,.86),#fff); border-bottom:1px solid var(--line); }
+.marketing-hero-inner { max-width:850px; margin:0 auto; text-align:center; }
+.marketing-hero h1 { margin:0; color:var(--pine-green); font-size:clamp(36px,5.2vw,58px); line-height:1.08; font-weight:500; }
+.marketing-hero p:not(.eyebrow) { max-width:760px; margin:18px auto 0; color:var(--muted); font-size:16px; line-height:1.8; }
+.marketing-section { padding:54px 0; }
+.marketing-two-col { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.marketing-panel { padding:clamp(26px,4vw,44px); border:1px solid var(--line); border-radius:var(--radius-lg); background:#fff; box-shadow:var(--shadow-soft); }
+.marketing-panel h2 { margin:0 0 14px; color:var(--pine-green); font-size:clamp(24px,3vw,32px); font-weight:500; }
+.marketing-panel p { color:var(--muted); line-height:1.8; }
+.marketing-checklist { margin:20px 0 0; padding:0; list-style:none; display:grid; gap:12px; }
+.marketing-checklist li { position:relative; padding-left:24px; color:var(--pine-charcoal); line-height:1.65; }
+.marketing-checklist li::before { content:'•'; position:absolute; left:5px; color:var(--pine-brown); font-weight:700; }
+.marketing-cta { display:flex; flex-wrap:wrap; gap:10px; margin-top:24px; }
+.marketing-cta .button { min-width:150px; }
+.location-landmarks { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:18px; }
+.location-landmarks span { padding:14px 16px; border:1px solid var(--line); border-radius:13px; color:var(--pine-green); background:var(--pine-offwhite); font-size:13px; }
+.static-seo-fallback { padding:46px 0 62px; }
+.static-seo-fallback .content-card { max-width:930px; margin-inline:auto; }
+.static-seo-fallback h1 { margin:0; color:var(--pine-green); font-size:clamp(32px,4.5vw,50px); font-weight:500; }
+.static-seo-fallback h2 { color:var(--pine-green); }
+.static-seo-fallback p, .static-seo-fallback li { color:var(--muted); line-height:1.75; }
+@media (max-width:900px) {
+  .seo-marketing-grid { grid-template-columns:1fr; }
+  .hotel-facts { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .marketing-two-col { grid-template-columns:1fr; }
+  .marketing-static-nav { gap:2px; }
+  .marketing-static-nav a { padding:8px 7px; font-size:11px; }
+}
+@media (max-width:720px) {
+  .seo-marketing-section { padding:38px 0 48px; }
+  .seo-marketing-card { min-height:0; padding:22px; }
+  .hotel-facts { grid-template-columns:1fr 1fr; }
+  .marketing-page .header-inner { flex-wrap:wrap; padding-block:10px; }
+  .marketing-page .brand { margin-right:0; }
+  .marketing-static-nav { width:100%; justify-content:flex-start; overflow-x:auto; flex-wrap:nowrap; padding-bottom:4px; }
+  .marketing-static-nav a { white-space:nowrap; }
+  .marketing-hero { padding:48px 0 38px; }
+  .marketing-section { padding:36px 0; }
+  .location-landmarks { grid-template-columns:1fr; }
+  .footer-social-links { flex-direction:column; align-items:flex-start; }
+}
