@@ -1,6 +1,8 @@
 (() => {
   const BASE = 'https://pinewoodhotel.vn';
   const IMAGE = `${BASE}/assets/images/pinewood-experience.webp`;
+  const ROOM_IMAGE = `${BASE}/assets/images/seo/pinewood-room.svg`;
+  const CAFE_IMAGE = `${BASE}/assets/images/seo/pinewood-cafe.svg`;
   const LOGO = `${BASE}/assets/logo/pinewood-logo.png`;
   const HOTEL_ID = `${BASE}/#hotel`;
   const WEBSITE_ID = `${BASE}/#website`;
@@ -9,10 +11,10 @@
   const MAP = 'https://www.google.com/maps/dir/?api=1&destination=Pinewood%20Hotel%20Dalat%2C%2054%20%C4%90%C6%B0%E1%BB%9Dng%20V%C3%B5%20Tr%C6%B0%E1%BB%9Dng%20To%E1%BA%A3n%2C%20%C4%90%C3%A0%20L%E1%BA%A1t%2C%20L%C3%A2m%20%C4%90%E1%BB%93ng%2C%20Vi%E1%BB%87t%20Nam';
 
   const routes = {
-    '/': ['vi', true, 'Pinewood Hotel Dalat | Khách sạn tại Đà Lạt', 'Pinewood Hotel Dalat tại 54 Võ Trường Toản, Đà Lạt với 50 phòng và suite. Khám phá phòng nghỉ, dịch vụ, vị trí và liên hệ trực tiếp với khách sạn.', `${BASE}/`, `${BASE}/en/`, 'Trang chủ'],
-    '/en': ['en', true, 'Pinewood Hotel Dalat | Hotel in Da Lat, Vietnam', 'Official website of Pinewood Hotel Dalat at 54 Vo Truong Toan Street with 50 rooms and suites. Explore rooms, services, location and direct hotel contact.', `${BASE}/en/`, `${BASE}/`, 'Home'],
-    '/dich-vu': ['vi', true, 'Dịch vụ & tiện nghi | Pinewood Hotel Dalat', 'Khám phá dịch vụ và tiện nghi tại Pinewood Hotel Dalat: Wi-Fi miễn phí, bữa sáng, nhà hàng, buồng phòng và hỗ trợ Lễ tân.', `${BASE}/dich-vu/`, `${BASE}/en/services/`, 'Dịch vụ'],
-    '/en/services': ['en', true, 'Hotel Services & Amenities | Pinewood Hotel Dalat', 'Explore guest services and amenities at Pinewood Hotel Dalat including complimentary Wi-Fi, breakfast, restaurant service, housekeeping and Reception support.', `${BASE}/en/services/`, `${BASE}/dich-vu/`, 'Services'],
+    '/': ['vi', true, 'Pinewood Hotel Dalat | Khách sạn tại Đà Lạt', 'Pinewood Hotel Dalat tại 54 Võ Trường Toản, Đà Lạt với 50 phòng và suite. Xem ảnh phòng thực tế, dịch vụ, vị trí và liên hệ trực tiếp với khách sạn.', `${BASE}/`, `${BASE}/en/`, 'Trang chủ'],
+    '/en': ['en', true, 'Pinewood Hotel Dalat | Hotel in Da Lat, Vietnam', 'Official website of Pinewood Hotel Dalat at 54 Vo Truong Toan Street with 50 rooms and suites. See real room photos, services, location and direct contact.', `${BASE}/en/`, `${BASE}/`, 'Home'],
+    '/dich-vu': ['vi', true, 'Dịch vụ khách sạn tại Đà Lạt | Pinewood Hotel Dalat', 'Khám phá dịch vụ tại Pinewood Hotel Dalat: Wi-Fi miễn phí, bữa sáng 06:30–09:00, nhà hàng, café, buồng phòng và hỗ trợ Lễ tân.', `${BASE}/dich-vu/`, `${BASE}/en/services/`, 'Dịch vụ'],
+    '/en/services': ['en', true, 'Hotel Services in Da Lat | Pinewood Hotel Dalat', 'Explore services at Pinewood Hotel Dalat including complimentary Wi-Fi, breakfast 06:30–09:00, restaurant and café service, housekeeping and Reception support.', `${BASE}/en/services/`, `${BASE}/dich-vu/`, 'Services'],
     '/lien-he': ['vi', true, 'Liên hệ & chỉ đường | Pinewood Hotel Dalat', 'Liên hệ Pinewood Hotel Dalat tại 54 Võ Trường Toản, Đà Lạt. Điện thoại 0785 098 686, email, Zalo và chỉ đường đến khách sạn.', `${BASE}/lien-he/`, `${BASE}/en/contact/`, 'Liên hệ'],
     '/en/contact': ['en', true, 'Contact & Directions | Pinewood Hotel Dalat', 'Contact Pinewood Hotel Dalat at 54 Vo Truong Toan Street, Da Lat. Call +84 785 098 686, email the hotel or get directions.', `${BASE}/en/contact/`, `${BASE}/lien-he/`, 'Contact'],
     '/moi-truong': ['vi', true, 'Lưu trú có trách nhiệm | Pinewood Hotel Dalat', 'Tìm hiểu các hướng dẫn sử dụng tài nguyên có trách nhiệm và bảo vệ môi trường dành cho khách tại Pinewood Hotel Dalat, Đà Lạt.', `${BASE}/moi-truong/`, `${BASE}/en/environment/`, 'Môi trường'],
@@ -57,7 +59,7 @@
     const graph=[
       {
         '@type':'Hotel','@id':HOTEL_ID,name:'Pinewood Hotel Dalat',url:`${BASE}/`,
-        logo:{'@type':'ImageObject',url:LOGO},image:IMAGE,telephone:'+84785098686',email:'info@pinewoodhotel.vn',
+        logo:{'@type':'ImageObject',url:LOGO},image:[IMAGE,ROOM_IMAGE,CAFE_IMAGE],telephone:'+84785098686',email:'info@pinewoodhotel.vn',
         slogan:'Ngủ ngon - Ấm áp - Đậm chất Đà Lạt',numberOfRooms:50,checkinTime:'14:00',checkoutTime:'12:00',
         address:{'@type':'PostalAddress',streetAddress:'54 Đường Võ Trường Toản',addressLocality:'Đà Lạt',addressRegion:'Lâm Đồng',addressCountry:'VN'},
         sameAs:[INSTAGRAM,TIKTOK],hasMap:MAP,
