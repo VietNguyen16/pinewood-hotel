@@ -2,6 +2,34 @@
   const normalize = value => (value || '/').replace(/\/+$/, '') || '/';
   const instagram = 'https://www.instagram.com/pinewooddalat/';
   const tiktok = 'https://www.tiktok.com/@dalat.pinewood';
+  const roomPhoto = '/assets/images/seo/pinewood-room.svg';
+  const cafePhoto = '/assets/images/seo/pinewood-cafe.svg';
+
+  function photoGallery(lang) {
+    const en = lang === 'en';
+    return `
+      <section class="hotel-photo-section" aria-labelledby="pinewood-photo-title">
+        <header class="hotel-photo-head">
+          <p class="eyebrow">${en ? 'PINEWOOD HOTEL DALAT' : 'HÌNH ẢNH PINEWOOD'}</p>
+          <h2 id="pinewood-photo-title">${en ? 'A closer look at your stay in Da Lat' : 'Không gian thật tại Pinewood Hotel Dalat'}</h2>
+          <p>${en ? 'Explore real hotel spaces before your stay, from bright guest rooms to relaxed café moments.' : 'Khám phá hình ảnh thực tế của khách sạn tại Đà Lạt, từ phòng nghỉ thoáng sáng đến không gian café thư giãn.'}</p>
+        </header>
+        <div class="hotel-photo-grid">
+          <figure class="hotel-photo-card">
+            <a href="${en ? '/en/rooms/' : '/phong/'}">
+              <img src="${roomPhoto}" width="600" height="450" loading="lazy" decoding="async" alt="${en ? 'Spacious twin room with balcony at Pinewood Hotel Dalat in Da Lat' : 'Phòng nghỉ hai giường rộng rãi có ban công tại Pinewood Hotel Dalat, Đà Lạt'}">
+              <figcaption><strong>${en ? 'Rooms & suites' : 'Phòng nghỉ & suite'}</strong>${en ? 'Bright, spacious accommodation with a warm modern interior.' : 'Không gian rộng rãi, nhiều ánh sáng và nội thất ấm áp.'}</figcaption>
+            </a>
+          </figure>
+          <figure class="hotel-photo-card">
+            <a href="${en ? '/en/services/' : '/dich-vu/'}">
+              <img src="${cafePhoto}" width="600" height="314" loading="lazy" decoding="async" alt="${en ? 'Coffee and pastries at Pinewood Hotel Dalat cafe in Da Lat' : 'Cà phê và bánh tại quầy café Pinewood Hotel Dalat ở Đà Lạt'}">
+              <figcaption><strong>${en ? 'Café & breakfast' : 'Café & bữa sáng'}</strong>${en ? 'Coffee, pastries and relaxed moments as part of the Pinewood stay.' : 'Cà phê, bánh và những khoảng nghỉ thư giãn trong hành trình tại Pinewood.'}</figcaption>
+            </a>
+          </figure>
+        </div>
+      </section>`;
+  }
 
   function homeMarkup(lang) {
     const en = lang === 'en';
@@ -10,29 +38,29 @@
         <div class="shell">
           <header class="seo-marketing-head">
             <p class="eyebrow">PINEWOOD HOTEL DALAT</p>
-            <h2 id="seo-home-title">${en ? 'A comfortable Da Lat stay with direct hotel support' : 'Lưu trú thoải mái tại Đà Lạt, kết nối trực tiếp với khách sạn'}</h2>
+            <h2 id="seo-home-title">${en ? 'A comfortable hotel stay in Da Lat with direct support' : 'Khách sạn tại Đà Lạt cho kỳ nghỉ thoải mái và thuận tiện'}</h2>
             <p>${en
-              ? 'Pinewood Hotel Dalat offers 50 rooms and suites with natural light and a modern design language, together with practical guest services and convenient access to Da Lat.'
-              : 'Pinewood Hotel Dalat có 50 phòng nghỉ và suite rộng rãi, nhiều ánh sáng tự nhiên, ngôn ngữ kiến trúc hiện đại cùng hệ thống dịch vụ thiết thực cho kỳ nghỉ tại Đà Lạt.'}</p>
+              ? 'Pinewood Hotel Dalat at 54 Vo Truong Toan Street offers 50 spacious rooms and suites with natural light, practical guest services and direct hotel support for your Da Lat stay.'
+              : 'Pinewood Hotel Dalat tại 54 Võ Trường Toản có 50 phòng nghỉ và suite rộng rãi, nhiều ánh sáng tự nhiên, dịch vụ thiết thực và hỗ trợ trực tiếp cho hành trình khám phá Đà Lạt.'}</p>
           </header>
 
           <div class="seo-marketing-grid">
             <article class="seo-marketing-card">
               <p class="eyebrow">${en ? 'ROOMS & SUITES' : 'PHÒNG & SUITE'}</p>
               <h3>${en ? 'Explore your stay' : 'Khám phá không gian lưu trú'}</h3>
-              <p>${en ? 'Learn about Pinewood’s 50-room and suite accommodation concept, check-in information and direct contact options for availability.' : 'Tìm hiểu không gian 50 phòng nghỉ và suite của Pinewood, giờ nhận phòng và cách liên hệ trực tiếp để kiểm tra tình trạng phòng.'}</p>
+              <p>${en ? 'See Pinewood’s accommodation, check-in information and direct contact options for current room availability.' : 'Xem không gian phòng nghỉ của Pinewood, giờ nhận phòng và cách liên hệ trực tiếp để kiểm tra tình trạng phòng.'}</p>
               <a href="${en ? '/en/rooms/' : '/phong/'}">${en ? 'View rooms →' : 'Xem phòng nghỉ →'}</a>
             </article>
             <article class="seo-marketing-card">
               <p class="eyebrow">${en ? 'LOCATION' : 'VỊ TRÍ'}</p>
               <h3>${en ? 'Stay connected to Da Lat' : 'Thuận tiện khám phá Đà Lạt'}</h3>
-              <p>${en ? 'Find Pinewood Hotel Dalat at 54 Vo Truong Toan Street and plan your route to the hotel and nearby Da Lat landmarks.' : 'Pinewood Hotel Dalat tọa lạc tại 54 Võ Trường Toản. Xem thông tin vị trí, chỉ đường và các địa điểm nổi bật quanh khu vực.'}</p>
+              <p>${en ? 'Find Pinewood at 54 Vo Truong Toan Street and plan routes to Da Lat University, Xuan Huong Lake and central Da Lat.' : 'Pinewood nằm tại 54 Võ Trường Toản, thuận tiện lên kế hoạch đến Đại học Đà Lạt, Hồ Xuân Hương và khu trung tâm.'}</p>
               <a href="${en ? '/en/location/' : '/vi-tri/'}">${en ? 'Explore location →' : 'Xem vị trí →'}</a>
             </article>
             <article class="seo-marketing-card">
               <p class="eyebrow">${en ? 'DIRECT CONTACT' : 'LIÊN HỆ TRỰC TIẾP'}</p>
               <h3>${en ? 'Talk to Pinewood Hotel' : 'Kết nối với Pinewood Hotel'}</h3>
-              <p>${en ? 'Contact the hotel directly by phone, email or Zalo for stay information and assistance.' : 'Liên hệ trực tiếp với khách sạn qua điện thoại, email hoặc Zalo để được hỗ trợ thông tin lưu trú.'}</p>
+              <p>${en ? 'Contact the hotel directly by phone, email or Zalo for room information and stay assistance.' : 'Liên hệ trực tiếp qua điện thoại, email hoặc Zalo để được hỗ trợ thông tin phòng và kỳ nghỉ.'}</p>
               <a href="${en ? '/en/contact/' : '/lien-he/'}">${en ? 'Contact Pinewood →' : 'Liên hệ Pinewood →'}</a>
             </article>
           </div>
@@ -43,6 +71,8 @@
             <div class="hotel-fact"><strong>12:00</strong><span>${en ? 'Check-out' : 'Trả phòng'}</span></div>
             <div class="hotel-fact"><strong>06:30–09:00</strong><span>${en ? 'Breakfast' : 'Bữa sáng'}</span></div>
           </div>
+
+          ${photoGallery(lang)}
 
           <div class="seo-social-strip" aria-label="${en ? 'Official Pinewood social profiles' : 'Mạng xã hội chính thức của Pinewood'}">
             <a href="${instagram}" target="_blank" rel="me noopener noreferrer">Instagram · @pinewooddalat</a>
@@ -58,6 +88,11 @@
           </section>
         </div>
       </section>`;
+  }
+
+  function servicePhotoMarkup(lang) {
+    const en = lang === 'en';
+    return `<section class="service-photo-band" id="seo-service-photo"><div class="shell"><figure class="hotel-photo-card"><a href="${en ? '/en/rooms/' : '/phong/'}"><img src="${cafePhoto}" width="600" height="314" loading="lazy" decoding="async" alt="${en ? 'Coffee and fresh pastries at Pinewood Hotel Dalat in Da Lat' : 'Cà phê và bánh tươi tại Pinewood Hotel Dalat ở Đà Lạt'}"><figcaption><strong>${en ? 'A relaxed part of your Pinewood stay' : 'Một khoảng nghỉ thư giãn tại Pinewood'}</strong>${en ? 'Discover hotel services, breakfast and the café experience, then explore the rooms for your stay.' : 'Khám phá dịch vụ, bữa sáng và trải nghiệm café, sau đó xem không gian phòng nghỉ cho kỳ lưu trú.'}</figcaption></a></figure></div></section>`;
   }
 
   function injectFaqSchema(lang) {
@@ -83,15 +118,24 @@
 
   function enhance() {
     const path = normalize(location.pathname);
-    const isHome = path === '/' || path === '/en';
     const main = document.getElementById('main-content');
-    if (isHome && main && !document.getElementById('seo-home-marketing')) {
+    if (!main) return;
+
+    const isHome = path === '/' || path === '/en';
+    if (isHome && !document.getElementById('seo-home-marketing')) {
       const lang = path === '/en' ? 'en' : 'vi';
       main.insertAdjacentHTML('beforeend', homeMarkup(lang));
       injectFaqSchema(lang);
-    } else if (!isHome) {
-      document.getElementById('seo-home-faq-schema')?.remove();
+      return;
     }
+
+    if (path === '/dich-vu' && !document.getElementById('seo-service-photo')) {
+      main.insertAdjacentHTML('beforeend', servicePhotoMarkup('vi'));
+    } else if (path === '/en/services' && !document.getElementById('seo-service-photo')) {
+      main.insertAdjacentHTML('beforeend', servicePhotoMarkup('en'));
+    }
+
+    if (!isHome) document.getElementById('seo-home-faq-schema')?.remove();
   }
 
   const schedule = () => window.requestAnimationFrame(enhance);
