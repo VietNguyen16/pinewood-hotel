@@ -51,12 +51,32 @@
 .static-seo-fallback h1 { margin:0; color:var(--pine-green); font-size:clamp(32px,4.5vw,50px); font-weight:500; }
 .static-seo-fallback h2 { color:var(--pine-green); }
 .static-seo-fallback p, .static-seo-fallback li { color:var(--muted); line-height:1.75; }
+
+/* Real hotel photography: compact, indexable and conversion-focused. */
+.hotel-photo-section { margin-top:34px; }
+.hotel-photo-head { max-width:760px; margin:0 auto 20px; text-align:center; }
+.hotel-photo-head h2 { margin:0; color:var(--pine-green); font-size:clamp(25px,3.4vw,34px); font-weight:500; line-height:1.2; }
+.hotel-photo-head p { margin:10px auto 0; color:var(--muted); line-height:1.7; }
+.hotel-photo-grid { display:grid; grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr); gap:14px; }
+.hotel-photo-card { margin:0; overflow:hidden; border:1px solid var(--line); border-radius:20px; background:#fff; box-shadow:var(--shadow-soft); }
+.hotel-photo-card a { display:block; color:inherit; text-decoration:none; }
+.hotel-photo-card img { width:100%; height:auto; display:block; background:var(--pine-offwhite); transition:transform .28s ease; }
+.hotel-photo-card:hover img { transform:scale(1.012); }
+.hotel-photo-card figcaption { padding:14px 16px 16px; color:var(--muted); font-size:12px; line-height:1.55; }
+.hotel-photo-card figcaption strong { display:block; margin-bottom:4px; color:var(--pine-green); font-size:14px; }
+.marketing-photo-feature { padding-top:24px; }
+.marketing-photo-feature .hotel-photo-card { max-width:980px; margin-inline:auto; }
+.marketing-photo-feature .hotel-photo-card img { width:100%; max-height:620px; object-fit:cover; }
+.service-photo-band { padding:18px 0 8px; }
+.service-photo-band .hotel-photo-card { max-width:980px; margin-inline:auto; }
+
 @media (max-width:900px) {
   .seo-marketing-grid { grid-template-columns:1fr; }
   .hotel-facts { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .marketing-two-col { grid-template-columns:1fr; }
   .marketing-static-nav { gap:2px; }
   .marketing-static-nav a { padding:8px 7px; font-size:11px; }
+  .hotel-photo-grid { grid-template-columns:1fr; }
 }
 @media (max-width:720px) {
   .seo-marketing-section { padding:38px 0 48px; }
@@ -72,4 +92,7 @@
   .marketing-section { padding:36px 0; }
   .location-landmarks { grid-template-columns:1fr; }
   .footer-social-links { flex-direction:column; align-items:flex-start; }
+  .hotel-photo-section { margin-top:26px; }
+  .hotel-photo-card { border-radius:16px; }
+  .hotel-photo-card figcaption { padding:12px 14px 14px; }
 }
