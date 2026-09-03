@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url><loc>https://pinewoodhotel.vn/</loc></url>
+  <url><loc>https://pinewoodhotel.vn/en/</loc></url>
+  <url><loc>https://pinewoodhotel.vn/dich-vu/</loc></url>
+  <url><loc>https://pinewoodhotel.vn/en/services/</loc></url>
+  <url><loc>https://pinewoodhotel.vn/lien-he/</loc></url>
+  <url><loc>https://pinewoodhotel.vn/en/contact/</loc></url>
+  <url><loc>https://pinewoodhotel.vn/moi-truong/</loc></url>
+  <url><loc>https://pinewoodhotel.vn/en/environment/</loc></url>
 </urlset>
