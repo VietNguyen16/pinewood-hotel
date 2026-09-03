@@ -50,5 +50,8 @@
     meta('meta[name="twitter:card"]','name','twitter:card','summary_large_image'); meta('meta[name="twitter:title"]','name','twitter:title',route.title); meta('meta[name="twitter:description"]','name','twitter:description',route.description); meta('meta[name="twitter:image"]','name','twitter:image',IMAGE);
     link('canonical',route.canonical); link('alternate',route.lang==='en'?route.alternate:route.canonical,'vi'); link('alternate',route.lang==='en'?route.canonical:route.alternate,'en'); link('alternate',`${BASE}/`,'x-default'); structuredData(route);
   }
-  ['pushState','replaceState'].forEach(name=>{const original=history[name];history[name]=function(...args){const out=original.apply(this,args);queueMicrotask(apply);return out;};}); addEventListener('popstate',apply); apply();
+  ['pushState','replaceState'].forEach(name=>{const original=history[name];history[name]=function(...args){const out=original.apply(this,args);queueMicrotask(apply);return out;};});
+  addEventListener('popstate',apply);
+  addEventListener('DOMContentLoaded',apply,{once:true});
+  apply();
 })();
