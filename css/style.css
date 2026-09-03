@@ -435,15 +435,18 @@ img { display: block; max-width: 100%; }
 .wifi-access-heading { text-align:center; margin-bottom:26px; }
 .wifi-access-heading .eyebrow { margin-bottom:10px; }
 .wifi-access-heading h2 { margin:0; color:var(--pine-green); font-size:clamp(30px,3vw,42px); line-height:1.15; font-weight:500; }
-.wifi-credentials { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr); gap:13px; }
+.wifi-credentials { display:grid; grid-template-columns:minmax(0,1fr) 118px minmax(0,1fr); gap:18px; align-items:center; }
+.wifi-credentials::before { content:''; grid-column:2; grid-row:1; justify-self:center; width:92px; aspect-ratio:82/89; background:url('/assets/logo/pinewood-logo.svg') center/contain no-repeat; }
+.wifi-credential-card:first-child { grid-column:1; grid-row:1; }
+.wifi-credential-card:last-child { grid-column:3; grid-row:1; }
 .wifi-credential-card { min-height:118px; display:flex; align-items:center; gap:15px; padding:20px; border:1px solid rgba(178,142,105,.27); border-radius:18px; background:#f7f6f2; }
 .wifi-credential-icon { width:46px; height:46px; flex:0 0 46px; display:grid; place-items:center; border:1px solid rgba(178,142,105,.28); border-radius:50%; color:var(--pine-brown); background:rgba(255,255,255,.78); }
 .wifi-credential-icon .icon { width:23px; height:23px; }
 .wifi-credential-card > div { min-width:0; }
 .wifi-credential-card span:not(.wifi-credential-icon) { display:block; color:var(--muted); font-size:10px; line-height:1.35; text-transform:uppercase; letter-spacing:.12em; }
 .wifi-credential-card strong { display:block; margin-top:9px; color:var(--pine-green); font-size:clamp(17px,1.7vw,22px); line-height:1.25; overflow-wrap:anywhere; }
-.wifi-premium-qr-card { position:relative; margin-top:22px; padding:46px 28px 28px; text-align:center; border:1px solid rgba(178,142,105,.43); border-radius:22px; background:radial-gradient(circle at 50% 0%,rgba(178,142,105,.07),transparent 30%),#fff; box-shadow:0 12px 30px rgba(12,53,34,.055); }
-.wifi-logo-medallion { position:absolute; top:0; left:50%; width:58px; height:58px; padding:8px; display:grid; place-items:center; transform:translate(-50%,-50%); border:1px solid rgba(178,142,105,.42); border-radius:50%; background:#fff; box-shadow:0 8px 18px rgba(12,53,34,.09); }
+.wifi-premium-qr-card { position:relative; margin-top:22px; padding:28px; text-align:center; border:1px solid rgba(178,142,105,.43); border-radius:22px; background:radial-gradient(circle at 50% 0%,rgba(178,142,105,.07),transparent 30%),#fff; box-shadow:0 12px 30px rgba(12,53,34,.055); }
+.wifi-logo-medallion { display:none; }
 .wifi-logo-medallion img { width:40px; height:40px; object-fit:contain; }
 .wifi-page-qr { width:min(280px,75%); height:auto; margin:4px auto 18px; padding:10px; border-radius:14px; background:#fff; }
 .wifi-qr-divider { display:flex; align-items:center; justify-content:center; gap:8px; margin:2px auto 14px; }
@@ -467,13 +470,15 @@ img { display: block; max-width: 100%; }
   .wifi-option2-access { padding:28px 20px 24px; border-radius:20px; }
   .wifi-access-heading { margin-bottom:20px; }
   .wifi-access-heading h2 { font-size:29px; }
-  .wifi-credentials { grid-template-columns:1fr; gap:9px; }
+  .wifi-credentials { grid-template-columns:1fr; gap:12px; }
+  .wifi-credential-card:first-child { grid-column:1; grid-row:1; }
+  .wifi-credentials::before { grid-column:1; grid-row:2; width:78px; margin:8px 0; }
+  .wifi-credential-card:last-child { grid-column:1; grid-row:3; }
   .wifi-credential-card { min-height:88px; padding:15px; }
   .wifi-credential-icon { width:40px; height:40px; flex-basis:40px; }
   .wifi-credential-card strong { font-size:17px; }
-  .wifi-premium-qr-card { margin-top:30px; padding:38px 16px 20px; border-radius:18px; }
-  .wifi-logo-medallion { width:50px; height:50px; padding:7px; }
-  .wifi-logo-medallion img { width:34px; height:34px; }
+  .wifi-premium-qr-card { margin-top:18px; padding:22px 16px 20px; border-radius:18px; }
+  .wifi-logo-medallion { display:none; }
   .wifi-page-qr { width:min(230px,82%); margin-bottom:12px; }
 }
 /* === End Pinewood Wi-Fi Option 2 === */
