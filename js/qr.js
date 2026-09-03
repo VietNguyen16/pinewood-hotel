@@ -26,7 +26,7 @@ window.PINEWOOD_ZALO_QR = '/assets/qr/zalo-pinewood.svg';
   const loadSiteFixes = () => {
     if (document.querySelector('script[data-pinewood-site-fixes]')) return;
     const script = document.createElement('script');
-    script.src = '/js/site-fixes.js?v=20260904';
+    script.src = '/js/site-fixes.js?v=20260904b';
     script.defer = true;
     script.dataset.pinewoodSiteFixes = 'true';
     document.head.appendChild(script);
