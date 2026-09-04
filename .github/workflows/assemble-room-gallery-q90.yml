@@ -1,0 +1,45 @@
+name: Assemble room gallery q90
+
+on:
+  push:
+    branches:
+      - room-gallery-q90-final
+    paths:
+      - .asset-room-q90/READY
+
+permissions:
+  contents: write
+
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: room-gallery-q90-final
+      - name: Assemble high-quality 1920px WebP images
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/images
+          cat .asset-room-q90/amenities/part-* | base64 -d > assets/images/pinewood-room-amenities-full.webp
+          cat .asset-room-q90/sleeping/part-* | base64 -d > assets/images/pinewood-room-sleeping-full.webp
+          cat .asset-room-q90/bathroom/part-* | base64 -d > assets/images/pinewood-room-bathroom-full.webp
+          test "$(wc -c < assets/images/pinewood-room-amenities-full.webp)" -eq 235232
+          test "$(wc -c < assets/images/pinewood-room-sleeping-full.webp)" -eq 210656
+          test "$(wc -c < assets/images/pinewood-room-bathroom-full.webp)" -eq 280270
+          sha256sum assets/images/pinewood-room-amenities-full.webp | grep -q '^c6afb0ac1122df0506a9f20a4d79c0ff5248cfed0ae17fbe0d2cfeca43dcd56a '
+          sha256sum assets/images/pinewood-room-sleeping-full.webp | grep -q '^198be34e175dc3a5276035b52ea96baf32f54e859ae63637ab79f78383211cfa '
+          sha256sum assets/images/pinewood-room-bathroom-full.webp | grep -q '^1b06b0e49988454ed1687c5513b8d1180e35876d9faf8fb1b07b9d4b1ccb8016 '
+          file assets/images/pinewood-room-amenities-full.webp | grep -q '1920x1920'
+          file assets/images/pinewood-room-sleeping-full.webp | grep -q '1920x1920'
+          file assets/images/pinewood-room-bathroom-full.webp | grep -q '1920x1920'
+      - name: Commit assembled images
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/images/pinewood-room-amenities-full.webp assets/images/pinewood-room-sleeping-full.webp assets/images/pinewood-room-bathroom-full.webp
+          git commit -m 'Assemble high quality room gallery images'
+          git push origin HEAD:room-gallery-q90-final
