@@ -1,0 +1,37 @@
+name: Cache bust home marketing
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/cache-bust-home-marketing.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Refresh marketing asset version
+        shell: bash
+        run: |
+          set -euo pipefail
+          sed -i 's|/js/marketing.js?v=20260904s|/js/marketing.js?v=20260904u|g' _layouts/app.html
+          grep -q '/js/marketing.js?v=20260904u' _layouts/app.html
+      - name: Commit cache bust
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if git diff --quiet; then
+            exit 0
+          fi
+          git add _layouts/app.html
+          git commit -m 'Bust home marketing asset cache'
+          git push origin HEAD:main
