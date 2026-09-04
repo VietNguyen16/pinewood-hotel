@@ -1,0 +1,75 @@
+name: One-time Pinewood production image fix
+
+on:
+  push:
+    branches:
+      - asset-upload-temp
+
+permissions:
+  contents: write
+
+jobs:
+  build-production-images:
+    if: github.event.head_commit.message == 'Prepare production breakfast image fix'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out staging branch
+        uses: actions/checkout@v4
+        with:
+          ref: asset-upload-temp
+          fetch-depth: 0
+
+      - name: Reconstruct real production photography
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/images
+          cat .asset-upload/breakfast/part-* | tr -d '\r\n' | base64 --decode > assets/images/pinewood-breakfast-original.webp
+          cat .asset-upload/room/part-* | tr -d '\r\n' | base64 --decode > assets/images/pinewood-room-home.webp
+          cp assets/images/pinewood-breakfast-original.webp assets/images/pinewood-breakfast-card.webp
+          cp assets/images/pinewood-room-home.webp assets/images/pinewood-experience.webp
+          test "$(stat -c%s assets/images/pinewood-breakfast-original.webp)" -gt 50000
+          test "$(stat -c%s assets/images/pinewood-room-home.webp)" -gt 50000
+          file assets/images/pinewood-breakfast-original.webp | grep -qi 'Web/P\|WebP\|RIFF'
+          file assets/images/pinewood-room-home.webp | grep -qi 'Web/P\|WebP\|RIFF'
+          printf 'Breakfast bytes: '; stat -c%s assets/images/pinewood-breakfast-original.webp
+          printf 'Room bytes: '; stat -c%s assets/images/pinewood-room-home.webp
+
+      - name: Patch production sources
+        run: python3 .asset-upload/apply_fix.py
+
+      - name: Validate JavaScript and source references
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check js/main.js
+          node --check js/marketing.js
+          node --check js/seo.js
+          node --check js/qr.js
+          node --check js/site-fixes.js
+          ! grep -R --line-number --exclude-dir=.git --exclude-dir=.asset-upload '/assets/images/seo/pinewood-room.svg\|/assets/images/seo/pinewood-cafe.svg\|/assets/images/seo/pinewood-breakfast-buffet.jpg' -- '*.html' '*.js' '*.xml'
+          grep -q '/assets/images/pinewood-breakfast-original.webp' js/main.js
+          grep -q '/assets/images/pinewood-breakfast-original.webp' js/marketing.js
+          grep -q '/assets/images/pinewood-breakfast-original.webp' dich-vu/index.html
+          grep -q '/assets/images/pinewood-breakfast-original.webp' en/services/index.html
+          grep -q '/assets/images/pinewood-room-home.webp' index.html
+          grep -q '/assets/images/pinewood-room-home.webp' en/index.html
+
+      - name: Remove one-time staging helpers
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .asset-upload
+          rm -f .github/workflows/one-time-image-fix.yml
+          rmdir .github/workflows 2>/dev/null || true
+          rmdir .github 2>/dev/null || true
+
+      - name: Commit tested production tree to staging branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Build tested production image fix'
+          git push origin HEAD:asset-upload-temp
