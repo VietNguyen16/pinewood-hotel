@@ -505,3 +505,6 @@ img { display: block; max-width: 100%; }
   .breakfast-time { white-space: nowrap; font-size: clamp(42px, 6vw, 54px); }
   .breakfast-time-note { font-size: 12px; }
 }
+
+/* Production breakfast photography */
+.breakfast-layout{display:grid;gap:24px}.breakfast-showcase{margin:0;overflow:hidden;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:var(--shadow-soft)}.breakfast-showcase img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;object-position:center}.breakfast-showcase figcaption{padding:12px 16px;color:var(--muted);font-size:13px;line-height:1.5}.breakfast-layout .breakfast-info-feature{margin-top:0}@media(max-width:720px){.breakfast-layout{gap:18px}.breakfast-showcase{border-radius:18px}.breakfast-showcase figcaption{padding:10px 12px;font-size:12px}}
