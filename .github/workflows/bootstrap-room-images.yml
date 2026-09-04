@@ -1,0 +1,35 @@
+name: Bootstrap room source images
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.asset-room-upload/**'
+
+permissions:
+  contents: write
+
+jobs:
+  assemble-room-images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Assemble staged room images
+        shell: bash
+        run: |
+          if [ ! -d .asset-room-upload ]; then
+            echo "No staged room image chunks."
+            exit 0
+          fi
+          mkdir -p assets/uploads/rooms/pinewood-room
+          cat .asset-room-upload/bedroom/part-* | base64 --decode > assets/uploads/rooms/pinewood-room/01-bedroom.webp
+          cat .asset-room-upload/amenities/part-* | base64 --decode > assets/uploads/rooms/pinewood-room/02-amenities.webp
+          cat .asset-room-upload/bathroom/part-* | base64 --decode > assets/uploads/rooms/pinewood-room/03-bathroom.webp
+          git add assets/uploads/rooms/pinewood-room
+          git rm -r .asset-room-upload
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Add high-quality room source images"
+          git push
