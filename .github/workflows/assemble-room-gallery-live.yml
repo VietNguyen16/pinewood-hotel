@@ -1,0 +1,44 @@
+name: Assemble room gallery live fix
+
+on:
+  push:
+    branches:
+      - room-gallery-hq-live-fix
+    paths:
+      - .room-hq-upload/READY
+
+permissions:
+  contents: write
+
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: room-gallery-hq-live-fix
+      - name: Assemble high-resolution WebP assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/images
+          cat .room-hq-upload/amenities/part-* | base64 -d > assets/images/pinewood-room-amenities-hq.webp
+          cat .room-hq-upload/bedroom/part-* | base64 -d > assets/images/pinewood-room-bedroom-hq.webp
+          cat .room-hq-upload/bathroom/part-* | base64 -d > assets/images/pinewood-room-bathroom-hq.webp
+          test "$(wc -c < assets/images/pinewood-room-amenities-hq.webp)" -eq 182320
+          test "$(wc -c < assets/images/pinewood-room-bedroom-hq.webp)" -eq 169782
+          test "$(wc -c < assets/images/pinewood-room-bathroom-hq.webp)" -eq 226718
+          file assets/images/pinewood-room-amenities-hq.webp | grep -q '1600x1600'
+          file assets/images/pinewood-room-bedroom-hq.webp | grep -q '1600x1600'
+          file assets/images/pinewood-room-bathroom-hq.webp | grep -q '1600x1600'
+      - name: Commit clean assembled result
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .room-hq-upload
+          rm -f .github/workflows/assemble-room-gallery-live.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Assemble high-resolution room gallery assets'
+          git push origin HEAD:room-gallery-hq-live-fix
