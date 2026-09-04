@@ -1,0 +1,1 @@
+Remove deprecated home action section and move Google Maps reviews into social links.
