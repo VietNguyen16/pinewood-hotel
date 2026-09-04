@@ -1,0 +1,168 @@
+name: Final breakfast and room gallery fix
+
+on:
+  push:
+    branches: [breakfast-room-gallery-final]
+
+permissions:
+  contents: write
+
+jobs:
+  prepare-production-tree:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out staging branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reconstruct verified breakfast image
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin breakfast-image-repair:refs/remotes/origin/breakfast-image-repair
+          : > /tmp/pinewood-breakfast.b64
+          for n in 00 01 02 03 04 05 06 07 08 09; do
+            git show "origin/breakfast-image-repair:.asset-repair/breakfast/part-${n}" >> /tmp/pinewood-breakfast.b64
+          done
+          base64 -d /tmp/pinewood-breakfast.b64 > /tmp/pinewood-breakfast.webp
+          test "$(sha256sum /tmp/pinewood-breakfast.webp | awk '{print $1}')" = "cb491d6fa3d1f3a61ec9d5cc1c59ae8c00eeb9de694d5576c97fa5fac8649e87"
+          test "$(stat -c%s /tmp/pinewood-breakfast.webp)" -gt 100000
+          head -c 4 /tmp/pinewood-breakfast.webp | grep -q RIFF
+          mkdir -p assets/images
+          cp /tmp/pinewood-breakfast.webp assets/images/pinewood-breakfast-buffet-1600.webp
+          cp /tmp/pinewood-breakfast.webp assets/images/pinewood-breakfast-original.webp
+          cp /tmp/pinewood-breakfast.webp assets/images/pinewood-breakfast-card.webp
+
+      - name: Patch production source and room gallery
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          ROOT = Path('.')
+          BFAST = '/assets/images/pinewood-breakfast-buffet-1600.webp'
+          VERSION = '20260904r'
+
+          # Replace every production reference to the stale/broken breakfast assets.
+          old_refs = [
+              '/assets/images/pinewood-breakfast-original.webp',
+              '/assets/images/pinewood-breakfast-card.webp',
+              '/assets/images/seo/pinewood-breakfast-buffet.jpg',
+              '/assets/images/seo/pinewood-cafe.svg',
+          ]
+          for p in ROOT.rglob('*'):
+              if not p.is_file() or p.suffix.lower() not in {'.html', '.js', '.xml'}:
+                  continue
+              if '.git' in p.parts or '.github' in p.parts:
+                  continue
+              text = p.read_text(encoding='utf-8', errors='ignore')
+              new = text
+              for old in old_refs:
+                  new = new.replace(old, BFAST)
+              if new != text:
+                  p.write_text(new, encoding='utf-8')
+
+          # Cache-bust core assets so browsers cannot reuse the previously broken image/render JS.
+          def version_refs(text):
+              for name in ['main.js', 'marketing.js', 'seo.js', 'qr.js']:
+                  text = re.sub(rf'/js/{re.escape(name)}(?:\?v=[^\"\']+)?', f'/js/{name}?v={VERSION}', text)
+              for name in ['style.css', 'seo-marketing.css']:
+                  text = re.sub(rf'/css/{re.escape(name)}(?:\?v=[^\"\']+)?', f'/css/{name}?v={VERSION}', text)
+              return text
+
+          for rel in ['_layouts/app.html', 'bua-sang/index.html', 'en/breakfast/index.html']:
+              p = ROOT / rel
+              text = p.read_text(encoding='utf-8')
+              p.write_text(version_refs(text), encoding='utf-8')
+
+          # Correct home captions/links: breakfast visual should lead to Breakfast, not generic services.
+          for rel, href, title, caption in [
+              ('index.html', '/bua-sang/', 'Bữa sáng Pinewood Hotel Dalat', 'Buffet sáng tại nhà hàng Pinewood, phục vụ hằng ngày từ 06:30 đến 09:00.'),
+              ('en/index.html', '/en/breakfast/', 'Breakfast at Pinewood Hotel Dalat', 'Breakfast buffet at the Pinewood restaurant, served daily from 06:30 to 09:00.'),
+          ]:
+              p = ROOT / rel
+              text = p.read_text(encoding='utf-8')
+              # Only rewrite the breakfast figure link/caption if current marketing wording is present.
+              if rel == 'index.html':
+                  text = text.replace('<figure class="hotel-photo-card"><a href="/dich-vu/"><img src="'+BFAST+'" width="600" height="314" loading="lazy" decoding="async" alt="Cà phê và bánh tại quầy café Pinewood Hotel Dalat ở Đà Lạt"><figcaption><strong>Café & dịch vụ khách sạn</strong>Cà phê, bánh và những khoảng nghỉ thư giãn trong hành trình tại Pinewood.</figcaption></a></figure>',
+                                      '<figure class="hotel-photo-card"><a href="/bua-sang/"><img src="'+BFAST+'" width="1600" height="900" loading="lazy" decoding="async" alt="Buffet sáng tại Pinewood Hotel Dalat, Đà Lạt"><figcaption><strong>'+title+'</strong>'+caption+'</figcaption></a></figure>')
+              else:
+                  text = text.replace('<figure class="hotel-photo-card"><a href="/en/services/"><img src="'+BFAST+'" width="600" height="314" loading="lazy" decoding="async" alt="Coffee and pastries at Pinewood Hotel Dalat cafe in Da Lat"><figcaption><strong>Café & hotel services</strong>Coffee, pastries and relaxed moments as part of the Pinewood stay.</figcaption></a></figure>',
+                                      '<figure class="hotel-photo-card"><a href="/en/breakfast/"><img src="'+BFAST+'" width="1600" height="900" loading="lazy" decoding="async" alt="Breakfast buffet at Pinewood Hotel Dalat in Da Lat"><figcaption><strong>'+title+'</strong>'+caption+'</figcaption></a></figure>')
+              p.write_text(text, encoding='utf-8')
+
+          # Marketing runtime must use the new cache-safe breakfast asset and link to Breakfast.
+          p = ROOT / 'js/marketing.js'
+          text = p.read_text(encoding='utf-8')
+          text = text.replace("const cafePhoto = '/assets/images/pinewood-breakfast-buffet-1600.webp';", "const cafePhoto = '/assets/images/pinewood-breakfast-buffet-1600.webp';")
+          text = text.replace("<a href=\"${en ? '/en/services/' : '/dich-vu/'}\">\n              <img src=\"${cafePhoto}\"", "<a href=\"${en ? '/en/breakfast/' : '/bua-sang/'}\">\n              <img src=\"${cafePhoto}\"")
+          p.write_text(text, encoding='utf-8')
+
+          # Add a compact additional room gallery using the room creatives already supplied for this project.
+          galleries = {
+              'en/rooms/index.html': '''\n<section class="marketing-section room-gallery-section" aria-labelledby="room-gallery-title"><div class="shell"><header class="room-gallery-head"><p class="eyebrow">ROOM DETAILS</p><h2 id="room-gallery-title">More views of the Pinewood stay</h2><p>Explore the sleeping area, in-room amenities and bathroom details prepared for a comfortable stay in Da Lat.</p></header><div class="room-gallery-grid"><figure class="room-gallery-card"><img src="/assets/images/pinewood-room-stay-card.webp" width="320" height="320" loading="lazy" decoding="async" alt="Bright twin guest room at Pinewood Hotel Dalat"><figcaption><strong>Bright sleeping space</strong><span>Twin beds, warm finishes and natural light.</span></figcaption></figure><figure class="room-gallery-card"><img src="/assets/images/pinewood-room-amenities-card.webp" width="320" height="320" loading="lazy" decoding="async" alt="In-room amenities at Pinewood Hotel Dalat"><figcaption><strong>Prepared amenities</strong><span>Useful room details arranged for an easy stay.</span></figcaption></figure><figure class="room-gallery-card"><img src="/assets/images/pinewood-room-bathroom-card.webp" width="320" height="320" loading="lazy" decoding="async" alt="Guest bathroom at Pinewood Hotel Dalat"><figcaption><strong>Private bathroom</strong><span>A clean, comfortable bathroom with essential amenities.</span></figcaption></figure></div></div></section>\n''',
+              'phong/index.html': '''\n<section class="marketing-section room-gallery-section" aria-labelledby="room-gallery-title"><div class="shell"><header class="room-gallery-head"><p class="eyebrow">CHI TIẾT PHÒNG</p><h2 id="room-gallery-title">Thêm góc nhìn về không gian lưu trú</h2><p>Khám phá khu vực nghỉ ngơi, tiện nghi trong phòng và phòng tắm được chuẩn bị cho một kỳ nghỉ thoải mái tại Đà Lạt.</p></header><div class="room-gallery-grid"><figure class="room-gallery-card"><img src="/assets/images/pinewood-room-stay-card.webp" width="320" height="320" loading="lazy" decoding="async" alt="Phòng hai giường sáng thoáng tại Pinewood Hotel Dalat"><figcaption><strong>Không gian nghỉ ngơi</strong><span>Hai giường, nội thất ấm áp và nhiều ánh sáng.</span></figcaption></figure><figure class="room-gallery-card"><img src="/assets/images/pinewood-room-amenities-card.webp" width="320" height="320" loading="lazy" decoding="async" alt="Tiện nghi trong phòng tại Pinewood Hotel Dalat"><figcaption><strong>Tiện nghi được chuẩn bị</strong><span>Những chi tiết thiết thực cho kỳ lưu trú thuận tiện.</span></figcaption></figure><figure class="room-gallery-card"><img src="/assets/images/pinewood-room-bathroom-card.webp" width="320" height="320" loading="lazy" decoding="async" alt="Phòng tắm tại Pinewood Hotel Dalat"><figcaption><strong>Phòng tắm riêng</strong><span>Không gian sạch sẽ, thoải mái và đầy đủ tiện nghi cơ bản.</span></figcaption></figure></div></div></section>\n'''
+          }
+          for rel, gallery in galleries.items():
+              p = ROOT / rel
+              text = p.read_text(encoding='utf-8')
+              text = text.replace('width="1200" height="1200" decoding="async"', 'width="1080" height="810" decoding="async"', 1)
+              if 'room-gallery-section' not in text:
+                  marker = '</section>\n<section class="marketing-section"><div class="shell marketing-two-col">'
+                  if marker not in text:
+                      raise SystemExit(f'{rel}: insertion marker not found')
+                  text = text.replace(marker, '</section>' + gallery + '<section class="marketing-section"><div class="shell marketing-two-col">', 1)
+              p.write_text(text, encoding='utf-8')
+
+          # Responsive gallery CSS. Cards never upscale the 320 px supplemental sources.
+          css = ROOT / 'css/seo-marketing.css'
+          text = css.read_text(encoding='utf-8')
+          marker = '/* Room detail gallery */'
+          if marker not in text:
+              text += '''\n\n/* Room detail gallery */\n.room-gallery-section{padding-top:18px}.room-gallery-head{max-width:780px;margin:0 auto 24px;text-align:center}.room-gallery-head h2{margin:0;color:var(--pine-green);font-size:clamp(26px,3.4vw,38px);font-weight:500;line-height:1.2}.room-gallery-head p:not(.eyebrow){margin:12px auto 0;color:var(--muted);line-height:1.7}.room-gallery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,320px));justify-content:center;gap:18px}.room-gallery-card{margin:0;overflow:hidden;border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:var(--shadow-soft)}.room-gallery-card img{display:block;width:320px;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover}.room-gallery-card figcaption{padding:14px 16px 17px;color:var(--muted);font-size:12px;line-height:1.55}.room-gallery-card figcaption strong,.room-gallery-card figcaption span{display:block}.room-gallery-card figcaption strong{margin-bottom:4px;color:var(--pine-green);font-size:14px}@media(max-width:760px){.room-gallery-grid{grid-template-columns:minmax(0,320px)}.room-gallery-section{padding-top:8px}}\n'''
+              css.write_text(text, encoding='utf-8')
+
+          # Verify breakfast renderer and all public source references use the new asset.
+          main = (ROOT / 'js/main.js').read_text(encoding='utf-8')
+          if BFAST not in main:
+              raise SystemExit('js/main.js does not point to canonical breakfast image')
+          forbidden = ['/assets/images/seo/pinewood-cafe.svg', '/assets/images/seo/pinewood-breakfast-buffet.jpg']
+          violations = []
+          for p in ROOT.rglob('*'):
+              if p.is_file() and p.suffix.lower() in {'.html', '.js', '.xml'} and '.git' not in p.parts and '.github' not in p.parts:
+                  t = p.read_text(encoding='utf-8', errors='ignore')
+                  for token in forbidden:
+                      if token in t:
+                          violations.append(f'{p}: {token}')
+          if violations:
+              raise SystemExit('\n'.join(violations))
+          PY
+
+      - name: Validate source and assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check js/main.js
+          node --check js/marketing.js
+          node --check js/seo.js
+          test -s assets/images/pinewood-breakfast-buffet-1600.webp
+          test -s assets/images/pinewood-breakfast-original.webp
+          test -s assets/images/pinewood-breakfast-card.webp
+          grep -q 'pinewood-breakfast-buffet-1600.webp' js/main.js
+          grep -q 'room-gallery-section' en/rooms/index.html
+          grep -q 'room-gallery-section' phong/index.html
+
+      - name: Commit clean staging tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm -f .github/workflows/final-breakfast-room-fix.yml
+          git add -A
+          git commit -m 'Prepare breakfast image and room gallery fix'
+          git push origin HEAD:breakfast-room-gallery-final
