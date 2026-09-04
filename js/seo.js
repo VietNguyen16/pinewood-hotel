@@ -1,117 +1,98 @@
 (() => {
   const BASE = 'https://pinewoodhotel.vn';
-  const IMAGE = `${BASE}/assets/images/pinewood-experience.webp`;
-  const ROOM_IMAGE = `${BASE}/assets/images/seo/pinewood-room.svg`;
-  const CAFE_IMAGE = `${BASE}/assets/images/seo/pinewood-cafe.svg`;
-  const LOGO = `${BASE}/assets/logo/pinewood-logo.png`;
-  const HOTEL_ID = `${BASE}/#hotel`;
-  const WEBSITE_ID = `${BASE}/#website`;
-  const INSTAGRAM = 'https://www.instagram.com/pinewooddalat/';
-  const TIKTOK = 'https://www.tiktok.com/@dalat.pinewood';
-  const MAP = 'https://www.google.com/maps/dir/?api=1&destination=Pinewood%20Hotel%20Dalat%2C%2054%20%C4%90%C6%B0%E1%BB%9Dng%20V%C3%B5%20Tr%C6%B0%E1%BB%9Dng%20To%E1%BA%A3n%2C%20%C4%90%C3%A0%20L%E1%BA%A1t%2C%20L%C3%A2m%20%C4%90%E1%BB%93ng%2C%20Vi%E1%BB%87t%20Nam';
-
-  const routes = {
-    '/': ['vi', true, 'Pinewood Hotel Dalat | Khách sạn tại Đà Lạt', 'Pinewood Hotel Dalat tại 54 Võ Trường Toản, Đà Lạt với 50 phòng và suite. Xem ảnh phòng thực tế, dịch vụ, vị trí và liên hệ trực tiếp với khách sạn.', `${BASE}/`, `${BASE}/en/`, 'Trang chủ'],
-    '/en': ['en', true, 'Pinewood Hotel Dalat | Hotel in Da Lat, Vietnam', 'Official website of Pinewood Hotel Dalat at 54 Vo Truong Toan Street with 50 rooms and suites. See real room photos, services, location and direct contact.', `${BASE}/en/`, `${BASE}/`, 'Home'],
-    '/dich-vu': ['vi', true, 'Dịch vụ khách sạn tại Đà Lạt | Pinewood Hotel Dalat', 'Khám phá dịch vụ tại Pinewood Hotel Dalat: Wi-Fi miễn phí, bữa sáng 06:30–09:00, nhà hàng, café, buồng phòng và hỗ trợ Lễ tân.', `${BASE}/dich-vu/`, `${BASE}/en/services/`, 'Dịch vụ'],
-    '/en/services': ['en', true, 'Hotel Services in Da Lat | Pinewood Hotel Dalat', 'Explore services at Pinewood Hotel Dalat including complimentary Wi-Fi, breakfast 06:30–09:00, restaurant and café service, housekeeping and Reception support.', `${BASE}/en/services/`, `${BASE}/dich-vu/`, 'Services'],
-    '/lien-he': ['vi', true, 'Liên hệ & chỉ đường | Pinewood Hotel Dalat', 'Liên hệ Pinewood Hotel Dalat tại 54 Võ Trường Toản, Đà Lạt. Điện thoại 0785 098 686, email, Zalo và chỉ đường đến khách sạn.', `${BASE}/lien-he/`, `${BASE}/en/contact/`, 'Liên hệ'],
-    '/en/contact': ['en', true, 'Contact & Directions | Pinewood Hotel Dalat', 'Contact Pinewood Hotel Dalat at 54 Vo Truong Toan Street, Da Lat. Call +84 785 098 686, email the hotel or get directions.', `${BASE}/en/contact/`, `${BASE}/lien-he/`, 'Contact'],
-    '/moi-truong': ['vi', true, 'Lưu trú có trách nhiệm | Pinewood Hotel Dalat', 'Tìm hiểu các hướng dẫn sử dụng tài nguyên có trách nhiệm và bảo vệ môi trường dành cho khách tại Pinewood Hotel Dalat, Đà Lạt.', `${BASE}/moi-truong/`, `${BASE}/en/environment/`, 'Môi trường'],
-    '/en/environment': ['en', true, 'Responsible Stay & Environment | Pinewood Hotel Dalat', 'Learn about responsible resource use and environmental guidance for guests staying at Pinewood Hotel Dalat in Da Lat, Vietnam.', `${BASE}/en/environment/`, `${BASE}/moi-truong/`, 'Environment'],
-    '/wifi': ['vi', false, 'Wi-Fi | Pinewood Hotel Dalat', 'Thông tin Wi-Fi dành cho khách đang lưu trú tại Pinewood Hotel Dalat.', `${BASE}/wifi/`, `${BASE}/en/wifi/`, 'Wi-Fi'],
-    '/en/wifi': ['en', false, 'Wi-Fi | Pinewood Hotel Dalat', 'Wi-Fi information for guests currently staying at Pinewood Hotel Dalat.', `${BASE}/en/wifi/`, `${BASE}/wifi/`, 'Wi-Fi'],
-    '/bua-sang': ['vi', false, 'Bữa sáng | Pinewood Hotel Dalat', 'Thông tin bữa sáng dành cho khách đang lưu trú tại Pinewood Hotel Dalat.', `${BASE}/bua-sang/`, `${BASE}/en/breakfast/`, 'Bữa sáng'],
-    '/en/breakfast': ['en', false, 'Breakfast | Pinewood Hotel Dalat', 'Breakfast information for guests currently staying at Pinewood Hotel Dalat.', `${BASE}/en/breakfast/`, `${BASE}/bua-sang/`, 'Breakfast'],
-    '/noi-quy': ['vi', false, 'Nội quy khách sạn | Pinewood Hotel Dalat', 'Nội quy và hướng dẫn dành cho khách đang lưu trú tại Pinewood Hotel Dalat.', `${BASE}/noi-quy/`, `${BASE}/en/hotel-rules/`, 'Nội quy'],
-    '/en/hotel-rules': ['en', false, 'Hotel Rules | Pinewood Hotel Dalat', 'Hotel rules and guidance for guests currently staying at Pinewood Hotel Dalat.', `${BASE}/en/hotel-rules/`, `${BASE}/noi-quy/`, 'Hotel Rules'],
-    '/an-toan': ['vi', false, 'An toàn & khẩn cấp | Pinewood Hotel Dalat', 'Thông tin an toàn và hướng dẫn khẩn cấp dành cho khách lưu trú tại Pinewood Hotel Dalat.', `${BASE}/an-toan/`, `${BASE}/en/safety/`, 'An toàn'],
-    '/en/safety': ['en', false, 'Safety & Emergency | Pinewood Hotel Dalat', 'Safety and emergency guidance for guests currently staying at Pinewood Hotel Dalat.', `${BASE}/en/safety/`, `${BASE}/an-toan/`, 'Safety'],
-    '/thong-tin': ['vi', false, 'Thông tin lưu trú | Pinewood Hotel Dalat', 'Thông tin tổng hợp dành cho khách đang lưu trú tại Pinewood Hotel Dalat.', `${BASE}/thong-tin/`, `${BASE}/en/hotel-information/`, 'Thông tin lưu trú'],
-    '/en/hotel-information': ['en', false, 'Guest Information | Pinewood Hotel Dalat', 'Complete guest information for visitors currently staying at Pinewood Hotel Dalat.', `${BASE}/en/hotel-information/`, `${BASE}/thong-tin/`, 'Guest Information'],
-    '/thu-chao-mung': ['vi', false, 'Thư chào mừng | Pinewood Hotel Dalat', 'Thư chào mừng dành cho khách lưu trú tại Pinewood Hotel Dalat.', `${BASE}/thu-chao-mung/`, `${BASE}/en/welcome/`, 'Thư chào mừng'],
-    '/en/welcome': ['en', false, 'Welcome | Pinewood Hotel Dalat', 'Welcome information for guests staying at Pinewood Hotel Dalat.', `${BASE}/en/welcome/`, `${BASE}/thu-chao-mung/`, 'Welcome']
+  const BREAKFAST_IMG = '/assets/images/pinewood-breakfast-card.webp?v=20260904e';
+  const ROOM_IMG = '/assets/images/pinewood-experience.webp?v=20260904e';
+  const routeData = {
+    '/': ['vi', true, 'Pinewood Hotel Dalat | Khách sạn tại Đà Lạt', 'Pinewood Hotel Dalat tại 54 Võ Trường Toản, Đà Lạt với 50 phòng và suite, bữa sáng, Wi-Fi và hỗ trợ trực tiếp.'],
+    '/en': ['en', true, 'Pinewood Hotel Dalat | Hotel in Da Lat, Vietnam', 'Official website of Pinewood Hotel Dalat with rooms, breakfast, Wi-Fi and direct hotel support.'],
+    '/dich-vu': ['vi', true, 'Dịch vụ khách sạn tại Đà Lạt | Pinewood Hotel Dalat', 'Dịch vụ tại Pinewood Hotel Dalat: Wi-Fi miễn phí, bữa sáng, nhà hàng, café, buồng phòng và hỗ trợ Lễ tân.'],
+    '/en/services': ['en', true, 'Hotel Services in Da Lat | Pinewood Hotel Dalat', 'Services at Pinewood Hotel Dalat including complimentary Wi-Fi, breakfast, restaurant and café service, housekeeping and Reception support.'],
+    '/bua-sang': ['vi', false, 'Bữa sáng | Pinewood Hotel Dalat', 'Thông tin bữa sáng dành cho khách đang lưu trú tại Pinewood Hotel Dalat.'],
+    '/en/breakfast': ['en', false, 'Breakfast | Pinewood Hotel Dalat', 'Breakfast information for guests currently staying at Pinewood Hotel Dalat.'],
+    '/wifi': ['vi', false, 'Wi-Fi | Pinewood Hotel Dalat', 'Thông tin Wi-Fi dành cho khách đang lưu trú tại Pinewood Hotel Dalat.'],
+    '/en/wifi': ['en', false, 'Wi-Fi | Pinewood Hotel Dalat', 'Wi-Fi information for guests currently staying at Pinewood Hotel Dalat.']
   };
-
   const normalize = p => (p || '/').replace(/\/+$/, '') || '/';
-  function unpack(key) {
-    const r = routes[key];
-    return r ? { lang:r[0], index:r[1], title:r[2], description:r[3], canonical:r[4], alternate:r[5], label:r[6] } : {
-      lang:key.startsWith('/en')?'en':'vi', index:false, title:'Pinewood Hotel Dalat',
-      description:key.startsWith('/en')?'Guest information from Pinewood Hotel Dalat.':'Thông tin dành cho khách của Pinewood Hotel Dalat.',
-      canonical:`${BASE}${key==='/'?'/':`${key}/`}`, alternate:key.startsWith('/en')?`${BASE}/`:`${BASE}/en/`, label:'Pinewood Hotel Dalat'
-    };
+  function current() {
+    const key = normalize(location.pathname);
+    const data = routeData[key] || [key.startsWith('/en') ? 'en' : 'vi', !key.includes('/wifi') && !key.includes('/breakfast') && !key.includes('/bua-sang'), 'Pinewood Hotel Dalat', key.startsWith('/en') ? 'Guest information from Pinewood Hotel Dalat.' : 'Thông tin dành cho khách của Pinewood Hotel Dalat.'];
+    return { key, lang:data[0], index:data[1], title:data[2], description:data[3] };
   }
-  function meta(selector, attr, name, content) {
-    let n=document.head.querySelector(selector);
-    if(!n){n=document.createElement('meta');n.setAttribute(attr,name);document.head.appendChild(n);}
-    n.setAttribute('content',content);
+  function upsertMeta(selector, attr, name, content) {
+    let node = document.head.querySelector(selector);
+    if (!node) { node = document.createElement('meta'); node.setAttribute(attr, name); document.head.appendChild(node); }
+    node.setAttribute('content', content);
   }
-  function link(rel, href, hreflang) {
-    const s=hreflang?`link[rel="${rel}"][hreflang="${hreflang}"]`:`link[rel="${rel}"]:not([hreflang])`;
-    let n=document.head.querySelector(s);
-    if(!n){n=document.createElement('link');n.rel=rel;if(hreflang)n.hreflang=hreflang;document.head.appendChild(n);}
-    n.href=href;
+  function applySeo() {
+    const r = current();
+    document.documentElement.lang = r.lang;
+    document.title = r.title;
+    upsertMeta('meta[name="description"]', 'name', 'description', r.description);
+    upsertMeta('meta[name="robots"]', 'name', 'robots', r.index ? 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1' : 'noindex,follow');
+    upsertMeta('meta[property="og:title"]', 'property', 'og:title', r.title);
+    upsertMeta('meta[property="og:description"]', 'property', 'og:description', r.description);
+    upsertMeta('meta[property="og:image"]', 'property', 'og:image', `${BASE}${ROOM_IMG.replace(/^\//,'')}`);
+    upsertMeta('meta[name="twitter:image"]', 'name', 'twitter:image', `${BASE}${ROOM_IMG.replace(/^\//,'')}`);
   }
-  function structuredData(route) {
-    let n=document.getElementById('seo-structured-data');
-    if(!n){n=document.createElement('script');n.type='application/ld+json';n.id='seo-structured-data';document.head.appendChild(n);}
-    const graph=[
-      {
-        '@type':'Hotel','@id':HOTEL_ID,name:'Pinewood Hotel Dalat',url:`${BASE}/`,
-        logo:{'@type':'ImageObject',url:LOGO},image:[IMAGE,ROOM_IMAGE,CAFE_IMAGE],telephone:'+84785098686',email:'info@pinewoodhotel.vn',
-        slogan:'Ngủ ngon - Ấm áp - Đậm chất Đà Lạt',numberOfRooms:50,checkinTime:'14:00',checkoutTime:'12:00',
-        address:{'@type':'PostalAddress',streetAddress:'54 Đường Võ Trường Toản',addressLocality:'Đà Lạt',addressRegion:'Lâm Đồng',addressCountry:'VN'},
-        sameAs:[INSTAGRAM,TIKTOK],hasMap:MAP,
-        contactPoint:{'@type':'ContactPoint',telephone:'+84785098686',contactType:'customer service',availableLanguage:['Vietnamese','English']},
-        amenityFeature:[
-          {'@type':'LocationFeatureSpecification',name:'Free Wi-Fi',value:true},
-          {'@type':'LocationFeatureSpecification',name:'Breakfast',value:true},
-          {'@type':'LocationFeatureSpecification',name:'Restaurant',value:true},
-          {'@type':'LocationFeatureSpecification',name:'Air conditioning',value:true}
-        ]
-      },
-      {'@type':'WebSite','@id':WEBSITE_ID,url:`${BASE}/`,name:'Pinewood Hotel Dalat',publisher:{'@id':HOTEL_ID},inLanguage:['vi','en']},
-      {'@type':'WebPage','@id':`${route.canonical}#webpage`,url:route.canonical,name:route.title,description:route.description,inLanguage:route.lang,isPartOf:{'@id':WEBSITE_ID},about:{'@id':HOTEL_ID},primaryImageOfPage:{'@type':'ImageObject',url:IMAGE}}
-    ];
-    if(route.index&&route.canonical!==`${BASE}/`&&route.canonical!==`${BASE}/en/`) {
-      graph.push({'@type':'BreadcrumbList',itemListElement:[
-        {'@type':'ListItem',position:1,name:route.lang==='en'?'Home':'Trang chủ',item:route.lang==='en'?`${BASE}/en/`:`${BASE}/`},
-        {'@type':'ListItem',position:2,name:route.label,item:route.canonical}
-      ]});
-    }
-    n.textContent=JSON.stringify({'@context':'https://schema.org','@graph':graph});
+  function injectStyle() {
+    if (document.getElementById('pinewood-image-fix-style')) return;
+    const style = document.createElement('style');
+    style.id = 'pinewood-image-fix-style';
+    style.textContent = `
+      .pinewood-image-fix-section{margin-top:34px}.pinewood-image-fix-head{text-align:center;max-width:860px;margin:0 auto 24px}.pinewood-image-fix-head h2{margin:0;color:var(--pine-green);font-size:clamp(30px,4vw,48px);font-weight:500;line-height:1.15}.pinewood-image-fix-head p{color:var(--muted);line-height:1.7}.pinewood-image-fix-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:24px;align-items:start}.pinewood-image-fix-card{overflow:hidden;border:1px solid var(--line);border-radius:var(--radius-xl);background:#fff;box-shadow:var(--shadow-soft)}.pinewood-image-fix-card.full{grid-column:1/-1}.pinewood-image-fix-media{background:#f5f2eb;padding:16px}.pinewood-image-fix-media img{display:block;width:100%;height:100%;object-fit:contain;border-radius:18px}.pinewood-image-fix-media.room{aspect-ratio:16/10}.pinewood-image-fix-media.breakfast{aspect-ratio:863/452}.pinewood-image-fix-copy{padding:22px 24px 26px}.pinewood-image-fix-copy h3{margin:0;color:var(--pine-green);font-size:clamp(22px,2.2vw,32px)}.pinewood-image-fix-copy p{margin:12px 0 0;color:var(--muted);line-height:1.7}.pinewood-image-fix-copy a{display:inline-block;margin-top:14px;color:var(--pine-green);font-weight:700;text-decoration:none}.pinewood-breakfast-page-visual{margin-top:24px}.pinewood-breakfast-page-visual .pinewood-image-fix-media{padding:18px}@media(max-width:900px){.pinewood-image-fix-grid{grid-template-columns:1fr}.pinewood-image-fix-media{padding:12px}.pinewood-image-fix-card.full{grid-column:auto}}`;
+    document.head.appendChild(style);
   }
-  function apply(){
-    const route=unpack(normalize(location.pathname));
-    document.documentElement.lang=route.lang;
-    document.title=route.title;
-    meta('meta[name="description"]','name','description',route.description);
-    meta('meta[name="robots"]','name','robots',route.index?'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1':'noindex,follow');
-    meta('meta[property="og:type"]','property','og:type','website');
-    meta('meta[property="og:site_name"]','property','og:site_name','Pinewood Hotel Dalat');
-    meta('meta[property="og:title"]','property','og:title',route.title);
-    meta('meta[property="og:description"]','property','og:description',route.description);
-    meta('meta[property="og:url"]','property','og:url',route.canonical);
-    meta('meta[property="og:image"]','property','og:image',IMAGE);
-    meta('meta[property="og:image:alt"]','property','og:image:alt','Pinewood Hotel Dalat');
-    meta('meta[property="og:locale"]','property','og:locale',route.lang==='en'?'en_US':'vi_VN');
-    meta('meta[property="og:locale:alternate"]','property','og:locale:alternate',route.lang==='en'?'vi_VN':'en_US');
-    meta('meta[name="twitter:card"]','name','twitter:card','summary_large_image');
-    meta('meta[name="twitter:title"]','name','twitter:title',route.title);
-    meta('meta[name="twitter:description"]','name','twitter:description',route.description);
-    meta('meta[name="twitter:image"]','name','twitter:image',IMAGE);
-    link('canonical',route.canonical);
-    link('alternate',route.lang==='en'?route.alternate:route.canonical,'vi');
-    link('alternate',route.lang==='en'?route.canonical:route.alternate,'en');
-    link('alternate',`${BASE}/`,'x-default');
-    structuredData(route);
+  function img(src, alt, cls='') { return `<img src="${src}" alt="${alt}" loading="lazy" decoding="async" class="${cls}">`; }
+  function homeVisual(lang) {
+    const en = lang === 'en';
+    return `<header class="pinewood-image-fix-head"><p class="eyebrow">PINEWOOD IMAGES</p><h2>${en ? 'Rooms and breakfast at Pinewood' : 'Phòng nghỉ và bữa sáng tại Pinewood'}</h2><p>${en ? 'A cleaner visual preview with working images for the room atmosphere and breakfast experience.' : 'Bố cục hình ảnh gọn hơn, bảo đảm ảnh phòng và ảnh bữa sáng hiển thị đúng trên website.'}</p></header><div class="pinewood-image-fix-grid"><article class="pinewood-image-fix-card"><div class="pinewood-image-fix-media room">${img(ROOM_IMG, en ? 'Pinewood Hotel Dalat room and stay experience' : 'Không gian phòng nghỉ Pinewood Hotel Dalat')}</div><div class="pinewood-image-fix-copy"><h3>${en ? 'Rooms & stay' : 'Không gian lưu trú'}</h3><p>${en ? 'A balanced preview of the stay experience at Pinewood Hotel Dalat.' : 'Góc nhìn tổng quan về trải nghiệm lưu trú tại Pinewood Hotel Dalat.'}</p><a href="${en ? '/en/rooms/' : '/phong/'}">${en ? 'View rooms' : 'Xem phòng'}</a></div></article><article class="pinewood-image-fix-card"><div class="pinewood-image-fix-media breakfast">${img(BREAKFAST_IMG, en ? 'Breakfast at Pinewood Hotel Dalat' : 'Bữa sáng tại Pinewood Hotel Dalat')}</div><div class="pinewood-image-fix-copy"><h3>${en ? 'Breakfast at Pinewood' : 'Bữa sáng tại Pinewood'}</h3><p>${en ? 'The breakfast poster is now shown correctly instead of a blank or broken image area.' : 'Ảnh bữa sáng đã được hiển thị đúng thay cho khung ảnh bị lỗi.'}</p><a href="${en ? '/en/breakfast/' : '/bua-sang/'}">${en ? 'View breakfast' : 'Xem bữa sáng'}</a></div></article></div>`;
   }
-  ['pushState','replaceState'].forEach(name=>{
-    const original=history[name];
-    history[name]=function(...args){const out=original.apply(this,args);queueMicrotask(apply);return out;};
-  });
-  addEventListener('popstate',apply);
-  addEventListener('DOMContentLoaded',apply,{once:true});
-  apply();
+  function patchHome(r) {
+    const target = document.querySelector('#seo-home-marketing .hotel-photo-section, .static-seo-fallback .hotel-photo-section, #seo-home-marketing .pinewood-gallery');
+    if (!target || target.dataset.imageFixed === 'true') return;
+    target.className = 'hotel-photo-section pinewood-image-fix-section';
+    target.dataset.imageFixed = 'true';
+    target.innerHTML = homeVisual(r.lang);
+  }
+  function patchServices(r) {
+    const target = document.getElementById('seo-service-photo') || document.querySelector('.service-photo-card, .hotel-photo-section');
+    if (!target || target.dataset.imageFixed === 'true') return;
+    target.dataset.imageFixed = 'true';
+    target.innerHTML = `<div class="pinewood-image-fix-media breakfast">${img(BREAKFAST_IMG, r.lang === 'en' ? 'Breakfast and café service at Pinewood Hotel Dalat' : 'Dịch vụ bữa sáng và café tại Pinewood Hotel Dalat')}</div><div class="pinewood-image-fix-copy"><h3>${r.lang === 'en' ? 'Breakfast & café' : 'Bữa sáng & café'}</h3><p>${r.lang === 'en' ? 'A real breakfast visual is shown here so the service page no longer has a blank image.' : 'Ảnh bữa sáng được hiển thị tại đây để trang dịch vụ không còn khung ảnh lỗi.'}</p></div>`;
+    target.classList.add('pinewood-image-fix-card');
+  }
+  function patchBreakfastPage(r) {
+    if (!/^(\/en\/breakfast|\/bua-sang)$/.test(r.key)) return;
+    if (document.getElementById('pinewood-breakfast-page-visual')) return;
+    const after = document.querySelector('.breakfast-info-feature') || document.querySelector('.page-section .shell');
+    if (!after) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'shell pinewood-breakfast-page-visual';
+    wrap.id = 'pinewood-breakfast-page-visual';
+    wrap.innerHTML = `<article class="pinewood-image-fix-card full"><div class="pinewood-image-fix-media breakfast">${img(BREAKFAST_IMG, r.lang === 'en' ? 'Breakfast poster at Pinewood Hotel Dalat' : 'Hình ảnh bữa sáng tại Pinewood Hotel Dalat')}</div><div class="pinewood-image-fix-copy"><h3>${r.lang === 'en' ? 'Breakfast at Pinewood' : 'Bữa sáng tại Pinewood'}</h3><p>${r.lang === 'en' ? 'This page now shows the breakfast image requested for Pinewood Hotel Dalat.' : 'Trang này đã hiển thị đúng hình ảnh bữa sáng theo yêu cầu.'}</p></div></article>`;
+    after.insertAdjacentElement('afterend', wrap);
+  }
+  function replaceBrokenImages() {
+    document.querySelectorAll('img[src*="pinewood-cafe.svg"],img[src*="pinewood-breakfast-buffet"],img[src*="pinewood-breakfast-card"],img[src*="pinewood-room.svg"]').forEach(el => {
+      const isRoom = /pinewood-room\.svg/.test(el.getAttribute('src') || '');
+      el.src = isRoom ? ROOM_IMG : BREAKFAST_IMG;
+      el.style.objectFit = 'contain';
+      el.style.background = '#f5f2eb';
+    });
+  }
+  function run() {
+    injectStyle();
+    applySeo();
+    const r = current();
+    if (r.key === '/' || r.key === '/en') patchHome(r);
+    if (r.key === '/dich-vu' || r.key === '/en/services') patchServices(r);
+    patchBreakfastPage(r);
+    replaceBrokenImages();
+  }
+  const schedule = () => requestAnimationFrame(run);
+  ['pushState','replaceState'].forEach(name => { const original = history[name]; history[name] = function(...args){ const out = original.apply(this,args); schedule(); return out; }; });
+  addEventListener('popstate', schedule);
+  addEventListener('DOMContentLoaded', schedule, { once:true });
+  new MutationObserver(schedule).observe(document.documentElement, { childList:true, subtree:true });
+  schedule();
 })();
