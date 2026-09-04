@@ -1,0 +1,45 @@
+name: Optimize room gallery images
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/uploads/rooms/**'
+      - 'scripts/process_room_images.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  optimize-room-images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Pillow
+        run: python -m pip install --disable-pip-version-check 'Pillow>=10,<12'
+
+      - name: Generate optimized room gallery
+        run: python scripts/process_room_images.py
+
+      - name: Commit generated gallery if changed
+        shell: bash
+        run: |
+          git add assets/images/rooms _data/rooms.json
+          if git diff --cached --quiet; then
+            echo "Room gallery is already up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Optimize room gallery images"
+          git push
