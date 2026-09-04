@@ -1,0 +1,45 @@
+name: Assemble room gallery originals v3
+
+on:
+  push:
+    branches:
+      - room-gallery-hq-v2
+    paths:
+      - .asset-room-upload-v2/READY2
+
+permissions:
+  contents: write
+
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: room-gallery-hq-v2
+      - name: Assemble exact uploaded JPEG files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/images
+          cat .asset-room-upload-v2/amenities/part-* | base64 -d > assets/images/pinewood-room-amenities-original.jpg
+          cat .asset-room-upload-v2/room/part-* | base64 -d > assets/images/pinewood-room-sleeping-original.jpg
+          cat .asset-room-upload-v2/bathroom/part-* | base64 -d > assets/images/pinewood-room-bathroom-original.jpg
+          test "$(wc -c < assets/images/pinewood-room-amenities-original.jpg)" -eq 510650
+          test "$(wc -c < assets/images/pinewood-room-sleeping-original.jpg)" -eq 460920
+          test "$(wc -c < assets/images/pinewood-room-bathroom-original.jpg)" -eq 565421
+          file assets/images/pinewood-room-amenities-original.jpg | grep -q '1920x1920'
+          file assets/images/pinewood-room-sleeping-original.jpg | grep -q '1920x1920'
+          file assets/images/pinewood-room-bathroom-original.jpg | grep -q '1920x1920'
+          sha256sum assets/images/pinewood-room-amenities-original.jpg | grep -q '^c7e63c84b82f91b0446211dcb1669a7f3025557293a826e5b4a29e3d77cb127f '
+          sha256sum assets/images/pinewood-room-sleeping-original.jpg | grep -q '^d4b4b511eb8db4c5192dbe852fa1eba5792f5a50fedbc8431ca2d11ebd59bd07 '
+          sha256sum assets/images/pinewood-room-bathroom-original.jpg | grep -q '^fe6b775eccd8d2625f16d0cf5df11bd6e43b27126066b74f1f59ceea4a0828e6 '
+      - name: Commit assembled originals to temporary branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/images/pinewood-room-amenities-original.jpg assets/images/pinewood-room-sleeping-original.jpg assets/images/pinewood-room-bathroom-original.jpg
+          git commit -m 'Assemble exact room gallery originals v3'
+          git push origin HEAD:room-gallery-hq-v2
