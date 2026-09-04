@@ -12,14 +12,14 @@
   <meta property="og:title" content="{{ page.title | escape }}">
   <meta property="og:description" content="{{ page.description | escape }}">
   <meta property="og:url" content="{{ page.canonical }}">
-  <meta property="og:image" content="https://pinewoodhotel.vn/assets/images/pinewood-experience.webp">
+  <meta property="og:image" content="https://pinewoodhotel.vn/assets/images/pinewood-room-home.webp">
   <meta property="og:image:alt" content="Pinewood Hotel Dalat">
   <meta property="og:locale" content="{% if page.lang == 'en' %}en_US{% else %}vi_VN{% endif %}">
   <meta property="og:locale:alternate" content="{% if page.lang == 'en' %}vi_VN{% else %}en_US{% endif %}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{{ page.title | escape }}">
   <meta name="twitter:description" content="{{ page.description | escape }}">
-  <meta name="twitter:image" content="https://pinewoodhotel.vn/assets/images/pinewood-experience.webp">
+  <meta name="twitter:image" content="https://pinewoodhotel.vn/assets/images/pinewood-room-home.webp">
   <link rel="canonical" href="{{ page.canonical }}">
   <link rel="alternate" hreflang="vi" href="{{ page.alternate_vi }}">
   <link rel="alternate" hreflang="en" href="{{ page.alternate_en }}">
@@ -41,7 +41,7 @@
         "name":"Pinewood Hotel Dalat",
         "url":"https://pinewoodhotel.vn/",
         "logo":{"@type":"ImageObject","url":"https://pinewoodhotel.vn/assets/logo/pinewood-logo.png"},
-        "image":"https://pinewoodhotel.vn/assets/images/pinewood-experience.webp",
+        "image":"https://pinewoodhotel.vn/assets/images/pinewood-room-home.webp",
         "telephone":"+84785098686",
         "email":"info@pinewoodhotel.vn",
         "slogan":"Ngủ ngon - Ấm áp - Đậm chất Đà Lạt",
@@ -60,7 +60,7 @@
         ]
       },
       {"@type":"WebSite","@id":"https://pinewoodhotel.vn/#website","url":"https://pinewoodhotel.vn/","name":"Pinewood Hotel Dalat","publisher":{"@id":"https://pinewoodhotel.vn/#hotel"},"inLanguage":["vi","en"]},
-      {"@type":"WebPage","@id":"{{ page.canonical }}#webpage","url":"{{ page.canonical }}","name":{{ page.title | jsonify }},"description":{{ page.description | jsonify }},"inLanguage":"{{ page.lang }}","isPartOf":{"@id":"https://pinewoodhotel.vn/#website"},"about":{"@id":"https://pinewoodhotel.vn/#hotel"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://pinewoodhotel.vn/assets/images/pinewood-experience.webp"}}{% if page.breadcrumb_name %},
+      {"@type":"WebPage","@id":"{{ page.canonical }}#webpage","url":"{{ page.canonical }}","name":{{ page.title | jsonify }},"description":{{ page.description | jsonify }},"inLanguage":"{{ page.lang }}","isPartOf":{"@id":"https://pinewoodhotel.vn/#website"},"about":{"@id":"https://pinewoodhotel.vn/#hotel"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://pinewoodhotel.vn/assets/images/pinewood-room-home.webp"}}{% if page.breadcrumb_name %},
       {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"{% if page.lang == 'en' %}Home{% else %}Trang chủ{% endif %}","item":"{% if page.lang == 'en' %}https://pinewoodhotel.vn/en/{% else %}https://pinewoodhotel.vn/{% endif %}"},{"@type":"ListItem","position":2,"name":{{ page.breadcrumb_name | jsonify }},"item":"{{ page.canonical }}"}]}{% endif %}
     ]
   }
@@ -153,7 +153,7 @@
     <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
     <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 4 6 4 9s-1 6-4 9M12 3c-3 3-4 6-4 9s1 6 4 9"/></symbol>
   </svg>
-  <script src="/js/qr.js" defer></script><script src="/js/config.js" defer></script><script src="/js/content.js" defer></script><script src="/js/main.js" defer></script><script src="/js/marketing.js" defer></script>
+  <script src="/js/qr.js?v=20260904h" defer></script><script src="/js/config.js" defer></script><script src="/js/content.js" defer></script><script src="/js/main.js?v=20260904h" defer></script><script src="/js/marketing.js?v=20260904h" defer></script>
   {% endunless %}
 </body>
 </html>

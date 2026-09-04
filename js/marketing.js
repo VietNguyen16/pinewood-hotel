@@ -3,8 +3,8 @@
   const instagram = 'https://www.instagram.com/pinewooddalat/';
   const tiktok = 'https://www.tiktok.com/@dalat.pinewood';
   const googleReviews = 'https://www.google.com/maps/place/Kh%C3%A1ch+s%E1%BA%A1n+Pinewood/@11.9611181,108.4486208,1207m/data=!3m1!1e3!4m11!3m10!1s0x3171130010cadc19:0xdcb299e4322ab577!5m2!4m1!1i2!8m2!3d11.9611181!4d108.4512011!9m1!1b1!16s%2Fg%2F11njdj19vf?entry=ttu&g_ep=EgoyMDI2MDgzMS4wIKXMDSoASAFQAw%3D%3D';
-  const roomPhoto = '/assets/images/seo/pinewood-room.svg';
-  const cafePhoto = '/assets/images/seo/pinewood-cafe.svg';
+  const roomPhoto = '/assets/images/pinewood-room-home.webp';
+  const cafePhoto = '/assets/images/pinewood-breakfast-original.webp';
 
   function photoGallery(lang) {
     const en = lang === 'en';
