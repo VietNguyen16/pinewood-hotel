@@ -1,0 +1,42 @@
+name: Assemble room gallery originals v2
+
+on:
+  push:
+    branches:
+      - room-gallery-hq-v2
+    paths:
+      - .asset-room-upload-v2/READY
+
+permissions:
+  contents: write
+
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: room-gallery-hq-v2
+      - name: Assemble exact uploaded JPEG files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/images
+          cat .asset-room-upload-v2/amenities/part-* | base64 -d > assets/images/pinewood-room-amenities-original.jpg
+          cat .asset-room-upload-v2/room/part-* | base64 -d > assets/images/pinewood-room-sleeping-original.jpg
+          cat .asset-room-upload-v2/bathroom/part-* | base64 -d > assets/images/pinewood-room-bathroom-original.jpg
+          test "$(wc -c < assets/images/pinewood-room-amenities-original.jpg)" -eq 510651
+          test "$(wc -c < assets/images/pinewood-room-sleeping-original.jpg)" -eq 460920
+          test "$(wc -c < assets/images/pinewood-room-bathroom-original.jpg)" -eq 565422
+          file assets/images/pinewood-room-amenities-original.jpg | grep -q '1920x1920'
+          file assets/images/pinewood-room-sleeping-original.jpg | grep -q '1920x1920'
+          file assets/images/pinewood-room-bathroom-original.jpg | grep -q '1920x1920'
+      - name: Commit assembled originals to temporary branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/images/pinewood-room-amenities-original.jpg assets/images/pinewood-room-sleeping-original.jpg assets/images/pinewood-room-bathroom-original.jpg
+          git commit -m 'Assemble exact room gallery originals'
+          git push origin HEAD:room-gallery-hq-v2
