@@ -1,7 +1,7 @@
 (() => {
   const BASE = 'https://pinewoodhotel.vn';
   const ROOM_IMAGE = `${BASE}/assets/images/pinewood-room-home.webp`;
-  const BREAKFAST_IMAGE = `${BASE}/assets/images/pinewood-breakfast-original.webp`;
+  const BREAKFAST_IMAGE = `${BASE}/assets/images/pinewood-breakfast-buffet-1600.webp`;
   const normalize = value => (value || '/').replace(/\/+$/, '') || '/';
   const routes = {
     '/': ['vi', true, 'Pinewood Hotel Dalat | Khách sạn tại Đà Lạt', 'Pinewood Hotel Dalat tại 54 Võ Trường Toản, Đà Lạt với 50 phòng và suite. Xem ảnh phòng thực tế, bữa sáng, dịch vụ, vị trí và liên hệ trực tiếp.', ROOM_IMAGE],
