@@ -35,26 +35,13 @@
   function homeMarkup(lang) {
     const en = lang === 'en';
     return `
-      <section class="seo-marketing-section" id="seo-home-marketing" aria-labelledby="seo-home-title">
+      <section class="seo-marketing-section" id="seo-home-marketing" aria-label="${en ? 'Pinewood Hotel photos and official social links' : 'Hình ảnh và mạng xã hội chính thức của Pinewood Hotel'}">
         <div class="shell">
-          <header class="seo-marketing-head">
-            <p class="eyebrow">PINEWOOD HOTEL DALAT</p>
-            <h2 id="seo-home-title">${en ? 'A warm Da Lat stay, kept simple' : 'Một kỳ nghỉ Đà Lạt ấm áp, gọn gàng'}</h2>
-            <p>${en
-              ? 'Explore the essentials in one place: rooms, location, direct contact and real guest impressions from Google Maps.'
-              : 'Trang chủ chỉ giữ những điểm cần thiết: phòng nghỉ, vị trí, liên hệ trực tiếp và đánh giá thực tế trên Google Maps.'}</p>
-            <div class="seo-social-strip" aria-label="${en ? 'Main hotel actions' : 'Thao tác chính'}">
-              <a href="${en ? '/en/rooms/' : '/phong/'}">${en ? 'View rooms' : 'Xem phòng'}</a>
-              <a href="${en ? '/en/contact/' : '/lien-he/'}">${en ? 'Contact hotel' : 'Liên hệ khách sạn'}</a>
-              <a href="${googleReviews}" target="_blank" rel="noopener noreferrer">${en ? 'Google Maps reviews' : 'Đánh giá Google Maps'}</a>
-            </div>
-          </header>
-
           ${photoGallery(lang)}
-
-          <div class="seo-social-strip" aria-label="${en ? 'Official Pinewood social profiles' : 'Mạng xã hội chính thức của Pinewood'}">
+          <div class="seo-social-strip" aria-label="${en ? 'Official Pinewood social profiles and guest reviews' : 'Mạng xã hội chính thức và đánh giá khách hàng của Pinewood'}">
             <a href="${instagram}" target="_blank" rel="me noopener noreferrer">Instagram · @pinewooddalat</a>
             <a href="${tiktok}" target="_blank" rel="me noopener noreferrer">TikTok · @dalat.pinewood</a>
+            <a href="${googleReviews}" target="_blank" rel="noopener noreferrer">${en ? 'Google Maps reviews' : 'Đánh giá Google Maps'}</a>
           </div>
         </div>
       </section>`;
