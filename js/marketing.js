@@ -4,7 +4,7 @@
   const tiktok = 'https://www.tiktok.com/@dalat.pinewood';
   const googleReviews = 'https://www.google.com/maps/place/Kh%C3%A1ch+s%E1%BA%A1n+Pinewood/@11.9611181,108.4486208,1207m/data=!3m1!1e3!4m11!3m10!1s0x3171130010cadc19:0xdcb299e4322ab577!5m2!4m1!1i2!8m2!3d11.9611181!4d108.4512011!9m1!1b1!16s%2Fg%2F11njdj19vf?entry=ttu&g_ep=EgoyMDI2MDgzMS4wIKXMDSoASAFQAw%3D%3D';
   const roomPhoto = '/assets/images/pinewood-room-home.webp';
-  const cafePhoto = '/assets/images/pinewood-breakfast-original.webp';
+  const cafePhoto = '/assets/images/pinewood-breakfast-buffet-1600.webp';
 
   function photoGallery(lang) {
     const en = lang === 'en';
@@ -23,7 +23,7 @@
             </a>
           </figure>
           <figure class="hotel-photo-card">
-            <a href="${en ? '/en/services/' : '/dich-vu/'}">
+            <a href="${en ? '/en/breakfast/' : '/bua-sang/'}">
               <img src="${cafePhoto}" width="600" height="314" loading="lazy" decoding="async" alt="${en ? 'Breakfast and cafe at Pinewood Hotel Dalat in Da Lat' : 'Bữa sáng và café tại Pinewood Hotel Dalat ở Đà Lạt'}">
               <figcaption><strong>${en ? 'Breakfast & café' : 'Bữa sáng & café'}</strong>${en ? 'A relaxed morning experience during your Pinewood stay.' : 'Một trải nghiệm buổi sáng thư giãn trong kỳ lưu trú tại Pinewood.'}</figcaption>
             </a>

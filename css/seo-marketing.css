@@ -101,3 +101,7 @@
   .hotel-photo-card img, .hotel-photo-card-wide img, .marketing-photo-feature .hotel-photo-card img, .service-photo-band .hotel-photo-card img { min-height:300px; max-height:520px; }
   .hotel-photo-card figcaption { padding:12px 14px 14px; }
 }
+
+
+/* Room detail gallery */
+.room-gallery-section{padding-top:18px}.room-gallery-head{max-width:780px;margin:0 auto 24px;text-align:center}.room-gallery-head h2{margin:0;color:var(--pine-green);font-size:clamp(26px,3.4vw,38px);font-weight:500;line-height:1.2}.room-gallery-head p:not(.eyebrow){margin:12px auto 0;color:var(--muted);line-height:1.7}.room-gallery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,320px));justify-content:center;gap:18px}.room-gallery-card{margin:0;overflow:hidden;border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:var(--shadow-soft)}.room-gallery-card img{display:block;width:320px;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover}.room-gallery-card figcaption{padding:14px 16px 17px;color:var(--muted);font-size:12px;line-height:1.55}.room-gallery-card figcaption strong,.room-gallery-card figcaption span{display:block}.room-gallery-card figcaption strong{margin-bottom:4px;color:var(--pine-green);font-size:14px}@media(max-width:760px){.room-gallery-grid{grid-template-columns:minmax(0,320px)}.room-gallery-section{padding-top:8px}}
