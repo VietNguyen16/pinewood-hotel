@@ -1,0 +1,47 @@
+[
+  {
+    "slug": "pinewood-room",
+    "name_en": "Pinewood Room",
+    "name_vi": "Phòng Pinewood",
+    "description_en": "Real room photos from Pinewood Hotel Dalat.",
+    "description_vi": "Hình ảnh thực tế phòng nghỉ tại Pinewood Hotel Dalat.",
+    "images": [
+      {
+        "display": "/assets/uploads/rooms/pinewood-room/01-bedroom.jpg",
+        "full": "/assets/uploads/rooms/pinewood-room/01-bedroom.jpg",
+        "width": 1920,
+        "height": 1920,
+        "title_en": "Bright sleeping space",
+        "title_vi": "Không gian nghỉ ngơi",
+        "caption_en": "Twin beds, warm finishes and natural light.",
+        "caption_vi": "Hai giường, nội thất ấm áp và nhiều ánh sáng.",
+        "alt_en": "Bright twin guest room at Pinewood Hotel Dalat",
+        "alt_vi": "Phòng hai giường sáng thoáng tại Pinewood Hotel Dalat"
+      },
+      {
+        "display": "/assets/uploads/rooms/pinewood-room/02-amenities.jpg",
+        "full": "/assets/uploads/rooms/pinewood-room/02-amenities.jpg",
+        "width": 1920,
+        "height": 1920,
+        "title_en": "Prepared amenities",
+        "title_vi": "Tiện nghi được chuẩn bị",
+        "caption_en": "Useful room details arranged for an easy stay.",
+        "caption_vi": "Những chi tiết thiết thực cho kỳ lưu trú thuận tiện.",
+        "alt_en": "In-room amenities at Pinewood Hotel Dalat",
+        "alt_vi": "Tiện nghi trong phòng tại Pinewood Hotel Dalat"
+      },
+      {
+        "display": "/assets/uploads/rooms/pinewood-room/03-bathroom.jpg",
+        "full": "/assets/uploads/rooms/pinewood-room/03-bathroom.jpg",
+        "width": 1920,
+        "height": 1920,
+        "title_en": "Private bathroom",
+        "title_vi": "Phòng tắm riêng",
+        "caption_en": "A clean, comfortable bathroom with essential amenities.",
+        "caption_vi": "Không gian sạch sẽ, thoải mái và đầy đủ tiện nghi cơ bản.",
+        "alt_en": "Guest bathroom at Pinewood Hotel Dalat",
+        "alt_vi": "Phòng tắm tại Pinewood Hotel Dalat"
+      }
+    ]
+  }
+]
