@@ -7,10 +7,10 @@
     "description_vi": "Hình ảnh thực tế phòng nghỉ tại Pinewood Hotel Dalat.",
     "images": [
       {
-        "display": "/assets/uploads/rooms/pinewood-room/01-bedroom.jpg",
-        "full": "/assets/uploads/rooms/pinewood-room/01-bedroom.jpg",
-        "width": 1920,
-        "height": 1920,
+        "display": "/assets/uploads/rooms/pinewood-room/01-bedroom.webp",
+        "full": "/assets/uploads/rooms/pinewood-room/01-bedroom.webp",
+        "width": 1280,
+        "height": 1280,
         "title_en": "Bright sleeping space",
         "title_vi": "Không gian nghỉ ngơi",
         "caption_en": "Twin beds, warm finishes and natural light.",
@@ -19,10 +19,10 @@
         "alt_vi": "Phòng hai giường sáng thoáng tại Pinewood Hotel Dalat"
       },
       {
-        "display": "/assets/uploads/rooms/pinewood-room/02-amenities.jpg",
-        "full": "/assets/uploads/rooms/pinewood-room/02-amenities.jpg",
-        "width": 1920,
-        "height": 1920,
+        "display": "/assets/uploads/rooms/pinewood-room/02-amenities.webp",
+        "full": "/assets/uploads/rooms/pinewood-room/02-amenities.webp",
+        "width": 1280,
+        "height": 1280,
         "title_en": "Prepared amenities",
         "title_vi": "Tiện nghi được chuẩn bị",
         "caption_en": "Useful room details arranged for an easy stay.",
@@ -31,10 +31,10 @@
         "alt_vi": "Tiện nghi trong phòng tại Pinewood Hotel Dalat"
       },
       {
-        "display": "/assets/uploads/rooms/pinewood-room/03-bathroom.jpg",
-        "full": "/assets/uploads/rooms/pinewood-room/03-bathroom.jpg",
-        "width": 1920,
-        "height": 1920,
+        "display": "/assets/uploads/rooms/pinewood-room/03-bathroom.webp",
+        "full": "/assets/uploads/rooms/pinewood-room/03-bathroom.webp",
+        "width": 1280,
+        "height": 1280,
         "title_en": "Private bathroom",
         "title_vi": "Phòng tắm riêng",
         "caption_en": "A clean, comfortable bathroom with essential amenities.",
