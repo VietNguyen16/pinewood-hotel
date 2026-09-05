@@ -1,0 +1,135 @@
+name: Final live SEO QA
+
+on:
+  push:
+    branches:
+      - full-seo-validation-20260905
+    paths:
+      - .github/workflows/final-live-qa.yml
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Canonical hreflang noindex and schema
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, urllib.request
+          from html.parser import HTMLParser
+          BASE='https://pinewoodhotel.vn'
+          pairs=[('/','/en/'),('/phong/','/en/rooms/'),('/gallery/','/en/gallery/'),('/vi-tri/','/en/location/'),('/dich-vu/','/en/services/'),('/lien-he/','/en/contact/'),('/moi-truong/','/en/environment/'),('/wifi/','/en/wifi/'),('/bua-sang/','/en/breakfast/'),('/thu-chao-mung/','/en/welcome/'),('/noi-quy/','/en/hotel-rules/'),('/an-toan/','/en/safety/'),('/thong-tin/','/en/hotel-information/')]
+          noindex={p for pair in pairs[7:] for p in pair}
+          class P(HTMLParser):
+            def __init__(self): super().__init__(); self.links=[]; self.metas=[]; self.ld=[]; self.capture=False; self.buf=[]
+            def handle_starttag(self,t,a):
+              d=dict(a)
+              if t=='link': self.links.append(d)
+              if t=='meta': self.metas.append(d)
+              if t=='script' and d.get('type')=='application/ld+json': self.capture=True; self.buf=[]
+            def handle_data(self,d):
+              if self.capture: self.buf.append(d)
+            def handle_endtag(self,t):
+              if t=='script' and self.capture: self.ld.append(''.join(self.buf)); self.capture=False
+          def fetch(route):
+            req=urllib.request.Request(BASE+route+'?qa=9e77c5df6891f8ca20b8e74a4220a7e8d0f15e67',headers={'User-Agent':'PinewoodFinalQA/1.0','Cache-Control':'no-cache'})
+            with urllib.request.urlopen(req,timeout=30) as r:
+              assert r.status==200; return r.read().decode('utf-8','replace')
+          for vi,en in pairs:
+            for route in (vi,en):
+              p=P(); p.feed(fetch(route))
+              canon=[x.get('href') for x in p.links if x.get('rel')=='canonical']
+              alts={x.get('hreflang'):x.get('href') for x in p.links if x.get('rel')=='alternate' and x.get('hreflang')}
+              robots=[x.get('content','') for x in p.metas if x.get('name')=='robots']
+              assert canon==[BASE+route], (route,canon)
+              assert alts.get('vi')==BASE+vi and alts.get('en')==BASE+en and alts.get('x-default'), (route,alts)
+              if route in noindex: assert robots and 'noindex' in robots[0] and 'follow' in robots[0], (route,robots)
+              else: assert not robots or 'noindex' not in robots[0], (route,robots)
+          home=P(); home.feed(fetch('/'))
+          docs=[json.loads(x) for x in home.ld]
+          entities=[]
+          for d in docs:
+            if isinstance(d,dict) and isinstance(d.get('@graph'),list): entities += d['@graph']
+            elif isinstance(d,dict): entities.append(d)
+          hotels=[e for e in entities if e.get('@type')=='Hotel']
+          assert len(hotels)==1
+          h=hotels[0]
+          for k in ['@id','name','url','logo','image','telephone','email','slogan','address','contactPoint']: assert h.get(k), k
+          context=json.loads(urllib.request.urlopen('https://schema.org/docs/jsonldcontext.json',timeout=30).read()).get('@context',{})
+          unknown=[]
+          def walk(v):
+            if isinstance(v,dict):
+              t=v.get('@type')
+              if isinstance(t,str) and t not in context: unknown.append(('type',t))
+              for k,x in v.items():
+                if not k.startswith('@') and k not in context: unknown.append(('property',k))
+                walk(x)
+            elif isinstance(v,list):
+              for x in v: walk(x)
+          for d in docs: walk(d)
+          assert not unknown, unknown
+          print('PASS 26/26 live routes canonical/hreflang/robots; Hotel JSON-LD syntax and Schema.org vocabulary valid')
+          PY
+
+      - name: Final live responsive-image audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/imgqa && cd /tmp/imgqa
+          npm init -y >/dev/null 2>&1
+          npm install --silent puppeteer-core >/dev/null 2>&1
+          CHROME=$(command -v google-chrome-stable || command -v google-chrome || command -v chromium)
+          cat > audit.mjs <<'JS'
+          import puppeteer from 'puppeteer-core';
+          const browser=await puppeteer.launch({executablePath:process.env.CHROME,headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
+          const routes=['/','/en/','/phong/','/en/rooms/','/gallery/','/en/gallery/','/dich-vu/','/en/services/','/bua-sang/','/en/breakfast/'];
+          const issues=[];
+          for (const route of routes){
+            const page=await browser.newPage();
+            await page.setCacheEnabled(false);
+            await page.setViewport({width:390,height:844,deviceScaleFactor:1});
+            await page.goto('https://pinewoodhotel.vn'+route+'?qa=9e77c5df',{waitUntil:'networkidle2',timeout:45000});
+            const initial=await page.evaluate(()=>[...document.images].map(img=>({src:img.getAttribute('src')||'',srcset:img.getAttribute('srcset')||'',sizes:img.getAttribute('sizes')||'',width:img.getAttribute('width')||'',height:img.getAttribute('height')||'',loading:img.getAttribute('loading')||'',top:img.getBoundingClientRect().top})));
+            for(const x of initial){
+              if(!x.src.includes('/assets/images/') || x.src.endsWith('.svg')) continue;
+              if(!x.width||!x.height) issues.push([route,'missing width/height',x]);
+              if(!x.srcset||!x.sizes) issues.push([route,'missing srcset/sizes',x]);
+              if(x.top>=844 && x.loading!=='lazy') issues.push([route,'below-fold not lazy',x]);
+            }
+            await page.evaluate(async()=>{for(let y=0;y<document.body.scrollHeight;y+=700){scrollTo(0,y);await new Promise(r=>setTimeout(r,80));}scrollTo(0,document.body.scrollHeight);});
+            await new Promise(r=>setTimeout(r,500));
+            const loaded=await page.evaluate(()=>[...document.images].filter(img=>img.getAttribute('src')?.includes('/assets/images/')&&!img.getAttribute('src')?.endsWith('.svg')).map(img=>({src:img.getAttribute('src'),complete:img.complete,naturalWidth:img.naturalWidth,naturalHeight:img.naturalHeight,currentSrc:img.currentSrc})));
+            for(const x of loaded){if(!x.complete||!x.naturalWidth||!x.naturalHeight) issues.push([route,'image failed after scroll',x]);}
+            console.log('ROUTE',route,'photos',loaded.length);
+            await page.close();
+          }
+          await browser.close();
+          console.log('IMAGE_ISSUES_COUNT',issues.length);
+          if(issues.length){console.log(JSON.stringify(issues,null,2));process.exit(3)}
+          console.log('PASS responsive image attributes, lazy policy, and decode/load after scroll');
+          JS
+          CHROME="$CHROME" node audit.mjs
+
+      - name: Lighthouse mobile final
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lhqa && cd /tmp/lhqa
+          npm init -y >/dev/null 2>&1
+          npm install --silent lighthouse >/dev/null 2>&1
+          CHROME=$(command -v google-chrome-stable || command -v google-chrome || command -v chromium)
+          urls=('https://pinewoodhotel.vn/' 'https://pinewoodhotel.vn/phong/' 'https://pinewoodhotel.vn/en/' 'https://pinewoodhotel.vn/en/rooms/')
+          i=0
+          for url in "${urls[@]}"; do i=$((i+1)); npx lighthouse "$url?qa=9e77c5df" --quiet --chrome-path="$CHROME" --chrome-flags='--headless --no-sandbox --disable-dev-shm-usage' --only-categories=performance,accessibility,best-practices,seo --output=json --output-path="/tmp/lh-$i.json"; done
+          python3 - <<'PY'
+          import json
+          for i,name in enumerate(['home-vi','rooms-vi','home-en','rooms-en'],1):
+            d=json.load(open(f'/tmp/lh-{i}.json')); c=d['categories']; a=d['audits']
+            scores={k:round(c[k]['score']*100) for k in ['performance','accessibility','best-practices','seo']}
+            metrics={k:a[k].get('displayValue') for k in ['largest-contentful-paint','cumulative-layout-shift','total-blocking-time']}
+            print('FINAL_LIGHTHOUSE',name,scores,metrics)
+          PY
