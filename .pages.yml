@@ -1,0 +1,226 @@
+media:
+  - name: double_room_garden_view
+    label: Double Room with Garden View
+    input: assets/images/rooms/double-room-garden-view
+    output: /assets/images/rooms/double-room-garden-view
+    rename: safe
+    categories: [image]
+  - name: deluxe_double_or_twin_room
+    label: Deluxe Double or Twin Room
+    input: assets/images/rooms/deluxe-double-or-twin-room
+    output: /assets/images/rooms/deluxe-double-or-twin-room
+    rename: safe
+    categories: [image]
+  - name: junior_suite_garden_view
+    label: Junior Suite with Garden View
+    input: assets/images/rooms/junior-suite-garden-view
+    output: /assets/images/rooms/junior-suite-garden-view
+    rename: safe
+    categories: [image]
+  - name: king_suite_balcony
+    label: King Suite with Balcony
+    input: assets/images/rooms/king-suite-balcony
+    output: /assets/images/rooms/king-suite-balcony
+    rename: safe
+    categories: [image]
+  - name: triple_room_balcony
+    label: Triple Room with Balcony
+    input: assets/images/rooms/triple-room-balcony
+    output: /assets/images/rooms/triple-room-balcony
+    rename: safe
+    categories: [image]
+  - name: family_suite_balcony
+    label: Family Suite with Balcony
+    input: assets/images/rooms/family-suite-balcony
+    output: /assets/images/rooms/family-suite-balcony
+    rename: safe
+    categories: [image]
+  - name: twin_room_garden_view
+    label: Twin Room with Garden View
+    input: assets/images/rooms/twin-room-garden-view
+    output: /assets/images/rooms/twin-room-garden-view
+    rename: safe
+    categories: [image]
+  - name: twin_room_city_view
+    label: Twin Room with City View
+    input: assets/images/rooms/twin-room-city-view
+    output: /assets/images/rooms/twin-room-city-view
+    rename: safe
+    categories: [image]
+
+content:
+  - name: room_manager
+    label: Hạng phòng
+    type: group
+    items:
+      - name: double_room_garden_view
+        label: Double Room with Garden View
+        type: file
+        path: _data/room_types/double-room-garden-view.yml
+        format: yaml
+        fields: &room_fields_double
+          - name: enabled
+            label: Hiển thị trên website
+            type: boolean
+          - name: name_vi
+            label: Tên tiếng Việt
+            type: string
+            required: true
+          - name: name_en
+            label: English name
+            type: string
+            required: true
+          - name: guests
+            label: Số khách
+            type: number
+            required: true
+          - name: bed_vi
+            label: Giường - tiếng Việt
+            type: string
+            required: true
+          - name: bed_en
+            label: Beds - English
+            type: string
+            required: true
+          - name: description_vi
+            label: Mô tả tiếng Việt (không bắt buộc)
+            type: text
+          - name: description_en
+            label: English description (optional)
+            type: text
+          - name: images
+            label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
+            type: image
+            options:
+              media: double_room_garden_view
+              multiple:
+                max: 12
+              unique: true
+              extensions: [jpg, jpeg, png, webp, avif]
+              rename: safe
+      - name: deluxe_double_or_twin_room
+        label: Deluxe Double or Twin Room
+        type: file
+        path: _data/room_types/deluxe-double-or-twin-room.yml
+        format: yaml
+        fields:
+          - { name: enabled, label: Hiển thị trên website, type: boolean }
+          - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
+          - { name: name_en, label: English name, type: string, required: true }
+          - { name: guests, label: Số khách, type: number, required: true }
+          - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
+          - { name: bed_en, label: Beds - English, type: string, required: true }
+          - { name: description_vi, label: Mô tả tiếng Việt (không bắt buộc), type: text }
+          - { name: description_en, label: English description (optional), type: text }
+          - name: images
+            label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
+            type: image
+            options: { media: deluxe_double_or_twin_room, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }
+      - name: junior_suite_garden_view
+        label: Junior Suite with Garden View
+        type: file
+        path: _data/room_types/junior-suite-garden-view.yml
+        format: yaml
+        fields:
+          - { name: enabled, label: Hiển thị trên website, type: boolean }
+          - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
+          - { name: name_en, label: English name, type: string, required: true }
+          - { name: guests, label: Số khách, type: number, required: true }
+          - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
+          - { name: bed_en, label: Beds - English, type: string, required: true }
+          - { name: description_vi, label: Mô tả tiếng Việt (không bắt buộc), type: text }
+          - { name: description_en, label: English description (optional), type: text }
+          - name: images
+            label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
+            type: image
+            options: { media: junior_suite_garden_view, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }
+      - name: king_suite_balcony
+        label: King Suite with Balcony
+        type: file
+        path: _data/room_types/king-suite-balcony.yml
+        format: yaml
+        fields:
+          - { name: enabled, label: Hiển thị trên website, type: boolean }
+          - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
+          - { name: name_en, label: English name, type: string, required: true }
+          - { name: guests, label: Số khách, type: number, required: true }
+          - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
+          - { name: bed_en, label: Beds - English, type: string, required: true }
+          - { name: description_vi, label: Mô tả tiếng Việt (không bắt buộc), type: text }
+          - { name: description_en, label: English description (optional), type: text }
+          - name: images
+            label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
+            type: image
+            options: { media: king_suite_balcony, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }
+      - name: triple_room_balcony
+        label: Triple Room with Balcony
+        type: file
+        path: _data/room_types/triple-room-balcony.yml
+        format: yaml
+        fields:
+          - { name: enabled, label: Hiển thị trên website, type: boolean }
+          - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
+          - { name: name_en, label: English name, type: string, required: true }
+          - { name: guests, label: Số khách, type: number, required: true }
+          - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
+          - { name: bed_en, label: Beds - English, type: string, required: true }
+          - { name: description_vi, label: Mô tả tiếng Việt (không bắt buộc), type: text }
+          - { name: description_en, label: English description (optional), type: text }
+          - name: images
+            label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
+            type: image
+            options: { media: triple_room_balcony, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }
+      - name: family_suite_balcony
+        label: Family Suite with Balcony
+        type: file
+        path: _data/room_types/family-suite-balcony.yml
+        format: yaml
+        fields:
+          - { name: enabled, label: Hiển thị trên website, type: boolean }
+          - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
+          - { name: name_en, label: English name, type: string, required: true }
+          - { name: guests, label: Số khách, type: number, required: true }
+          - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
+          - { name: bed_en, label: Beds - English, type: string, required: true }
+          - { name: description_vi, label: Mô tả tiếng Việt (không bắt buộc), type: text }
+          - { name: description_en, label: English description (optional), type: text }
+          - name: images
+            label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
+            type: image
+            options: { media: family_suite_balcony, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }
+      - name: twin_room_garden_view
+        label: Twin Room with Garden View
+        type: file
+        path: _data/room_types/twin-room-garden-view.yml
+        format: yaml
+        fields:
+          - { name: enabled, label: Hiển thị trên website, type: boolean }
+          - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
+          - { name: name_en, label: English name, type: string, required: true }
+          - { name: guests, label: Số khách, type: number, required: true }
+          - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
+          - { name: bed_en, label: Beds - English, type: string, required: true }
+          - { name: description_vi, label: Mô tả tiếng Việt (không bắt buộc), type: text }
+          - { name: description_en, label: English description (optional), type: text }
+          - name: images
+            label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
+            type: image
+            options: { media: twin_room_garden_view, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }
+      - name: twin_room_city_view
+        label: Twin Room with City View
+        type: file
+        path: _data/room_types/twin-room-city-view.yml
+        format: yaml
+        fields:
+          - { name: enabled, label: Hiển thị trên website, type: boolean }
+          - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
+          - { name: name_en, label: English name, type: string, required: true }
+          - { name: guests, label: Số khách, type: number, required: true }
+          - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
+          - { name: bed_en, label: Beds - English, type: string, required: true }
+          - { name: description_vi, label: Mô tả tiếng Việt (không bắt buộc), type: text }
+          - { name: description_en, label: English description (optional), type: text }
+          - name: images
+            label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
+            type: image
+            options: { media: twin_room_city_view, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }
