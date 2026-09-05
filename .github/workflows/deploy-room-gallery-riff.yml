@@ -1,0 +1,89 @@
+name: Deploy room gallery RIFF
+
+on:
+  push:
+    branches: [room-gallery-hq-v2]
+    paths: [.asset-room-upload-q84/DEPLOY-RIFF]
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: room-gallery-hq-v2
+          fetch-depth: 0
+
+      - name: Rebuild exact HQ room photos
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --quiet pillow
+          python3 - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import base64, hashlib, io, re
+
+          def group(pattern):
+              return ''.join(re.sub(r'\s+', '', p.read_text()) for p in sorted(Path('.').glob(pattern)))
+
+          amen = group('.asset-room-upload-q84/amenities/part-*')
+          bed = group('.asset-room-upload-q84/bedroom/part-*')
+          bath = group('.asset-room-upload-q84/bathroom/part-*')
+          out = Path('/tmp/room-hq')
+          out.mkdir(parents=True, exist_ok=True)
+
+          def extract(text, name, expected_size):
+              raw = base64.b64decode(text + '=' * ((-len(text)) % 4), validate=False)
+              if raw[:4] != b'RIFF':
+                  raise SystemExit(f'{name}: missing RIFF header')
+              riff_size = 8 + int.from_bytes(raw[4:8], 'little')
+              data = raw[:riff_size]
+              if len(data) != expected_size:
+                  raise SystemExit(f'{name}: expected {expected_size}, got {len(data)}')
+              image = Image.open(io.BytesIO(data))
+              image.load()
+              if image.size != (1920, 1920):
+                  raise SystemExit(f'{name}: unexpected dimensions {image.size}')
+              dest = out / f'{name}.webp'
+              dest.write_bytes(data)
+              print(name, len(data), image.size, hashlib.sha256(data).hexdigest())
+
+          extract(bed, 'bedroom', 146756)
+          extract(amen + bed, 'amenities', 160792)
+          extract(bath + amen, 'bathroom', 195946)
+          PY
+
+      - name: Patch production main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git worktree add /tmp/main origin/main
+          cp /tmp/room-hq/bedroom.webp /tmp/main/assets/images/pinewood-room-bedroom-hq.webp
+          cp /tmp/room-hq/amenities.webp /tmp/main/assets/images/pinewood-room-amenities-hq.webp
+          cp /tmp/room-hq/bathroom.webp /tmp/main/assets/images/pinewood-room-bathroom-hq.webp
+          cp css/room-gallery-hq.css /tmp/main/css/room-gallery-hq.css
+          cp js/room-gallery.js /tmp/main/js/room-gallery.js
+          python3 scripts/deploy-room-gallery-riff.py
+
+          cd /tmp/main
+          test "$(wc -c < assets/images/pinewood-room-bedroom-hq.webp)" -eq 146756
+          test "$(wc -c < assets/images/pinewood-room-amenities-hq.webp)" -eq 160792
+          test "$(wc -c < assets/images/pinewood-room-bathroom-hq.webp)" -eq 195946
+          grep -q 'data-room-lightbox' en/rooms/index.html
+          grep -q 'data-room-lightbox' phong/index.html
+          grep -q 'pinewood-room-bedroom-hq.webp' en/rooms/index.html
+          grep -q 'pinewood-room-bathroom-hq.webp' phong/index.html
+          node --check js/room-gallery.js
+
+          git switch -C main origin/main
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add en/rooms/index.html phong/index.html css/room-gallery-hq.css js/room-gallery.js assets/images/pinewood-room-*-hq.webp
+          git commit -m 'Deploy high-resolution room gallery and lightbox'
+          git push origin main
+          git rev-parse HEAD
