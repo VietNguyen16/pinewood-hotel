@@ -1,0 +1,69 @@
+name: Remove Gallery temporary task
+
+on:
+  push:
+    branches:
+      - remove-gallery-20260905
+    paths:
+      - .github/workflows/remove-gallery-temp.yml
+
+permissions:
+  contents: write
+
+jobs:
+  remove-gallery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Remove Gallery routes, navigation and sitemap entries
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          layout = Path('_layouts/app.html')
+          text = layout.read_text(encoding='utf-8')
+          lines = text.splitlines()
+          kept = [line for line in lines if '/en/gallery/' not in line and '/gallery/' not in line]
+          if len(kept) == len(lines):
+              raise SystemExit('Gallery navigation link was not found in _layouts/app.html')
+          layout.write_text('\n'.join(kept) + '\n', encoding='utf-8')
+
+          sitemap = Path('sitemap.xml')
+          sitemap_lines = sitemap.read_text(encoding='utf-8').splitlines()
+          filtered = [
+              line for line in sitemap_lines
+              if '<loc>https://pinewoodhotel.vn/gallery/</loc>' not in line
+              and '<loc>https://pinewoodhotel.vn/en/gallery/</loc>' not in line
+          ]
+          if len(filtered) != len(sitemap_lines) - 2:
+              raise SystemExit('Expected exactly two Gallery sitemap URL entries')
+          sitemap.write_text('\n'.join(filtered) + '\n', encoding='utf-8')
+          PY
+
+          rm -f gallery/index.html en/gallery/index.html
+
+      - name: Validate removal
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e gallery/index.html
+          test ! -e en/gallery/index.html
+          ! grep -F '/gallery/' _layouts/app.html
+          ! grep -F '/gallery/' sitemap.xml
+          git diff --check
+          git status --short
+
+      - name: Commit Gallery removal
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Remove Gallery pages and navigation"
+          git push origin HEAD:remove-gallery-20260905
