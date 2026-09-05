@@ -1,0 +1,40 @@
+name: Diagnose room image chunks v2
+on:
+  push:
+    branches: [room-gallery-hq-v2]
+    paths: [.asset-room-upload-q84/DIAGNOSE2]
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: room-gallery-hq-v2
+      - run: |
+          python3 -m pip install --quiet pillow
+          python3 - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import base64,io,re,itertools
+          pats={
+           'q84amen':'.asset-room-upload-q84/amenities/part-*',
+           'q84bed':'.asset-room-upload-q84/bedroom/part-*',
+           'q84bath':'.asset-room-upload-q84/bathroom/part-*',
+           'bathclean':'.asset-room-upload-q84/bathroom-clean/part-*',
+           'v2root':'.asset-room-upload-v2/part-*',
+           'v2amen':'.asset-room-upload-v2/amenities/part-*',
+           'oldbed':'.asset-room-upload/bedroom/part-*'}
+          groups={k:''.join(re.sub(r'\s+','',p.read_text()) for p in sorted(Path('.').glob(v))) for k,v in pats.items()}
+          print('GROUPS',[(k,len(v)) for k,v in groups.items()])
+          def test(s,label):
+           try:r=base64.b64decode(s+'='*((-len(s))%4),validate=False); im=Image.open(io.BytesIO(r)); im.load(); print('VALID',label,len(r),im.format,im.size)
+           except:pass
+          for k,s in groups.items():test(s,k)
+          for a,b in itertools.permutations(groups,2):test(groups[a]+groups[b],a+'+'+b)
+          for k,pat in pats.items():
+           vals=[re.sub(r'\s+','',p.read_text()) for p in sorted(Path('.').glob(pat))]
+           for i in range(len(vals)):
+            s=''
+            for j in range(i,len(vals)):
+             s+=vals[j]; test(s,f'{k}[{i}:{j+1}]')
+          PY
