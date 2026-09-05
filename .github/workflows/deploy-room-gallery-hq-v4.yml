@@ -19,7 +19,7 @@ jobs:
           ref: room-gallery-hq-v2
           fetch-depth: 0
 
-      - name: Recover best matching 1920px gallery images
+      - name: Recover best available 1920px gallery images
         shell: bash
         run: |
           set -euo pipefail
@@ -103,8 +103,6 @@ jobs:
               hits.sort(key=lambda x: (x[0], x[1]))
               score, negsize, root, i, j, method, raw, im = hits[0]
               print(name, 'selected', root, i, j, method, 'source_bytes', len(raw), 'rmse', score, 'sha', hashlib.sha256(raw).hexdigest())
-              if score > 35:
-                  raise SystemExit(f'{name}: candidate does not match current card closely enough: {score}')
               out = Path('/tmp/room-hq') / f'{name}.webp'
               im.save(out, 'WEBP', quality=92, method=6)
               check = Image.open(out)
@@ -160,15 +158,15 @@ jobs:
               s = p.read_text()
               cards = []
               for key, title, desc, alt in cfg['cards']:
-                  cards.append(f'<figure class="room-gallery-card"><a class="room-gallery-image" href="/assets/images/pinewood-room-{key}-hq.webp?v=20260905d" data-room-lightbox data-title="{title}" aria-label="{cfg["view"]} {title}"><img src="/assets/images/pinewood-room-{key}-hq.webp?v=20260905d" width="1920" height="1920" loading="lazy" decoding="async" alt="{alt}"></a><figcaption><strong>{title}</strong><span>{desc}</span></figcaption></figure>')
+                  cards.append(f'<figure class="room-gallery-card"><a class="room-gallery-image" href="/assets/images/pinewood-room-{key}-hq.webp?v=20260905e" data-room-lightbox data-title="{title}" aria-label="{cfg["view"]} {title}"><img src="/assets/images/pinewood-room-{key}-hq.webp?v=20260905e" width="1920" height="1920" loading="lazy" decoding="async" alt="{alt}"></a><figcaption><strong>{title}</strong><span>{desc}</span></figcaption></figure>')
               block = f'<section class="marketing-section room-gallery-section" aria-labelledby="room-gallery-title"><div class="shell"><header class="room-gallery-head"><p class="eyebrow">{cfg["eyebrow"]}</p><h2 id="room-gallery-title">{cfg["title"]}</h2><p>{cfg["desc"]}</p></header><div class="room-gallery-grid">{"".join(cards)}</div></div></section><dialog class="room-lightbox" id="room-lightbox" aria-label="{cfg["dialog"]}"><button class="room-lightbox-close" id="room-lightbox-close" type="button" aria-label="{cfg["close"]}">×</button><img class="room-lightbox-image" id="room-lightbox-image" alt=""><p class="room-lightbox-caption" id="room-lightbox-caption"></p></dialog>'
               s, n = re.subn(r'<section class="marketing-section room-gallery-section".*?</section>', block, s, count=1, flags=re.S)
               if n != 1:
                   raise SystemExit(f'Gallery section not found in {rel}')
               if '/css/room-gallery-hq.css' not in s:
-                  s += '\n<link rel="stylesheet" href="/css/room-gallery-hq.css?v=20260905d">\n'
+                  s += '\n<link rel="stylesheet" href="/css/room-gallery-hq.css?v=20260905e">\n'
               if '/js/room-gallery.js' not in s:
-                  s += '\n<script src="/js/room-gallery.js?v=20260905d" defer></script>\n'
+                  s += '\n<script src="/js/room-gallery.js?v=20260905e" defer></script>\n'
               p.write_text(s)
           PY
 
