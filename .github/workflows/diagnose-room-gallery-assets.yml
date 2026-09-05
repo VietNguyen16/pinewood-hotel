@@ -1,0 +1,81 @@
+name: Diagnose room gallery assets
+
+on:
+  push:
+    branches:
+      - room-gallery-hq-v2
+    paths:
+      - .asset-room-upload-q84/DIAGNOSE
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: room-gallery-hq-v2
+          fetch-depth: 0
+      - name: Inspect staged image candidates
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --quiet pillow
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64, hashlib, io, re
+          from PIL import Image
+
+          groups = [
+            '.asset-room-upload-q84/amenities',
+            '.asset-room-upload-q84/bedroom',
+            '.asset-room-upload-q84/bathroom',
+            '.asset-room-upload-q84/bathroom-clean',
+            '.asset-room-upload-v2/amenities',
+            '.asset-room-upload-v2',
+            '.asset-room-upload/bedroom',
+          ]
+
+          def clean(p):
+              return re.sub(r'\s+', '', p.read_text())
+
+          def methods(files):
+              text=''.join(clean(p) for p in files)
+              try:
+                  yield 'whole', base64.b64decode(text + '='*((-len(text))%4), validate=False)
+              except Exception:
+                  pass
+              try:
+                  out=bytearray()
+                  for p in files:
+                      t=clean(p)
+                      out.extend(base64.b64decode(t + '='*((-len(t))%4), validate=False))
+                  yield 'parts', bytes(out)
+              except Exception:
+                  pass
+
+          for g in groups:
+              root=Path(g)
+              files=sorted(root.glob('part-*')) if root.is_dir() else []
+              if not files:
+                  continue
+              print('\nGROUP', g, 'FILES', len(files), [p.name for p in files])
+              n=len(files)
+              hits=[]
+              ranges=[(0,n)]
+              if n <= 45:
+                  ranges += [(i,j) for i in range(n) for j in range(i+1,n+1)]
+              seen=set()
+              for i,j in ranges:
+                  if (i,j) in seen: continue
+                  seen.add((i,j))
+                  subset=files[i:j]
+                  for method,raw in methods(subset):
+                      try:
+                          im=Image.open(io.BytesIO(raw)); im.load()
+                      except Exception:
+                          continue
+                      hits.append((im.width*im.height, im.width, im.height, len(raw), hashlib.sha256(raw).hexdigest(), method, i, j, subset[0].name, subset[-1].name, im.format))
+              hits=sorted(set(hits), reverse=True)
+              for h in hits[:20]:
+                  print('HIT', h)
+          PY
