@@ -49,6 +49,87 @@ body.marketing-page .marketing-hero {
 .room-gallery-card figcaption span { display: block; }
 .room-gallery-card figcaption strong { margin-bottom: 5px; color: var(--pine-green); font-size: 14px; }
 
+/* Rooms-only hierarchy: keep Gallery and other marketing pages unchanged. */
+.rooms-photo-section {
+  padding-top: 24px;
+  padding-bottom: 28px;
+}
+.rooms-detail-section,
+.rooms-info-section {
+  position: relative;
+}
+.rooms-detail-section {
+  padding-top: 52px;
+  padding-bottom: 32px;
+}
+.rooms-info-section {
+  padding-top: 52px;
+  padding-bottom: 54px;
+}
+.rooms-detail-section::before,
+.rooms-info-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(52%, 620px);
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent 0%, rgba(178, 142, 105, .42) 18%, rgba(178, 142, 105, .42) 82%, transparent 100%);
+}
+.rooms-gallery-head {
+  margin: 0 0 28px;
+}
+.rooms-gallery-head .eyebrow {
+  margin-bottom: 10px;
+}
+.rooms-gallery-head h2 {
+  margin: 0;
+  color: var(--pine-green);
+  font-size: clamp(28px, 3.4vw, 36px);
+  line-height: 1.2;
+  font-weight: 500;
+}
+.rooms-gallery-head > p:last-child {
+  max-width: 760px;
+  margin: 12px 0 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.rooms-page-gallery {
+  align-items: stretch;
+}
+.rooms-page-gallery .room-gallery-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 22px;
+  box-shadow: 0 10px 30px rgba(92, 63, 33, .08);
+}
+.rooms-page-gallery .room-gallery-image {
+  flex: 0 0 auto;
+}
+.rooms-page-gallery .room-gallery-card figcaption {
+  flex: 1 1 auto;
+  padding: 16px 18px 19px;
+}
+.rooms-page-gallery .room-gallery-card-bedroom img { object-position: 50% 50%; }
+.rooms-page-gallery .room-gallery-card-amenities img { object-position: 50% 50%; }
+.rooms-page-gallery .room-gallery-card-bathroom img { object-position: 50% 50%; }
+.rooms-info-section .marketing-two-col {
+  align-items: stretch;
+}
+.rooms-info-section .marketing-panel {
+  height: 100%;
+  border-color: rgba(178, 142, 105, .28);
+  border-radius: 22px;
+  box-shadow: 0 10px 30px rgba(92, 63, 33, .07);
+}
+.rooms-info-section .marketing-cta .button {
+  white-space: normal;
+  text-align: center;
+}
+
 .room-lightbox {
   width: min(1100px, 94vw);
   max-width: 94vw;
@@ -82,4 +163,45 @@ body.marketing-page .marketing-hero {
 @media (max-width: 860px) {
   .room-gallery-grid { grid-template-columns: 1fr; max-width: 620px; }
   .room-gallery-card figcaption { padding: 14px 16px 17px; }
+  .rooms-page-gallery .room-gallery-card figcaption { padding: 15px 16px 18px; }
+}
+
+@media (max-width: 720px) {
+  .rooms-photo-section {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .rooms-detail-section {
+    padding-top: 36px;
+    padding-bottom: 20px;
+  }
+  .rooms-info-section {
+    padding-top: 36px;
+    padding-bottom: 36px;
+  }
+  .rooms-detail-section::before,
+  .rooms-info-section::before {
+    width: min(62%, 280px);
+  }
+  .rooms-gallery-head {
+    margin-bottom: 24px;
+  }
+  .rooms-gallery-head h2 {
+    font-size: clamp(26px, 8vw, 32px);
+  }
+  .rooms-gallery-head > p:last-child {
+    margin-top: 10px;
+  }
+  .rooms-page-gallery {
+    gap: 18px;
+  }
+  .rooms-page-gallery .room-gallery-card,
+  .rooms-info-section .marketing-panel {
+    border-radius: 18px;
+  }
+  .rooms-info-section .marketing-cta .button {
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+  }
 }
