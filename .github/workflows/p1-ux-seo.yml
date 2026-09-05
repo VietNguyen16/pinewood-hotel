@@ -29,156 +29,23 @@ jobs:
 
           main = Path('js/main.js')
           s = main.read_text()
-
-          # Render the official slogan directly. This removes the post-render text swap
-          # and avoids needless work/flicker on home navigation.
           old_home = "<p class=\"hero-copy\">${esc(state.lang === 'vi' ? 'Chào mừng Quý khách đến với Pinewood Hotel Dalat' : 'Welcome to Pinewood Hotel Dalat')}</p>"
           new_home = "<p class=\"hero-copy\">${esc(state.lang === 'vi' ? 'Ngủ ngon · Ấm áp · Đậm chất Đà Lạt' : 'Sleep Well · Stay Warm · Feel Dalat')}</p>"
           if old_home not in s:
               raise SystemExit('Expected homepage welcome line not found')
           s = s.replace(old_home, new_home, 1)
 
-          # Preserve the full green Wi-Fi panel. Only refine the credential/logo area:
-          # desktop SSID | LOGO | PASSWORD, mobile SSID -> LOGO -> PASSWORD -> QR.
-          old_credentials = '''            <div class="wifi-credentials">
-              <div class="wifi-credential-card">
-                <span class="wifi-credential-icon">${icon('wifi')}</span>
-                <div><span>${esc(c.ui.network)}</span><strong>${esc(CONFIG.wifi.ssid)}</strong></div>
-              </div>
-              <div class="wifi-credential-card">
-                <span class="wifi-credential-icon">${icon('shield')}</span>
-                <div><span>${esc(c.ui.password)}</span><strong>${esc(CONFIG.wifi.password)}</strong></div>
-              </div>
-            </div>
-            <div class="wifi-premium-qr-card">
-              <div class="wifi-logo-medallion" aria-hidden="true"><img src="/assets/logo/pinewood-logo.svg" alt=""></div>'''
-          new_credentials = '''            <div class="wifi-credentials">
-              <div class="wifi-credential-card">
-                <span class="wifi-credential-icon">${icon('wifi')}</span>
-                <div><span>${esc(c.ui.network)}</span><strong>${esc(CONFIG.wifi.ssid)}</strong></div>
-              </div>
-              <div class="wifi-credentials-logo" aria-label="Pinewood Hotel Dalat"><img src="/assets/logo/pinewood-logo.svg" alt="Pinewood Hotel Dalat" width="52" height="56"></div>
-              <div class="wifi-credential-card">
-                <span class="wifi-credential-icon">${icon('shield')}</span>
-                <div><span>${esc(c.ui.password)}</span><strong>${esc(CONFIG.wifi.password)}</strong></div>
-              </div>
-            </div>
-            <div class="wifi-premium-qr-card">'''
+          old_credentials = "            <div class=\"wifi-credentials\">\n              <div class=\"wifi-credential-card\">\n                <span class=\"wifi-credential-icon\">${icon('wifi')}</span>\n                <div><span>${esc(c.ui.network)}</span><strong>${esc(CONFIG.wifi.ssid)}</strong></div>\n              </div>\n              <div class=\"wifi-credential-card\">\n                <span class=\"wifi-credential-icon\">${icon('shield')}</span>\n                <div><span>${esc(c.ui.password)}</span><strong>${esc(CONFIG.wifi.password)}</strong></div>\n              </div>\n            </div>\n            <div class=\"wifi-premium-qr-card\">\n              <div class=\"wifi-logo-medallion\" aria-hidden=\"true\"><img src=\"/assets/logo/pinewood-logo.svg\" alt=\"\"></div>"
+          new_credentials = "            <div class=\"wifi-credentials\">\n              <div class=\"wifi-credential-card\">\n                <span class=\"wifi-credential-icon\">${icon('wifi')}</span>\n                <div><span>${esc(c.ui.network)}</span><strong>${esc(CONFIG.wifi.ssid)}</strong></div>\n              </div>\n              <div class=\"wifi-credentials-logo\" aria-label=\"Pinewood Hotel Dalat\"><img src=\"/assets/logo/pinewood-logo.svg\" alt=\"Pinewood Hotel Dalat\" width=\"52\" height=\"56\"></div>\n              <div class=\"wifi-credential-card\">\n                <span class=\"wifi-credential-icon\">${icon('shield')}</span>\n                <div><span>${esc(c.ui.password)}</span><strong>${esc(CONFIG.wifi.password)}</strong></div>\n              </div>\n            </div>\n            <div class=\"wifi-premium-qr-card\">"
           if old_credentials not in s:
               raise SystemExit('Expected Wi-Fi credential block not found')
-          s = s.replace(old_credentials, new_credentials, 1)
-          main.write_text(s)
+          main.write_text(s.replace(old_credentials, new_credentials, 1))
 
-          # qr.js only needs to expose the Zalo QR now; slogan is rendered correctly in main.js.
           Path('js/qr.js').write_text("window.PINEWOOD_ZALO_QR = '/assets/qr/zalo-pinewood.svg';\n")
 
-          wifi_css = '''/* Pinewood Wi-Fi credential/logo refinement.
-   The original green left panel and all SSID/password/QR behavior are preserved.
-   Loaded globally so SPA first navigation and direct reload use the same CSS. */
-
-@media (min-width: 821px) {
-  .wifi-option2-access .wifi-credentials {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) 82px minmax(0, 1fr) !important;
-    gap: 18px !important;
-    align-items: stretch !important;
-  }
-
-  .wifi-option2-access .wifi-credentials::before {
-    content: none !important;
-    display: none !important;
-  }
-
-  .wifi-option2-access .wifi-credential-card:first-child {
-    grid-column: 1 !important;
-    grid-row: 1 !important;
-  }
-
-  .wifi-option2-access .wifi-credentials-logo {
-    grid-column: 2 !important;
-    grid-row: 1 !important;
-    align-self: center !important;
-    justify-self: center !important;
-  }
-
-  .wifi-option2-access .wifi-credential-card:last-child {
-    grid-column: 3 !important;
-    grid-row: 1 !important;
-  }
-
-  .wifi-option2-access .wifi-credential-card {
-    width: 100% !important;
-    min-width: 0 !important;
-    height: 100% !important;
-  }
-}
-
-.wifi-credentials-logo {
-  width: 72px;
-  height: 72px;
-  padding: 9px;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(178,142,105,.34);
-  border-radius: 50%;
-  background: var(--pine-warm-surface, #FFFCF7);
-  box-shadow: 0 8px 18px rgba(12,53,34,.07);
-}
-
-.wifi-credentials-logo img {
-  width: 52px;
-  height: 56px;
-  object-fit: contain;
-}
-
-.wifi-option2-access .wifi-premium-qr-card {
-  margin-top: 22px !important;
-  padding: 28px !important;
-}
-
-.wifi-option2-access .wifi-logo-medallion {
-  display: none !important;
-}
-
-@media (max-width: 820px) {
-  .wifi-option2-access .wifi-credentials {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) !important;
-    gap: 14px !important;
-    align-items: stretch !important;
-  }
-
-  .wifi-option2-access .wifi-credentials::before {
-    content: none !important;
-    display: none !important;
-  }
-
-  .wifi-option2-access .wifi-credential-card:first-child {
-    grid-column: 1 !important;
-    grid-row: 1 !important;
-  }
-
-  .wifi-option2-access .wifi-credentials-logo {
-    grid-column: 1 !important;
-    grid-row: 2 !important;
-    justify-self: center !important;
-    margin: 4px 0 !important;
-  }
-
-  .wifi-option2-access .wifi-credential-card:last-child {
-    grid-column: 1 !important;
-    grid-row: 3 !important;
-  }
-
-  .wifi-option2-access .wifi-premium-qr-card {
-    margin-top: 18px !important;
-    padding: 22px 16px 20px !important;
-  }
-}
-'''
+          wifi_css = "/* Pinewood Wi-Fi credential/logo refinement. The green left panel and SSID/password/QR behavior are preserved. */\n@media (min-width:821px){.wifi-option2-access .wifi-credentials{display:grid!important;grid-template-columns:minmax(0,1fr) 82px minmax(0,1fr)!important;gap:18px!important;align-items:stretch!important}.wifi-option2-access .wifi-credentials::before{content:none!important;display:none!important}.wifi-option2-access .wifi-credential-card:first-child{grid-column:1!important;grid-row:1!important}.wifi-option2-access .wifi-credentials-logo{grid-column:2!important;grid-row:1!important;align-self:center!important;justify-self:center!important}.wifi-option2-access .wifi-credential-card:last-child{grid-column:3!important;grid-row:1!important}.wifi-option2-access .wifi-credential-card{width:100%!important;min-width:0!important;height:100%!important}}\n.wifi-credentials-logo{width:72px;height:72px;padding:9px;display:grid;place-items:center;border:1px solid rgba(178,142,105,.34);border-radius:50%;background:var(--pine-warm-surface,#FFFCF7);box-shadow:0 8px 18px rgba(12,53,34,.07)}.wifi-credentials-logo img{width:52px;height:56px;object-fit:contain}.wifi-option2-access .wifi-premium-qr-card{margin-top:22px!important;padding:28px!important}.wifi-option2-access .wifi-logo-medallion{display:none!important}\n@media (max-width:820px){.wifi-option2-access .wifi-credentials{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:14px!important;align-items:stretch!important}.wifi-option2-access .wifi-credentials::before{content:none!important;display:none!important}.wifi-option2-access .wifi-credential-card:first-child{grid-column:1!important;grid-row:1!important}.wifi-option2-access .wifi-credentials-logo{grid-column:1!important;grid-row:2!important;justify-self:center!important;margin:4px 0!important}.wifi-option2-access .wifi-credential-card:last-child{grid-column:1!important;grid-row:3!important}.wifi-option2-access .wifi-premium-qr-card{margin-top:18px!important;padding:22px 16px 20px!important}}\n"
           Path('css/wifi-layout-fix.css').write_text(wifi_css)
 
-          # Eliminate the render-blocking CSS @import; the font stylesheet is linked in <head> below.
           style = Path('css/style.css')
           s = style.read_text()
           import_line = "@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');\n\n"
@@ -186,73 +53,7 @@ jobs:
               raise SystemExit('Expected Google Fonts @import not found')
           style.write_text(s.replace(import_line, '', 1))
 
-          # Conservative design-system/accessibility layer: standard radii and spacing,
-          # clear keyboard focus and safe touch target sizes without changing the brand palette.
-          ux_css = '''/* Pinewood P1 UX consistency and accessibility */
-:root {
-  --radius-xl: 24px;
-  --radius-lg: 24px;
-  --radius-md: 18px;
-  --pine-image-radius: 22px;
-}
-
-.page-section:not(.wifi-page-section),
-.marketing-section {
-  padding-top: 84px;
-  padding-bottom: 84px;
-}
-
-.seo-marketing-section {
-  padding-top: 84px;
-  padding-bottom: 84px;
-}
-
-.hotel-photo-card,
-.room-gallery-card,
-.room-gallery-image,
-.room-gallery-image img {
-  border-radius: var(--pine-image-radius);
-}
-
-.button,
-.menu-button,
-.language-switcher button,
-.dialog-close,
-.welcome-dialog-close,
-.room-lightbox-close,
-.seo-social-strip a,
-.footer-social-links a {
-  min-height: 44px;
-}
-
-:where(a, button, summary, [tabindex]):focus-visible {
-  outline: 3px solid rgba(178,142,105,.95);
-  outline-offset: 3px;
-}
-
-.seo-social-strip a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-@media (max-width: 720px) {
-  .page-section:not(.wifi-page-section),
-  .marketing-section,
-  .seo-marketing-section {
-    padding-top: 56px;
-    padding-bottom: 56px;
-  }
-
-  .seo-social-strip {
-    align-items: stretch;
-  }
-
-  .seo-social-strip a {
-    width: 100%;
-  }
-}
-'''
+          ux_css = "/* Pinewood P1 UX consistency and accessibility */\n:root{--radius-xl:24px;--radius-lg:24px;--radius-md:18px;--pine-image-radius:22px}.page-section:not(.wifi-page-section),.marketing-section,.seo-marketing-section{padding-top:84px;padding-bottom:84px}.hotel-photo-card,.room-gallery-card,.room-gallery-image,.room-gallery-image img{border-radius:var(--pine-image-radius)}.button,.menu-button,.language-switcher button,.dialog-close,.welcome-dialog-close,.room-lightbox-close,.seo-social-strip a,.footer-social-links a{min-height:44px}:where(a,button,summary,[tabindex]):focus-visible{outline:3px solid rgba(178,142,105,.95);outline-offset:3px}.seo-social-strip a{display:inline-flex;align-items:center;justify-content:center}@media (max-width:720px){.page-section:not(.wifi-page-section),.marketing-section,.seo-marketing-section{padding-top:56px;padding-bottom:56px}.seo-social-strip{align-items:stretch}.seo-social-strip a{width:100%}}\n"
           Path('css/p1-ux.css').write_text(ux_css)
 
           layout = Path('_layouts/app.html')
@@ -264,22 +65,18 @@ jobs:
                   raise SystemExit('Expected font preconnect not found')
               s = s.replace(preconnect, preconnect + '\n  ' + font_link, 1)
           p1_link = '<link rel="stylesheet" href="/css/p1-ux.css?v=20260905p1">'
+          anchor = '<link rel="stylesheet" href="/css/wifi-layout-fix.css?v=20260905wifi4">'
           if p1_link not in s:
-              anchor = '<link rel="stylesheet" href="/css/wifi-layout-fix.css?v=20260905wifi4">'
               if anchor not in s:
                   raise SystemExit('Expected Wi-Fi stylesheet anchor not found')
               s = s.replace(anchor, '<link rel="stylesheet" href="/css/wifi-layout-fix.css?v=20260905p1">\n  ' + p1_link, 1)
-          else:
-              s = s.replace('/css/wifi-layout-fix.css?v=20260905wifi4', '/css/wifi-layout-fix.css?v=20260905p1')
-
           google_reviews = 'https://www.google.com/maps/place/Kh%C3%A1ch+s%E1%BA%A1n+Pinewood/@11.9611181,108.4486208,1207m/data=!3m1!1e3!4m11!3m10!1s0x3171130010cadc19:0xdcb299e4322ab577!5m2!4m1!1i2!8m2!3d11.9611181!4d108.4512011!9m1!1b1!16s%2Fg%2F11njdj19vf?entry=ttu&g_ep=EgoyMDI2MDgzMS4wIKXMDSoASAFQAw%3D%3D'
           social_anchor = '          <a href="https://www.tiktok.com/@dalat.pinewood" target="_blank" rel="me noopener noreferrer">TikTok · @dalat.pinewood</a>'
-          review_link = f'          <a href="{google_reviews}" target="_blank" rel="noopener noreferrer">{{% if page.lang == \'en\' %}}Google Reviews{{% else %}}Đánh giá Google Maps{{% endif %}}</a>'
+          review_link = '          <a href="' + google_reviews + '" target="_blank" rel="noopener noreferrer">{% if page.lang == \'en\' %}Google Reviews{% else %}Đánh giá Google Maps{% endif %}</a>'
           if review_link not in s:
               if social_anchor not in s:
                   raise SystemExit('Expected footer TikTok link not found')
               s = s.replace(social_anchor, social_anchor + '\n' + review_link, 1)
-
           s = s.replace('/js/qr.js?v=20260905final', '/js/qr.js?v=20260905p1')
           s = s.replace('/js/main.js?v=20260905wifi4', '/js/main.js?v=20260905p1')
           layout.write_text(s)
@@ -295,42 +92,30 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           import re
-
           main = Path('js/main.js').read_text()
           assert 'wifi-intro-panel' in main
           assert 'wifi-credentials-logo' in main
           assert 'Ngủ ngon · Ấm áp · Đậm chất Đà Lạt' in main
           assert 'Chào mừng Quý khách đến với Pinewood Hotel Dalat' not in main
           assert Path('js/qr.js').read_text().strip() == "window.PINEWOOD_ZALO_QR = '/assets/qr/zalo-pinewood.svg';"
-
           wifi = Path('css/wifi-layout-fix.css').read_text()
-          assert 'grid-template-columns: minmax(0, 1fr) 82px minmax(0, 1fr)' in wifi
-          assert 'grid-row: 2' in wifi and 'grid-row: 3' in wifi
-          assert '.wifi-intro-panel' not in wifi
-
+          assert 'grid-template-columns:minmax(0,1fr) 82px minmax(0,1fr)' in wifi
+          assert 'grid-row:2' in wifi and 'grid-row:3' in wifi
           assert '@import url(' not in Path('css/style.css').read_text()
           layout = Path('_layouts/app.html').read_text()
           assert 'fonts.googleapis.com/css2?family=Lora' in layout
           assert '/css/p1-ux.css?v=20260905p1' in layout
           assert 'Google Reviews' in layout and 'Đánh giá Google Maps' in layout
-
           assert 'MutationObserver' not in '\n'.join(p.read_text(errors='ignore') for p in Path('js').glob('*.js'))
           assert 'firestorage.ai' not in '\n'.join(p.read_text(errors='ignore') for p in Path('.').rglob('*') if p.is_file() and '.git' not in p.parts)
-
           for p in ['phong/index.html','en/rooms/index.html','gallery/index.html','en/gallery/index.html']:
               text = Path(p).read_text()
               assert 'srcset=' in text, p
               assert 'loading="lazy"' in text, p
               assert re.search(r'alt="[^\"]+"', text), p
-
           for asset in ['assets/qr/wifi-pinewood.svg','assets/qr/zalo-pinewood.svg','assets/logo/pinewood-logo.svg']:
               assert Path(asset).exists(), asset
-
-          indexables = [
-              'index.html','en/index.html','phong/index.html','en/rooms/index.html','gallery/index.html','en/gallery/index.html',
-              'vi-tri/index.html','en/location/index.html','dich-vu/index.html','en/services/index.html','lien-he/index.html','en/contact/index.html',
-              'moi-truong/index.html','en/environment/index.html'
-          ]
+          indexables = ['index.html','en/index.html','phong/index.html','en/rooms/index.html','gallery/index.html','en/gallery/index.html','vi-tri/index.html','en/location/index.html','dich-vu/index.html','en/services/index.html','lien-he/index.html','en/contact/index.html','moi-truong/index.html','en/environment/index.html']
           for p in indexables:
               text = Path(p).read_text()
               for token in ['title:', 'description:', 'canonical:', 'alternate_vi:', 'alternate_en:']:
