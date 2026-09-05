@@ -1,0 +1,192 @@
+name: Recover room gallery HQ from history
+
+on:
+  push:
+    branches:
+      - room-gallery-hq-v2
+    paths:
+      - .asset-room-upload-q84/RECOVER-HISTORY
+
+permissions:
+  contents: write
+
+jobs:
+  recover-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: room-gallery-hq-v2
+          fetch-depth: 0
+
+      - name: Fetch every branch and recover exact HQ image bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin '+refs/heads/*:refs/remotes/origin/*' --force
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64, hashlib, re, subprocess
+
+          SPECS = {
+            'amenities': (160792, '44a1d8e6d0b53ff2d3e82d2a659b50efa487dbcc09db83887e2a8a1c7dd638cd'),
+            'bedroom': (146756, '27173164a16ec3e6db3bf53aed0e964911b1ce7ad50eddd6e84c3882f8979885'),
+            'bathroom': (195946, 'ba89308bd6515561c560643dd6143259fdb124d90c89f1b4308a05b34e56a673'),
+          }
+          KEYWORDS = {
+            'amenities': ('amenit',),
+            'bedroom': ('bedroom','sleep','room'),
+            'bathroom': ('bathroom',),
+          }
+          outdir = Path('/tmp/recovered-room-hq'); outdir.mkdir(parents=True, exist_ok=True)
+
+          def run(*args, text=True):
+              return subprocess.check_output(args, text=text, stderr=subprocess.DEVNULL)
+
+          def clean_text(raw):
+              try:
+                  s = raw.decode('utf-8') if isinstance(raw, bytes) else raw
+              except Exception:
+                  return None
+              return re.sub(r'\s+', '', s)
+
+          def check(name, raw, origin):
+              if raw is None: return False
+              size, sha = SPECS[name]
+              if len(raw) == size and hashlib.sha256(raw).hexdigest() == sha:
+                  p = outdir / f'{name}.webp'; p.write_bytes(raw)
+                  print('FOUND EXACT', name, origin, len(raw), sha)
+                  return True
+              return False
+
+          # First search any historical repository blob directly by decoded bytes.
+          objects = run('git','rev-list','--objects','--all').splitlines()
+          candidate_blobs = []
+          for line in objects:
+              parts=line.split(' ',1)
+              if len(parts) != 2: continue
+              obj,path=parts
+              low=path.lower()
+              if any(k in low for k in ('room','amenit','bath','sleep')) and any(low.endswith(ext) for ext in ('.webp','.jpg','.jpeg','.png')):
+                  candidate_blobs.append((obj,path))
+          print('historical image blobs', len(candidate_blobs))
+          for obj,path in candidate_blobs:
+              raw=run('git','cat-file','-p',obj,text=False)
+              for name in SPECS:
+                  if not (outdir/f'{name}.webp').exists():
+                      check(name,raw,f'blob:{path}@{obj[:10]}')
+
+          # Then reconstruct base64 staging directories as they existed at every commit.
+          commits = run('git','rev-list','--all').splitlines()
+          print('commits to inspect', len(commits))
+          blob_cache={}
+          for ci,commit in enumerate(commits):
+              if all((outdir/f'{n}.webp').exists() for n in SPECS): break
+              try:
+                  rows=run('git','ls-tree','-r',commit).splitlines()
+              except Exception:
+                  continue
+              entries=[]
+              for row in rows:
+                  try:
+                      meta,path=row.split('\t',1); mode,typ,sha=meta.split()
+                  except Exception: continue
+                  low=path.lower()
+                  if typ=='blob' and 'asset-room' in low and '/part-' in low:
+                      entries.append((path,sha))
+              groups={}
+              for path,sha in entries:
+                  parent=path.rsplit('/',1)[0]
+                  groups.setdefault(parent,[]).append((path,sha))
+              for name in SPECS:
+                  if (outdir/f'{name}.webp').exists(): continue
+                  for parent,items in groups.items():
+                      low=parent.lower()
+                      if not any(k in low for k in KEYWORDS[name]): continue
+                      items=sorted(items,key=lambda x:x[0])
+                      n=len(items)
+                      ranges=[(0,n)]
+                      if n<=45:
+                          ranges += [(i,j) for i in range(n) for j in range(i+1,n+1)]
+                      for i,j in ranges:
+                          subset=items[i:j]
+                          texts=[]
+                          ok=True
+                          for path,sha in subset:
+                              if sha not in blob_cache:
+                                  try: blob_cache[sha]=clean_text(run('git','cat-file','-p',sha,text=False))
+                                  except Exception: blob_cache[sha]=None
+                              t=blob_cache[sha]
+                              if not t: ok=False; break
+                              texts.append(t)
+                          if not ok: continue
+                          joined=''.join(texts)
+                          try:
+                              raw=base64.b64decode(joined + '='*((-len(joined))%4), validate=False)
+                          except Exception:
+                              raw=None
+                          if check(name,raw,f'{commit[:10]}:{parent}[{i}:{j}]whole'): break
+                          try:
+                              parts=[]
+                              for t in texts:
+                                  parts.append(base64.b64decode(t + '='*((-len(t))%4), validate=False))
+                              raw=b''.join(parts)
+                          except Exception:
+                              raw=None
+                          if check(name,raw,f'{commit[:10]}:{parent}[{i}:{j}]parts'): break
+                      if (outdir/f'{name}.webp').exists(): break
+              if ci % 50 == 0: print('inspected',ci,'commits')
+
+          missing=[n for n in SPECS if not (outdir/f'{n}.webp').exists()]
+          if missing:
+              raise SystemExit('Could not recover exact assets: '+','.join(missing))
+          PY
+          file /tmp/recovered-room-hq/*.webp
+          for f in /tmp/recovered-room-hq/*.webp; do file "$f" | grep -q '1920x1920'; done
+
+      - name: Deploy recovered originals with lightbox to main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git worktree add /tmp/pinewood-main origin/main
+          cp /tmp/recovered-room-hq/amenities.webp /tmp/pinewood-main/assets/images/pinewood-room-amenities-hq.webp
+          cp /tmp/recovered-room-hq/bedroom.webp /tmp/pinewood-main/assets/images/pinewood-room-bedroom-hq.webp
+          cp /tmp/recovered-room-hq/bathroom.webp /tmp/pinewood-main/assets/images/pinewood-room-bathroom-hq.webp
+          cp css/room-gallery-hq.css /tmp/pinewood-main/css/room-gallery-hq.css
+          cp js/room-gallery.js /tmp/pinewood-main/js/room-gallery.js
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          root=Path('/tmp/pinewood-main')
+          pages={
+            'phong/index.html':(
+              'CHI TIẾT PHÒNG','Thêm góc nhìn về không gian lưu trú','Khám phá khu vực nghỉ ngơi, tiện nghi trong phòng và phòng tắm được chuẩn bị cho một kỳ nghỉ thoải mái tại Đà Lạt.',
+              [('bedroom','Không gian nghỉ ngơi','Hai giường, nội thất ấm áp và nhiều ánh sáng.','Phòng hai giường sáng thoáng tại Pinewood Hotel Dalat'),('amenities','Tiện nghi được chuẩn bị','Những chi tiết thiết thực cho kỳ lưu trú thuận tiện.','Tiện nghi trong phòng tại Pinewood Hotel Dalat'),('bathroom','Phòng tắm riêng','Không gian sạch sẽ, thoải mái và đầy đủ tiện nghi cơ bản.','Phòng tắm tại Pinewood Hotel Dalat')],
+              'Trình xem ảnh phòng','Đóng ảnh lớn','Xem ảnh lớn:'),
+            'en/rooms/index.html':(
+              'ROOM DETAILS','More views of the Pinewood stay','Explore the sleeping area, in-room amenities and bathroom details prepared for a comfortable stay in Da Lat.',
+              [('bedroom','Bright sleeping space','Twin beds, warm finishes and natural light.','Bright twin guest room at Pinewood Hotel Dalat'),('amenities','Prepared amenities','Useful room details arranged for an easy stay.','In-room amenities at Pinewood Hotel Dalat'),('bathroom','Private bathroom','A clean, comfortable bathroom with essential amenities.','Guest bathroom at Pinewood Hotel Dalat')],
+              'Room photo viewer','Close full image','View full image:')}
+          for rel,(eyebrow,title,desc,cards,dialog,close,view) in pages.items():
+              p=root/rel; s=p.read_text()
+              cardhtml=''.join(f'<figure class="room-gallery-card"><a class="room-gallery-image" href="/assets/images/pinewood-room-{key}-hq.webp?v=20260905hq" data-room-lightbox data-title="{ctitle}" aria-label="{view} {ctitle}"><img src="/assets/images/pinewood-room-{key}-hq.webp?v=20260905hq" width="1920" height="1920" loading="lazy" decoding="async" alt="{alt}"></a><figcaption><strong>{ctitle}</strong><span>{caption}</span></figcaption></figure>' for key,ctitle,caption,alt in cards)
+              block=f'<section class="marketing-section room-gallery-section" aria-labelledby="room-gallery-title"><div class="shell"><header class="room-gallery-head"><p class="eyebrow">{eyebrow}</p><h2 id="room-gallery-title">{title}</h2><p>{desc}</p></header><div class="room-gallery-grid">{cardhtml}</div></div></section><dialog class="room-lightbox" id="room-lightbox" aria-label="{dialog}"><button class="room-lightbox-close" id="room-lightbox-close" type="button" aria-label="{close}">×</button><img class="room-lightbox-image" id="room-lightbox-image" alt=""><p class="room-lightbox-caption" id="room-lightbox-caption"></p></dialog>'
+              s,n=re.subn(r'<section class="marketing-section room-gallery-section".*?</section>(?:<dialog class="room-lightbox".*?</dialog>)?',block,s,count=1,flags=re.S)
+              if n!=1: raise SystemExit('gallery block not found: '+rel)
+              if '/css/room-gallery-hq.css' not in s: s+='\n<link rel="stylesheet" href="/css/room-gallery-hq.css?v=20260905hq">\n'
+              if '/js/room-gallery.js' not in s: s+='\n<script src="/js/room-gallery.js?v=20260905hq" defer></script>\n'
+              p.write_text(s)
+          PY
+          cd /tmp/pinewood-main
+          test "$(wc -c < assets/images/pinewood-room-amenities-hq.webp)" -eq 160792
+          test "$(wc -c < assets/images/pinewood-room-bedroom-hq.webp)" -eq 146756
+          test "$(wc -c < assets/images/pinewood-room-bathroom-hq.webp)" -eq 195946
+          grep -q 'data-room-lightbox' phong/index.html
+          grep -q 'data-room-lightbox' en/rooms/index.html
+          git switch -C main origin/main
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add phong/index.html en/rooms/index.html css/room-gallery-hq.css js/room-gallery.js assets/images/pinewood-room-*-hq.webp
+          git commit -m 'Deploy verified 1920px room gallery images and lightbox'
+          git push origin main
