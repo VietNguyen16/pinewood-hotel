@@ -14,27 +14,34 @@ jobs:
           python3 -m pip install --quiet pillow
           python3 - <<'PY'
           from pathlib import Path
-          from PIL import Image
-          import base64,io,re,itertools
-          pats={
-           'q84amen':'.asset-room-upload-q84/amenities/part-*',
-           'q84bed':'.asset-room-upload-q84/bedroom/part-*',
-           'q84bath':'.asset-room-upload-q84/bathroom/part-*',
-           'bathclean':'.asset-room-upload-q84/bathroom-clean/part-*',
-           'v2root':'.asset-room-upload-v2/part-*',
-           'v2amen':'.asset-room-upload-v2/amenities/part-*',
-           'oldbed':'.asset-room-upload/bedroom/part-*'}
-          groups={k:''.join(re.sub(r'\s+','',p.read_text()) for p in sorted(Path('.').glob(v))) for k,v in pats.items()}
-          print('GROUPS',[(k,len(v)) for k,v in groups.items()])
-          def test(s,label):
-           try:r=base64.b64decode(s+'='*((-len(s))%4),validate=False); im=Image.open(io.BytesIO(r)); im.load(); print('VALID',label,len(r),im.format,im.size)
-           except:pass
-          for k,s in groups.items():test(s,k)
-          for a,b in itertools.permutations(groups,2):test(groups[a]+groups[b],a+'+'+b)
-          for k,pat in pats.items():
-           vals=[re.sub(r'\s+','',p.read_text()) for p in sorted(Path('.').glob(pat))]
-           for i in range(len(vals)):
-            s=''
-            for j in range(i,len(vals)):
-             s+=vals[j]; test(s,f'{k}[{i}:{j+1}]')
+          from PIL import Image,ImageChops,ImageStat
+          import base64,io,re,hashlib,subprocess
+          def group(p):return ''.join(re.sub(r'\s+','',f.read_text()) for f in sorted(Path('.').glob(p)))
+          g={
+           'amen':group('.asset-room-upload-q84/amenities/part-*'),
+           'bed':group('.asset-room-upload-q84/bedroom/part-*'),
+           'bath':group('.asset-room-upload-q84/bathroom/part-*'),
+           'clean':group('.asset-room-upload-q84/bathroom-clean/part-*')}
+          refs={}
+          for n,p in {'amen':'assets/images/pinewood-room-amenities-card.webp','bed':'assets/images/pinewood-room-stay-card.webp','bath':'assets/images/pinewood-room-bathroom-card.webp'}.items():
+           r=subprocess.check_output(['git','show',f'origin/main:{p}']) if False else Path(p).read_bytes()
+           refs[n]=Image.open(io.BytesIO(r)).convert('RGB').resize((64,64))
+          def probe(s,label):
+           try:raw=base64.b64decode(s+'='*((-len(s))%4),validate=False)
+           except Exception as e:print('B64FAIL',label,e);return
+           if raw[:4]!=b'RIFF':print('NORIFF',label,len(raw));return
+           need=8+int.from_bytes(raw[4:8],'little')
+           cut=raw[:need]
+           try:
+            im=Image.open(io.BytesIO(cut)).convert('RGB');im.load()
+            th=im.resize((64,64)); scores={n:round(sum(ImageStat.Stat(ImageChops.difference(th,r)).rms)/3,2) for n,r in refs.items()}
+            print('RIFF',label,'decoded',len(raw),'need',need,'cut',len(cut),'sha',hashlib.sha256(cut).hexdigest(),'fmt',im.format,'size',im.size,'scores',scores)
+           except Exception as e:print('IMGFAIL',label,'decoded',len(raw),'need',need,e)
+          probe(g['bed'],'bed')
+          probe(g['amen']+g['bed'],'amen+bed')
+          probe(g['amen']+g['bed'][:4],'amen+bed4')
+          probe(g['bath']+g['amen'],'bath+amen')
+          probe(g['bath']+g['amen'][:4],'bath+amen4')
+          probe(g['bath']+g['clean'],'bath+clean')
+          probe(g['clean']+g['bath'],'clean+bath')
           PY
