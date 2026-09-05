@@ -18,13 +18,13 @@
         <div class="hotel-photo-grid">
           <figure class="hotel-photo-card">
             <a href="${en ? '/en/rooms/' : '/phong/'}">
-              <img src="${roomPhoto}" width="600" height="450" loading="lazy" decoding="async" alt="${en ? 'Spacious room at Pinewood Hotel Dalat in Da Lat' : 'Phòng nghỉ rộng rãi tại Pinewood Hotel Dalat, Đà Lạt'}">
+              <img src="${roomPhoto}" srcset="/assets/images/pinewood-room-home-540.webp 540w, /assets/images/pinewood-room-home.webp 1080w" sizes="(max-width: 720px) 92vw, 600px" width="600" height="450" loading="lazy" decoding="async" alt="${en ? 'Spacious room at Pinewood Hotel Dalat in Da Lat' : 'Phòng nghỉ rộng rãi tại Pinewood Hotel Dalat, Đà Lạt'}">
               <figcaption><strong>${en ? 'Rooms & suites' : 'Phòng nghỉ & suite'}</strong>${en ? 'Bright, spacious accommodation with a warm modern interior.' : 'Không gian rộng rãi, nhiều ánh sáng và nội thất ấm áp.'}</figcaption>
             </a>
           </figure>
           <figure class="hotel-photo-card">
             <a href="${en ? '/en/breakfast/' : '/bua-sang/'}">
-              <img src="${cafePhoto}" width="600" height="314" loading="lazy" decoding="async" alt="${en ? 'Breakfast and cafe at Pinewood Hotel Dalat in Da Lat' : 'Bữa sáng và café tại Pinewood Hotel Dalat ở Đà Lạt'}">
+              <img src="${cafePhoto}" srcset="/assets/images/pinewood-breakfast-buffet-800.webp 800w, /assets/images/pinewood-breakfast-buffet-1600.webp 1600w" sizes="(max-width: 720px) 92vw, 600px" width="1600" height="900" loading="lazy" decoding="async" alt="${en ? 'Breakfast and cafe at Pinewood Hotel Dalat in Da Lat' : 'Bữa sáng và café tại Pinewood Hotel Dalat ở Đà Lạt'}">
               <figcaption><strong>${en ? 'Breakfast & café' : 'Bữa sáng & café'}</strong>${en ? 'A relaxed morning experience during your Pinewood stay.' : 'Một trải nghiệm buổi sáng thư giãn trong kỳ lưu trú tại Pinewood.'}</figcaption>
             </a>
           </figure>
@@ -49,7 +49,7 @@
 
   function servicePhotoMarkup(lang) {
     const en = lang === 'en';
-    return `<section class="service-photo-band" id="seo-service-photo"><div class="shell"><figure class="hotel-photo-card"><a href="${en ? '/en/rooms/' : '/phong/'}"><img src="${cafePhoto}" width="600" height="314" loading="lazy" decoding="async" alt="${en ? 'Coffee, breakfast and fresh pastries at Pinewood Hotel Dalat in Da Lat' : 'Cà phê, bữa sáng và bánh tươi tại Pinewood Hotel Dalat ở Đà Lạt'}"><figcaption><strong>${en ? 'A relaxed part of your Pinewood stay' : 'Một khoảng nghỉ thư giãn tại Pinewood'}</strong>${en ? 'Discover hotel services, breakfast and the café experience, then explore the rooms for your stay.' : 'Khám phá dịch vụ, bữa sáng và trải nghiệm café, sau đó xem không gian phòng nghỉ cho kỳ lưu trú.'}</figcaption></a></figure></div></section>`;
+    return `<section class="service-photo-band" id="seo-service-photo"><div class="shell"><figure class="hotel-photo-card"><a href="${en ? '/en/rooms/' : '/phong/'}"><img src="${cafePhoto}" srcset="/assets/images/pinewood-breakfast-buffet-800.webp 800w, /assets/images/pinewood-breakfast-buffet-1600.webp 1600w" sizes="(max-width: 720px) 92vw, 600px" width="1600" height="900" loading="lazy" decoding="async" alt="${en ? 'Coffee, breakfast and fresh pastries at Pinewood Hotel Dalat in Da Lat' : 'Cà phê, bữa sáng và bánh tươi tại Pinewood Hotel Dalat ở Đà Lạt'}"><figcaption><strong>${en ? 'A relaxed part of your Pinewood stay' : 'Một khoảng nghỉ thư giãn tại Pinewood'}</strong>${en ? 'Discover hotel services, breakfast and the café experience, then explore the rooms for your stay.' : 'Khám phá dịch vụ, bữa sáng và trải nghiệm café, sau đó xem không gian phòng nghỉ cho kỳ lưu trú.'}</figcaption></a></figure></div></section>`;
   }
 
   function contactFaqMarkup(lang) {
