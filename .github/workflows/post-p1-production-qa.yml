@@ -1,0 +1,116 @@
+name: Post P1 production QA
+
+on:
+  push:
+    branches: [post-p1-production-qa-20260905]
+    paths: [.github/workflows/post-p1-production-qa.yml]
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify production routes and SEO signals
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://pinewoodhotel.vn'
+          routes=(
+            '/'
+            '/en/'
+            '/phong/'
+            '/en/rooms/'
+            '/gallery/'
+            '/en/gallery/'
+            '/vi-tri/'
+            '/en/location/'
+            '/dich-vu/'
+            '/en/services/'
+            '/lien-he/'
+            '/en/contact/'
+            '/moi-truong/'
+            '/en/environment/'
+            '/wifi/'
+            '/en/wifi/'
+            '/bua-sang/'
+            '/en/breakfast/'
+            '/thu-chao-mung/'
+            '/en/welcome/'
+            '/noi-quy/'
+            '/en/hotel-rules/'
+            '/an-toan/'
+            '/en/safety/'
+            '/thong-tin/'
+            '/en/hotel-information/'
+          )
+          for route in "${routes[@]}"; do
+            code=$(curl -fsSL --max-time 25 -o /tmp/page.html -w '%{http_code}' "$base$route")
+            echo "$code $route"
+            test "$code" = '200'
+          done
+
+          curl -fsSL --max-time 25 "$base/robots.txt" -o /tmp/robots.txt
+          grep -q '^User-agent: \*$' /tmp/robots.txt
+          grep -q '^Allow: /$' /tmp/robots.txt
+          grep -q '^Sitemap: https://pinewoodhotel.vn/sitemap.xml$' /tmp/robots.txt
+
+          curl -fsSL --max-time 25 "$base/sitemap.xml" -o /tmp/sitemap.xml
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+          ET.parse('/tmp/sitemap.xml')
+          text = Path('/tmp/sitemap.xml').read_text()
+          for bad in ['/wifi/','/bua-sang/','/thu-chao-mung/','/noi-quy/','/an-toan/','/thong-tin/']:
+              assert f'<loc>https://pinewoodhotel.vn{bad}' not in text, bad
+          assert 'hreflang="vi"' in text
+          assert 'hreflang="en"' in text
+          assert 'hreflang="x-default"' in text
+          PY
+
+          curl -fsSL --max-time 25 "$base/" -o /tmp/home.html
+          grep -Fq '<title>Pinewood Hotel Dalat | Khách sạn Đà Lạt</title>' /tmp/home.html
+          grep -Fq '<link rel="canonical" href="https://pinewoodhotel.vn/">' /tmp/home.html
+          grep -Fq 'hreflang="vi" href="https://pinewoodhotel.vn/"' /tmp/home.html
+          grep -Fq 'hreflang="en" href="https://pinewoodhotel.vn/en/"' /tmp/home.html
+          grep -Fq '"@type":"Hotel"' /tmp/home.html
+
+          curl -fsSL --max-time 25 "$base/en/" -o /tmp/home-en.html
+          grep -Fq '<title>Pinewood Hotel Dalat | Hotel in Da Lat</title>' /tmp/home-en.html
+          grep -Fq '<link rel="canonical" href="https://pinewoodhotel.vn/en/">' /tmp/home-en.html
+
+          curl -fsSL --max-time 25 "$base/wifi/" -o /tmp/wifi.html
+          grep -Fq '<meta name="robots" content="noindex,follow">' /tmp/wifi.html
+          grep -Fq '<link rel="canonical" href="https://pinewoodhotel.vn/wifi/">' /tmp/wifi.html
+          grep -Fq '/css/wifi-layout-fix.css?v=20260905p1' /tmp/wifi.html
+          grep -Fq '/css/p1-ux.css?v=20260905p1' /tmp/wifi.html
+
+          if getent hosts www.pinewoodhotel.vn >/tmp/www-hosts.txt 2>/dev/null; then
+            echo 'www resolves:'
+            cat /tmp/www-hosts.txt
+            final=$(curl -fsSL --max-time 25 -o /dev/null -w '%{url_effective} %{http_code}' 'https://www.pinewoodhotel.vn/')
+            echo "www final: $final"
+            case "$final" in
+              'https://pinewoodhotel.vn/'*' 200') ;;
+              *) echo 'www resolves but does not finish on canonical host' >&2; exit 1 ;;
+            esac
+          else
+            echo 'www.pinewoodhotel.vn does not resolve; canonical non-www host is the only active host.'
+          fi
+
+      - name: Optional PageSpeed mobile snapshot
+        shell: bash
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          url='https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2Fpinewoodhotel.vn%2F&strategy=MOBILE&category=SEO&category=PERFORMANCE&category=ACCESSIBILITY'
+          curl -fsSL --max-time 90 "$url" -o /tmp/psi.json
+          python3 - <<'PY'
+          import json
+          data=json.load(open('/tmp/psi.json'))
+          lr=data['lighthouseResult']
+          for key in ['seo','performance','accessibility']:
+              print(f'{key}: {round(lr["categories"][key]["score"]*100)}')
+          audits=lr['audits']
+          for key in ['largest-contentful-paint','cumulative-layout-shift','total-blocking-time']:
+              if key in audits:
+                  print(f'{key}: {audits[key].get("displayValue")}')
+          PY
