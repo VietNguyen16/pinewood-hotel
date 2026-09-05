@@ -19,7 +19,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python3 -m pip install --quiet pillow
+          python3 -m pip install --quiet pillow numpy
           python3 - <<'PY'
           from pathlib import Path
           from PIL import Image
@@ -39,10 +39,9 @@ jobs:
             x=im.convert('L').resize((size,size), Image.Resampling.LANCZOS)
             px=list(x.getdata())
             m=sum(px)/len(px)
-            bits=[v>m for v in px]
             value=0
-            for bit in bits:
-              value=(value<<1)|int(bit)
+            for v in px:
+              value=(value<<1)|int(v>m)
             return f'{value:0{size*size//4}x}'
 
           for name in files:
