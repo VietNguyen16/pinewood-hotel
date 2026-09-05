@@ -28,8 +28,6 @@ jobs:
           from pathlib import Path
           import re
 
-          # Shared layout: page-specific x-default, verified Hotel entity only,
-          # and the official slogan punctuation.
           layout = Path('_layouts/app.html')
           s = layout.read_text()
           s = s.replace(
@@ -41,17 +39,8 @@ jobs:
               '"checkoutTime":"12:00",\n        "address"',
               '"checkoutTime":"12:00",\n        "availableLanguage":["vi","en"],\n        "address"'
           )
-          old_amenities = '''        "amenityFeature":[
-          {"@type":"LocationFeatureSpecification","name":"Free Wi-Fi","value":true},
-          {"@type":"LocationFeatureSpecification","name":"Breakfast","value":true},
-          {"@type":"LocationFeatureSpecification","name":"Restaurant","value":true},
-          {"@type":"LocationFeatureSpecification","name":"Air conditioning","value":true}
-        ]'''
-          new_amenities = '''        "amenityFeature":[
-          {"@type":"LocationFeatureSpecification","name":"Free Wi-Fi","value":true},
-          {"@type":"LocationFeatureSpecification","name":"Breakfast","value":true},
-          {"@type":"LocationFeatureSpecification","name":"Restaurant","value":true}
-        ]'''
+          old_amenities = '        "amenityFeature":[\n          {"@type":"LocationFeatureSpecification","name":"Free Wi-Fi","value":true},\n          {"@type":"LocationFeatureSpecification","name":"Breakfast","value":true},\n          {"@type":"LocationFeatureSpecification","name":"Restaurant","value":true},\n          {"@type":"LocationFeatureSpecification","name":"Air conditioning","value":true}\n        ]'
+          new_amenities = '        "amenityFeature":[\n          {"@type":"LocationFeatureSpecification","name":"Free Wi-Fi","value":true},\n          {"@type":"LocationFeatureSpecification","name":"Breakfast","value":true},\n          {"@type":"LocationFeatureSpecification","name":"Restaurant","value":true}\n        ]'
           if old_amenities not in s:
               raise SystemExit('Expected Hotel amenity block not found')
           s = s.replace(old_amenities, new_amenities, 1)
@@ -59,7 +48,6 @@ jobs:
           s = s.replace('Ngủ ngon - Ấm áp - Đậm chất Đà Lạt', 'Ngủ ngon · Ấm áp · Đậm chất Đà Lạt')
           layout.write_text(s)
 
-          # SPA metadata must mirror server-rendered hreflang behavior.
           seo = Path('js/seo.js')
           s = seo.read_text()
           old = "upsertLink('link[rel=\"alternate\"][hreflang=\"x-default\"]', 'alternate', `${BASE}/`, 'x-default');"
@@ -69,9 +57,6 @@ jobs:
           s = s.replace(old, new, 1)
           seo.write_text(s)
 
-          # Convert legacy guest-only deep-link entries to the shared Jekyll layout.
-          # This puts title/meta/canonical/hreflang directly in the generated HTML
-          # while preserving the existing SPA render and noindex behavior.
           guest_pages = [
               ('thu-chao-mung/index.html', 'vi', 'Thư chào mừng | Pinewood Hotel Dalat', 'Thư chào mừng dành cho khách đang lưu trú tại Pinewood Hotel Dalat.', 'https://pinewoodhotel.vn/thu-chao-mung/', 'https://pinewoodhotel.vn/thu-chao-mung/', 'https://pinewoodhotel.vn/en/welcome/', 'Thư chào mừng', 'Thông tin dành cho khách đang lưu trú tại Pinewood Hotel Dalat.'),
               ('noi-quy/index.html', 'vi', 'Quy định khách sạn | Pinewood Hotel Dalat', 'Quy định và thông tin dành cho khách đang lưu trú tại Pinewood Hotel Dalat.', 'https://pinewoodhotel.vn/noi-quy/', 'https://pinewoodhotel.vn/noi-quy/', 'https://pinewoodhotel.vn/en/hotel-rules/', 'Quy định khách sạn', 'Nội dung quy định dành cho khách lưu trú được hiển thị đầy đủ khi trang tải xong.'),
@@ -85,29 +70,29 @@ jobs:
               ('en/hotel-information/index.html', 'en', 'Hotel Information | Pinewood Hotel Dalat', 'Complete guest information for visitors currently staying at Pinewood Hotel Dalat.', 'https://pinewoodhotel.vn/en/hotel-information/', 'https://pinewoodhotel.vn/thong-tin/', 'https://pinewoodhotel.vn/en/hotel-information/', 'Hotel Information', 'Complete information for guests currently staying at Pinewood Hotel Dalat.'),
           ]
           for path, lang, title, desc, canonical, vi, en, h1, body in guest_pages:
-              content = f'''---
-layout: app
-lang: {lang}
-title: {title}
-description: {desc}
-canonical: {canonical}
-alternate_vi: {vi}
-alternate_en: {en}
-robots: noindex,follow
----
-<section class="static-seo-fallback">
-  <div class="shell">
-    <article class="content-card">
-      <p class="eyebrow">PINEWOOD HOTEL DALAT</p>
-      <h1>{h1}</h1>
-      <p>{body}</p>
-    </article>
-  </div>
-</section>
-'''
-              Path(path).write_text(content)
+              lines = [
+                  '---',
+                  'layout: app',
+                  f'lang: {lang}',
+                  f'title: {title}',
+                  f'description: {desc}',
+                  f'canonical: {canonical}',
+                  f'alternate_vi: {vi}',
+                  f'alternate_en: {en}',
+                  'robots: noindex,follow',
+                  '---',
+                  '<section class="static-seo-fallback">',
+                  '  <div class="shell">',
+                  '    <article class="content-card">',
+                  '      <p class="eyebrow">PINEWOOD HOTEL DALAT</p>',
+                  f'      <h1>{h1}</h1>',
+                  f'      <p>{body}</p>',
+                  '    </article>',
+                  '  </div>',
+                  '</section>',
+              ]
+              Path(path).write_text('\n'.join(lines) + '\n')
 
-          # Add x-default to every sitemap VI/EN pair without changing indexability.
           sitemap = Path('sitemap.xml')
           s = sitemap.read_text()
           def add_x_default(match):
@@ -132,45 +117,31 @@ robots: noindex,follow
           python3 - <<'PY'
           from pathlib import Path
           import xml.etree.ElementTree as ET
-
           ET.parse('sitemap.xml')
           robots = Path('robots.txt').read_text()
           assert 'User-agent: *' in robots
           assert 'Allow: /' in robots
           assert 'Sitemap: https://pinewoodhotel.vn/sitemap.xml' in robots
-
           required_routes = [
-              'index.html', 'en/index.html',
-              'phong/index.html', 'en/rooms/index.html',
-              'gallery/index.html', 'en/gallery/index.html',
-              'vi-tri/index.html', 'en/location/index.html',
-              'dich-vu/index.html', 'en/services/index.html',
-              'lien-he/index.html', 'en/contact/index.html',
-              'wifi/index.html', 'en/wifi/index.html',
-              'bua-sang/index.html', 'en/breakfast/index.html',
-              'thu-chao-mung/index.html', 'en/welcome/index.html',
-              'noi-quy/index.html', 'en/hotel-rules/index.html',
-              'an-toan/index.html', 'en/safety/index.html',
-              'moi-truong/index.html', 'en/environment/index.html',
-              'thong-tin/index.html', 'en/hotel-information/index.html',
+              'index.html','en/index.html','phong/index.html','en/rooms/index.html','gallery/index.html','en/gallery/index.html',
+              'vi-tri/index.html','en/location/index.html','dich-vu/index.html','en/services/index.html','lien-he/index.html','en/contact/index.html',
+              'wifi/index.html','en/wifi/index.html','bua-sang/index.html','en/breakfast/index.html','thu-chao-mung/index.html','en/welcome/index.html',
+              'noi-quy/index.html','en/hotel-rules/index.html','an-toan/index.html','en/safety/index.html','moi-truong/index.html','en/environment/index.html',
+              'thong-tin/index.html','en/hotel-information/index.html'
           ]
           missing = [p for p in required_routes if not Path(p).exists()]
           assert not missing, missing
-
           sitemap_text = Path('sitemap.xml').read_text()
-          for forbidden in ['/wifi/', '/bua-sang/', '/thu-chao-mung/', '/noi-quy/', '/an-toan/', '/thong-tin/']:
+          for forbidden in ['/wifi/','/bua-sang/','/thu-chao-mung/','/noi-quy/','/an-toan/','/thong-tin/']:
               assert f'<loc>https://pinewoodhotel.vn{forbidden}' not in sitemap_text
-
           layout = Path('_layouts/app.html').read_text()
           assert 'LocalBusiness' not in layout
           assert 'Air conditioning' not in layout
           assert 'Ngủ ngon · Ấm áp · Đậm chất Đà Lạt' in layout
           assert 'availableLanguage' in layout
           assert 'page.x_default | default: page.alternate_vi' in layout
-
           for p in ['wifi/index.html','en/wifi/index.html','bua-sang/index.html','en/breakfast/index.html','thu-chao-mung/index.html','en/welcome/index.html','noi-quy/index.html','en/hotel-rules/index.html','an-toan/index.html','en/safety/index.html','thong-tin/index.html','en/hotel-information/index.html']:
-              text = Path(p).read_text()
-              assert 'noindex,follow' in text, p
+              assert 'noindex,follow' in Path(p).read_text(), p
           PY
           git diff --check
 
@@ -185,9 +156,5 @@ robots: noindex,follow
             thu-chao-mung/index.html noi-quy/index.html bua-sang/index.html an-toan/index.html thong-tin/index.html \
             en/welcome/index.html en/hotel-rules/index.html en/breakfast/index.html en/safety/index.html en/hotel-information/index.html \
             .github/workflows/p0-seo-hardening.yml
-          if git diff --cached --quiet; then
-            echo 'No P0 changes required.'
-            exit 0
-          fi
           git commit -m 'P0: harden technical SEO and direct-route metadata'
           git push origin HEAD:main
