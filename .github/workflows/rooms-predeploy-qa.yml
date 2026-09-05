@@ -20,7 +20,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          gem install --no-document jekyll
+          gem install --user-install --no-document jekyll
+          export PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"
           jekyll build --source . --destination _site
           test -f _site/phong/index.html
           test -f _site/en/rooms/index.html
@@ -48,8 +49,7 @@ jobs:
           for html_path in ['_site/phong/index.html','_site/en/rooms/index.html']:
               html=Path(html_path).read_text(encoding='utf-8')
               for name in expected:
-                  if name.endswith('-960.webp') or name.endswith('-1920.webp'):
-                      assert name in html, (html_path, name)
+                  assert name in html, (html_path, name)
               assert 'loading="lazy"' in html
               assert 'decoding="async"' in html
               assert 'srcset=' in html and 'sizes=' in html
