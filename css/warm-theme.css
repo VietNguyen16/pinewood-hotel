@@ -1,0 +1,154 @@
+/* Pinewood unified warm background theme. Keep brand green/gold accents, warm every page surface. */
+:root {
+  --pine-offwhite: #F3E7CE;
+  --pine-warm-bg: #F3E7CE;
+  --pine-warm-bg-soft: #F8EEDB;
+  --pine-warm-surface: #FBF2DE;
+  --pine-warm-surface-strong: #F6E6C7;
+}
+
+html,
+body {
+  background: var(--pine-warm-bg);
+}
+
+body {
+  background: linear-gradient(180deg, #F8EFDC 0%, #F3E7CE 58%, #EFE0C0 100%);
+}
+
+.site-header,
+.mobile-menu {
+  background: rgba(248, 239, 220, .96);
+}
+
+.language-switcher {
+  background: var(--pine-warm-surface);
+}
+
+/* Lower the homepage forest slightly so more pine silhouettes remain visible. */
+.hero {
+  background-color: var(--pine-warm-bg);
+  background-position: center calc(100% + 30px);
+}
+
+.hero::before {
+  background: radial-gradient(
+    circle at 50% 24%,
+    rgba(255, 248, 232, .94),
+    rgba(252, 241, 217, .56) 42%,
+    rgba(243, 231, 206, .16)
+  );
+}
+
+.directory-panel,
+.content-card,
+.rule-card,
+.service-card,
+.feature-panel:not(.accent),
+.contact-panel,
+.full-info details,
+.assistance-dialog,
+.contact-location,
+.welcome-dialog {
+  background: var(--pine-warm-surface);
+}
+
+.directory-card {
+  background: linear-gradient(180deg, #FCF4E3 0%, #F6E7C9 100%);
+}
+
+.page-hero {
+  background: linear-gradient(180deg, #EEDDBB 0%, #F8EEDB 100%);
+}
+
+.wifi-box,
+.wifi-status,
+.contact-map-wrap {
+  background: var(--pine-warm-surface-strong);
+}
+
+.footer-inner img,
+.welcome-dialog-close,
+.wifi-secondary-button,
+.wifi-qr-panel {
+  background: var(--pine-warm-surface);
+}
+
+.welcome-letter-frame {
+  background: linear-gradient(180deg, rgba(255, 247, 229, .90), rgba(246, 230, 199, .97));
+}
+
+.hotel-experience-section {
+  background: linear-gradient(180deg, #F7ECD5 0%, var(--pine-warm-bg) 100%);
+}
+
+.wifi-option2-access {
+  background: linear-gradient(180deg, #FBF2DE 0%, #F5E5C5 100%);
+}
+
+.wifi-credential-card {
+  background: #F2E2C3;
+}
+
+.wifi-credential-icon,
+.wifi-premium-qr-card,
+.wifi-logo-medallion {
+  background-color: var(--pine-warm-surface);
+}
+
+.wifi-premium-qr-card {
+  background-image: radial-gradient(circle at 50% 0%, rgba(178,142,105,.10), transparent 32%);
+}
+
+.wifi-option2-access .wifi-logo-medallion {
+  background: var(--pine-warm-surface);
+}
+
+/* Marketing / indexable pages */
+html body.marketing-page {
+  background: linear-gradient(180deg, #F8EEDB 0%, #F3E7CE 52%, #EFE0C0 100%);
+}
+
+.seo-marketing-section {
+  background: linear-gradient(180deg, #F8EEDB 0%, #F1E1C2 100%);
+}
+
+.seo-marketing-card,
+.seo-faq details,
+.marketing-panel,
+.hotel-photo-card,
+.hotel-photo-card figcaption,
+.seo-social-strip a,
+.social-button,
+.hotel-fact {
+  background: var(--pine-warm-surface);
+}
+
+html body.marketing-page .marketing-hero {
+  background: linear-gradient(180deg, #EEDDBB 0%, #F8EEDB 100%);
+}
+
+.location-landmarks span,
+.hotel-photo-card img {
+  background-color: var(--pine-warm-surface-strong);
+}
+
+/* Room/gallery stylesheet loads later; use stronger selectors for one consistent surface. */
+body.marketing-page .room-gallery-section {
+  background: transparent;
+}
+
+body.marketing-page .room-gallery-card,
+body.marketing-page .room-gallery-card figcaption {
+  background: var(--pine-warm-surface);
+}
+
+body.marketing-page .room-gallery-image {
+  background: var(--pine-warm-surface-strong);
+}
+
+@media (max-width: 720px) {
+  .hero {
+    background-position: center calc(100% + 18px);
+  }
+}
