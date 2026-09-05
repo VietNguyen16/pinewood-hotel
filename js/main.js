@@ -93,7 +93,7 @@
             <p class="eyebrow">${esc(c.ui.welcomeTo)}</p>
             <h1>PINEWOOD HOTEL<span>DALAT</span></h1>
             <div class="ornament"><span></span></div>
-            <p class="hero-copy">${esc(state.lang === 'vi' ? 'Chào mừng Quý khách đến với Pinewood Hotel Dalat' : 'Welcome to Pinewood Hotel Dalat')}</p>
+            <p class="hero-copy">${esc(state.lang === 'vi' ? 'Ngủ ngon · Ấm áp · Đậm chất Đà Lạt' : 'Sleep Well · Stay Warm · Feel Dalat')}</p>
             <p class="hero-copy">${esc(c.ui.guestInformation)}</p>
           </div>
         </div>
@@ -162,13 +162,13 @@
                 <span class="wifi-credential-icon">${icon('wifi')}</span>
                 <div><span>${esc(c.ui.network)}</span><strong>${esc(CONFIG.wifi.ssid)}</strong></div>
               </div>
+              <div class="wifi-credentials-logo" aria-label="Pinewood Hotel Dalat"><img src="/assets/logo/pinewood-logo.svg" alt="Pinewood Hotel Dalat" width="52" height="56"></div>
               <div class="wifi-credential-card">
                 <span class="wifi-credential-icon">${icon('shield')}</span>
                 <div><span>${esc(c.ui.password)}</span><strong>${esc(CONFIG.wifi.password)}</strong></div>
               </div>
             </div>
             <div class="wifi-premium-qr-card">
-              <div class="wifi-logo-medallion" aria-hidden="true"><img src="/assets/logo/pinewood-logo.svg" alt=""></div>
               <img class="wifi-page-qr" src="/assets/qr/wifi-pinewood.svg" alt="Wi-Fi QR - Pinewood Hotel Dalat">
               <div class="wifi-qr-divider" aria-hidden="true"><span></span></div>
               <strong>Pinewood Hotel Dalat</strong>
