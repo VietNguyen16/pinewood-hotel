@@ -67,7 +67,7 @@
     upsertLink('link[rel="canonical"]', 'canonical', canonical);
     upsertLink('link[rel="alternate"][hreflang="vi"]', 'alternate', absolute(data.vi), 'vi');
     upsertLink('link[rel="alternate"][hreflang="en"]', 'alternate', absolute(data.en), 'en');
-    upsertLink('link[rel="alternate"][hreflang="x-default"]', 'alternate', `${BASE}/`, 'x-default');
+    upsertLink('link[rel="alternate"][hreflang="x-default"]', 'alternate', absolute(data.vi), 'x-default');
   }
 
   window.PINEWOOD_APPLY_SEO = apply;

@@ -23,7 +23,7 @@
   <link rel="canonical" href="{{ page.canonical }}">
   <link rel="alternate" hreflang="vi" href="{{ page.alternate_vi }}">
   <link rel="alternate" hreflang="en" href="{{ page.alternate_en }}">
-  <link rel="alternate" hreflang="x-default" href="https://pinewoodhotel.vn/">
+  <link rel="alternate" hreflang="x-default" href="{{ page.x_default | default: page.alternate_vi | default: 'https://pinewoodhotel.vn/' }}">
   <link rel="icon" type="image/svg+xml" href="/assets/logo/pinewood-logo.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,10 +45,11 @@
         "image":"https://pinewoodhotel.vn/assets/images/pinewood-room-home.webp",
         "telephone":"+84785098686",
         "email":"info@pinewoodhotel.vn",
-        "slogan":"Ngủ ngon - Ấm áp - Đậm chất Đà Lạt",
+        "slogan":"Ngủ ngon · Ấm áp · Đậm chất Đà Lạt",
         "numberOfRooms":50,
         "checkinTime":"14:00",
         "checkoutTime":"12:00",
+        "availableLanguage":["vi","en"],
         "address":{"@type":"PostalAddress","streetAddress":"54 Đường Võ Trường Toản","addressLocality":"Đà Lạt","addressRegion":"Lâm Đồng","addressCountry":"VN"},
         "sameAs":["https://www.instagram.com/pinewooddalat/","https://www.tiktok.com/@dalat.pinewood"],
         "hasMap":"https://www.google.com/maps/dir/?api=1&destination=Pinewood%20Hotel%20Dalat%2C%2054%20%C4%90%C6%B0%E1%BB%9Dng%20V%C3%B5%20Tr%C6%B0%E1%BB%9Dng%20To%E1%BA%A3n%2C%20%C4%90%C3%A0%20L%E1%BA%A1t%2C%20L%C3%A2m%20%C4%90%E1%BB%93ng%2C%20Vi%E1%BB%87t%20Nam",
@@ -56,8 +57,7 @@
         "amenityFeature":[
           {"@type":"LocationFeatureSpecification","name":"Free Wi-Fi","value":true},
           {"@type":"LocationFeatureSpecification","name":"Breakfast","value":true},
-          {"@type":"LocationFeatureSpecification","name":"Restaurant","value":true},
-          {"@type":"LocationFeatureSpecification","name":"Air conditioning","value":true}
+          {"@type":"LocationFeatureSpecification","name":"Restaurant","value":true}
         ]
       },
       {"@type":"WebSite","@id":"https://pinewoodhotel.vn/#website","url":"https://pinewoodhotel.vn/","name":"Pinewood Hotel Dalat","publisher":{"@id":"https://pinewoodhotel.vn/#hotel"},"inLanguage":["vi","en"]},
@@ -104,7 +104,7 @@
       <img src="/assets/logo/pinewood-logo.svg" alt="Pinewood Hotel" width="64" height="69" loading="lazy">
       <div class="footer-copy">
         <strong>Pinewood Hotel Dalat</strong>
-        <p id="footer-line" class="footer-slogan-link">{% if page.lang == 'en' %}Sleep Well - Stay Warm - Feel Dalat{% else %}Ngủ ngon - Ấm áp - Đậm chất Đà Lạt{% endif %}</p>
+        <p id="footer-line" class="footer-slogan-link">{% if page.lang == 'en' %}Sleep Well · Stay Warm · Feel Dalat{% else %}Ngủ ngon · Ấm áp · Đậm chất Đà Lạt{% endif %}</p>
         <div class="footer-contacts" aria-label="Pinewood Hotel contact information">
           <a class="footer-contact" href="tel:+84785098686"><span>0785 098 686</span></a>
           <a class="footer-contact" href="mailto:info@pinewoodhotel.vn"><span>info@pinewoodhotel.vn</span></a>
