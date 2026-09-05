@@ -1,0 +1,176 @@
+name: Deploy room gallery HQ v4
+
+on:
+  push:
+    branches:
+      - room-gallery-hq-v2
+    paths:
+      - .asset-room-upload-q84/DEPLOY-V4
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: room-gallery-hq-v2
+          fetch-depth: 0
+
+      - name: Rebuild validated HQ gallery images
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64, hashlib, itertools, re
+
+          specs = {
+              'amenities': ('44a1d8e6d0b53ff2d3e82d2a659b50efa487dbcc09db83887e2a8a1c7dd638cd', 160792),
+              'bedroom': ('27173164a16ec3e6db3bf53aed0e964911b1ce7ad50eddd6e84c3882f8979885', 146756),
+              'bathroom': ('ba89308bd6515561c560643dd6143259fdb124d90c89f1b4308a05b34e56a673', 195946),
+          }
+
+          roots = {
+              'amenities': [Path('.asset-room-upload-q84/amenities')],
+              'bedroom': [Path('.asset-room-upload-q84/bedroom')],
+              'bathroom': [Path('.asset-room-upload-q84/bathroom'), Path('.asset-room-upload-q84/bathroom-clean')],
+          }
+
+          def clean_text(p):
+              return re.sub(r'\s+', '', p.read_text())
+
+          def decode_whole(files):
+              text = ''.join(clean_text(p) for p in files)
+              try:
+                  return base64.b64decode(text, validate=True)
+              except Exception:
+                  return None
+
+          def decode_parts(files):
+              out = bytearray()
+              try:
+                  for p in files:
+                      t = clean_text(p)
+                      out.extend(base64.b64decode(t + '=' * ((-len(t)) % 4), validate=False))
+                  return bytes(out)
+              except Exception:
+                  return None
+
+          def find_expected(name):
+              expected_sha, expected_size = specs[name]
+              groups = []
+              for root in roots[name]:
+                  files = sorted(root.glob('part-*'))
+                  if files:
+                      groups.append(files)
+              all_groups = list(groups)
+              if len(groups) > 1:
+                  all_groups.append(sorted(sum(groups, []), key=lambda p: (p.parent.name, p.name)))
+
+              checked = 0
+              for files in all_groups:
+                  n = len(files)
+                  candidates = [(0, n)]
+                  if n <= 40:
+                      candidates += [(i, j) for i in range(n) for j in range(i + 1, n + 1)]
+                  seen = set()
+                  for i, j in candidates:
+                      key = (i, j)
+                      if key in seen:
+                          continue
+                      seen.add(key)
+                      subset = files[i:j]
+                      for method in (decode_whole, decode_parts):
+                          raw = method(subset)
+                          if raw is None:
+                              continue
+                          checked += 1
+                          if len(raw) == expected_size and hashlib.sha256(raw).hexdigest() == expected_sha:
+                              print(name, 'matched', method.__name__, [str(p) for p in subset])
+                              return raw
+              raise SystemExit(f'{name}: expected HQ asset not found after {checked} candidates')
+
+          outdir = Path('/tmp/room-hq')
+          outdir.mkdir(parents=True, exist_ok=True)
+          for name in specs:
+              raw = find_expected(name)
+              p = outdir / f'{name}.webp'
+              p.write_bytes(raw)
+              print(name, len(raw), hashlib.sha256(raw).hexdigest())
+          PY
+
+          file /tmp/room-hq/amenities.webp | grep -q '1920x1920'
+          file /tmp/room-hq/bedroom.webp | grep -q '1920x1920'
+          file /tmp/room-hq/bathroom.webp | grep -q '1920x1920'
+
+      - name: Patch production main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git worktree add /tmp/pinewood-main origin/main
+          cp /tmp/room-hq/amenities.webp /tmp/pinewood-main/assets/images/pinewood-room-amenities-hq.webp
+          cp /tmp/room-hq/bedroom.webp /tmp/pinewood-main/assets/images/pinewood-room-bedroom-hq.webp
+          cp /tmp/room-hq/bathroom.webp /tmp/pinewood-main/assets/images/pinewood-room-bathroom-hq.webp
+          cp css/room-gallery-hq.css /tmp/pinewood-main/css/room-gallery-hq.css
+          cp js/room-gallery.js /tmp/pinewood-main/js/room-gallery.js
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          root = Path('/tmp/pinewood-main')
+          data = {
+            'phong/index.html': {
+              'eyebrow':'CHI TIẾT PHÒNG','title':'Thêm góc nhìn về không gian lưu trú','desc':'Khám phá khu vực nghỉ ngơi, tiện nghi trong phòng và phòng tắm được chuẩn bị cho một kỳ nghỉ thoải mái tại Đà Lạt.',
+              'cards':[
+                ('bedroom','Không gian nghỉ ngơi','Hai giường, nội thất ấm áp và nhiều ánh sáng.','Phòng hai giường sáng thoáng tại Pinewood Hotel Dalat'),
+                ('amenities','Tiện nghi được chuẩn bị','Những chi tiết thiết thực cho kỳ lưu trú thuận tiện.','Tiện nghi trong phòng tại Pinewood Hotel Dalat'),
+                ('bathroom','Phòng tắm riêng','Không gian sạch sẽ, thoải mái và đầy đủ tiện nghi cơ bản.','Phòng tắm tại Pinewood Hotel Dalat')],
+              'dialog':'Trình xem ảnh phòng','close':'Đóng ảnh lớn','view':'Xem ảnh lớn:'
+            },
+            'en/rooms/index.html': {
+              'eyebrow':'ROOM DETAILS','title':'More views of the Pinewood stay','desc':'Explore the sleeping area, in-room amenities and bathroom details prepared for a comfortable stay in Da Lat.',
+              'cards':[
+                ('bedroom','Bright sleeping space','Twin beds, warm finishes and natural light.','Bright twin guest room at Pinewood Hotel Dalat'),
+                ('amenities','Prepared amenities','Useful room details arranged for an easy stay.','In-room amenities at Pinewood Hotel Dalat'),
+                ('bathroom','Private bathroom','A clean, comfortable bathroom with essential amenities.','Guest bathroom at Pinewood Hotel Dalat')],
+              'dialog':'Room photo viewer','close':'Close full image','view':'View full image:'
+            }
+          }
+
+          for rel, cfg in data.items():
+              p = root / rel
+              s = p.read_text()
+              cards = []
+              for key, title, desc, alt in cfg['cards']:
+                  cards.append(f'<figure class="room-gallery-card"><a class="room-gallery-image" href="/assets/images/pinewood-room-{key}-hq.webp?v=20260905c" data-room-lightbox data-title="{title}" aria-label="{cfg["view"]} {title}"><img src="/assets/images/pinewood-room-{key}-hq.webp?v=20260905c" width="1920" height="1920" loading="lazy" decoding="async" alt="{alt}"></a><figcaption><strong>{title}</strong><span>{desc}</span></figcaption></figure>')
+              block = f'<section class="marketing-section room-gallery-section" aria-labelledby="room-gallery-title"><div class="shell"><header class="room-gallery-head"><p class="eyebrow">{cfg["eyebrow"]}</p><h2 id="room-gallery-title">{cfg["title"]}</h2><p>{cfg["desc"]}</p></header><div class="room-gallery-grid">{"".join(cards)}</div></div></section><dialog class="room-lightbox" id="room-lightbox" aria-label="{cfg["dialog"]}"><button class="room-lightbox-close" id="room-lightbox-close" type="button" aria-label="{cfg["close"]}">×</button><img class="room-lightbox-image" id="room-lightbox-image" alt=""><p class="room-lightbox-caption" id="room-lightbox-caption"></p></dialog>'
+              s, n = re.subn(r'<section class="marketing-section room-gallery-section".*?</section>', block, s, count=1, flags=re.S)
+              if n != 1:
+                  raise SystemExit(f'Gallery section not found in {rel}')
+              if '/css/room-gallery-hq.css' not in s:
+                  s += '\n<link rel="stylesheet" href="/css/room-gallery-hq.css?v=20260905c">\n'
+              if '/js/room-gallery.js' not in s:
+                  s += '\n<script src="/js/room-gallery.js?v=20260905c" defer></script>\n'
+              p.write_text(s)
+          PY
+
+          cd /tmp/pinewood-main
+          grep -q 'pinewood-room-bedroom-hq.webp' phong/index.html
+          grep -q 'data-room-lightbox' phong/index.html
+          grep -q 'pinewood-room-bedroom-hq.webp' en/rooms/index.html
+          grep -q 'data-room-lightbox' en/rooms/index.html
+          test "$(wc -c < assets/images/pinewood-room-bedroom-hq.webp)" -eq 146756
+          test "$(wc -c < assets/images/pinewood-room-amenities-hq.webp)" -eq 160792
+          test "$(wc -c < assets/images/pinewood-room-bathroom-hq.webp)" -eq 195946
+
+          git switch -C main origin/main
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add phong/index.html en/rooms/index.html css/room-gallery-hq.css js/room-gallery.js assets/images/pinewood-room-bedroom-hq.webp assets/images/pinewood-room-amenities-hq.webp assets/images/pinewood-room-bathroom-hq.webp
+          git commit -m 'Fix room gallery with verified 1920px images and lightbox'
+          git push origin main
