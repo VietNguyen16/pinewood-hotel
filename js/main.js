@@ -257,8 +257,7 @@
   function render() {
     const c = CONTENT[state.lang];
     document.documentElement.lang = state.lang;
-    document.title = `${CONFIG.name} · ${state.key === 'home' ? c.ui.guestInformation : c.ui[state.key] || CONFIG.name}`;
-    document.querySelector('meta[name="description"]').setAttribute('content', c.metaDescription);
+    if (typeof window.PINEWOOD_APPLY_SEO === 'function') window.PINEWOOD_APPLY_SEO(window.location.pathname);
     renderNav();
     const brandLink = document.querySelector('.brand');
     if (brandLink) brandLink.setAttribute('href', pathTable[state.lang].home);
