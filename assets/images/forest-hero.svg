@@ -3,14 +3,14 @@
   <desc id="desc">A soft layered pine forest inspired by Da Lat, using Pinewood Hotel brand colors.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#F7F3EA"/>
-      <stop offset="0.68" stop-color="#F7F3EA" stop-opacity="0.9"/>
-      <stop offset="1" stop-color="#FCF9F2" stop-opacity="0"/>
+      <stop offset="0" stop-color="#FBF9F4"/>
+      <stop offset="0.68" stop-color="#FBF9F4" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#FFFCF7" stop-opacity="0"/>
     </linearGradient>
     <linearGradient id="mist" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#FCF9F2" stop-opacity="0.96"/>
-      <stop offset="0.5" stop-color="#F5EFE4" stop-opacity="0.26"/>
-      <stop offset="1" stop-color="#FCF9F2" stop-opacity="0.92"/>
+      <stop offset="0" stop-color="#FFFCF7" stop-opacity="0.96"/>
+      <stop offset="0.5" stop-color="#F9F5EE" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#FFFCF7" stop-opacity="0.92"/>
     </linearGradient>
     <g id="pine">
       <path d="M50 0 L84 72 H66 L96 134 H72 L110 214 H-10 L28 134 H4 L34 72 H16 Z" fill="currentColor"/>
