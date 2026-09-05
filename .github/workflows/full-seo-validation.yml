@@ -1,0 +1,168 @@
+name: Full SEO validation
+
+on:
+  push:
+    branches:
+      - full-seo-validation-20260905
+    paths:
+      - .github/workflows/full-seo-validation.yml
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Canonical hreflang noindex production audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import urllib.request
+          from html.parser import HTMLParser
+
+          BASE='https://pinewoodhotel.vn'
+          pairs = [
+            ('/','/en/'),('/phong/','/en/rooms/'),('/gallery/','/en/gallery/'),
+            ('/vi-tri/','/en/location/'),('/dich-vu/','/en/services/'),('/lien-he/','/en/contact/'),
+            ('/moi-truong/','/en/environment/'),('/wifi/','/en/wifi/'),('/bua-sang/','/en/breakfast/'),
+            ('/thu-chao-mung/','/en/welcome/'),('/noi-quy/','/en/hotel-rules/'),('/an-toan/','/en/safety/'),
+            ('/thong-tin/','/en/hotel-information/')
+          ]
+          noindex = {p for pair in pairs[7:] for p in pair}
+
+          class Head(HTMLParser):
+            def __init__(self):
+              super().__init__(); self.links=[]; self.metas=[]; self.in_head=False
+            def handle_starttag(self, tag, attrs):
+              d=dict(attrs)
+              if tag=='head': self.in_head=True
+              if not self.in_head: return
+              if tag=='link': self.links.append(d)
+              if tag=='meta': self.metas.append(d)
+            def handle_endtag(self, tag):
+              if tag=='head': self.in_head=False
+
+          def absolute(path): return BASE + path
+          failures=[]
+          for vi,en in pairs:
+            for route,lang in [(vi,'vi'),(en,'en')]:
+              req=urllib.request.Request(absolute(route), headers={'User-Agent':'PinewoodSEOQA/1.0'})
+              with urllib.request.urlopen(req, timeout=30) as r:
+                assert r.status==200, (route,r.status)
+                html=r.read().decode('utf-8','replace')
+              p=Head(); p.feed(html)
+              canon=[x.get('href') for x in p.links if x.get('rel')=='canonical']
+              alts={x.get('hreflang'):x.get('href') for x in p.links if x.get('rel')=='alternate' and x.get('hreflang')}
+              robots=[x.get('content','') for x in p.metas if x.get('name')=='robots']
+              expected_canon=absolute(route)
+              expected_vi=absolute(vi); expected_en=absolute(en)
+              if canon != [expected_canon]: failures.append((route,'canonical',canon,expected_canon))
+              if alts.get('vi') != expected_vi: failures.append((route,'hreflang vi',alts.get('vi'),expected_vi))
+              if alts.get('en') != expected_en: failures.append((route,'hreflang en',alts.get('en'),expected_en))
+              if not alts.get('x-default'): failures.append((route,'x-default missing',alts,None))
+              if route in noindex:
+                if not robots or 'noindex' not in robots[0] or 'follow' not in robots[0]:
+                  failures.append((route,'robots noindex,follow',robots,'noindex,follow'))
+              else:
+                if robots and 'noindex' in robots[0]: failures.append((route,'unexpected noindex',robots,None))
+              print(f'OK {route} canonical={canon[0] if canon else None} vi={alts.get("vi")} en={alts.get("en")} x-default={alts.get("x-default")} robots={robots[0] if robots else None}')
+          if failures:
+            print('FAILURES:')
+            for f in failures: print(f)
+            raise SystemExit(1)
+          print(f'PASS: canonical/hreflang/noindex on {len(pairs)*2} production routes')
+          PY
+
+      - name: Validate Hotel JSON-LD
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm --silent exec --yes --package=schemacraft-validator -- schemacraft-validator check https://pinewoodhotel.vn/ --format json > /tmp/schema.json
+          cat /tmp/schema.json
+          python3 - <<'PY'
+          import json
+          data=json.load(open('/tmp/schema.json'))
+          assert data.get('isValid') is True, data
+          assert data.get('summary',{}).get('errorCount') == 0, data
+          types=set(data.get('summary',{}).get('types',[]))
+          assert 'Hotel' in types, types
+          print('PASS: Schema.org validation reports zero errors and includes Hotel')
+          PY
+
+      - name: Runtime image attribute audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/imgqa && cd /tmp/imgqa
+          npm init -y >/dev/null 2>&1
+          npm install --silent puppeteer-core >/dev/null 2>&1
+          CHROME=$(command -v google-chrome-stable || command -v google-chrome || command -v chromium || true)
+          test -n "$CHROME"
+          cat > audit.mjs <<'JS'
+          import puppeteer from 'puppeteer-core';
+          const chrome=process.env.CHROME;
+          const browser=await puppeteer.launch({executablePath:chrome,headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
+          const routes=['/','/en/','/phong/','/en/rooms/','/gallery/','/en/gallery/','/vi-tri/','/en/location/','/dich-vu/','/en/services/','/lien-he/','/en/contact/','/moi-truong/','/en/environment/','/wifi/','/en/wifi/','/bua-sang/','/en/breakfast/','/thu-chao-mung/','/en/welcome/','/noi-quy/','/en/hotel-rules/','/an-toan/','/en/safety/','/thong-tin/','/en/hotel-information/'];
+          const issues=[];
+          for (const route of routes){
+            const page=await browser.newPage();
+            await page.setViewport({width:390,height:844,deviceScaleFactor:1});
+            await page.goto('https://pinewoodhotel.vn'+route,{waitUntil:'networkidle2',timeout:45000});
+            const rows=await page.evaluate(()=>[...document.images].map(img=>{
+              const r=img.getBoundingClientRect();
+              return {src:img.getAttribute('src')||'',srcset:img.getAttribute('srcset')||'',sizes:img.getAttribute('sizes')||'',width:img.getAttribute('width')||'',height:img.getAttribute('height')||'',loading:img.getAttribute('loading')||'',top:r.top,naturalWidth:img.naturalWidth,naturalHeight:img.naturalHeight,complete:img.complete};
+            }));
+            for (const x of rows){
+              if(!x.src || x.src.endsWith('.svg') || x.src.includes('/logo/') || x.src.includes('/qr/')) continue;
+              const photo=x.src.includes('/assets/images/');
+              if(!photo) continue;
+              if(!x.complete || !x.naturalWidth || !x.naturalHeight) issues.push([route,'decode/load',x]);
+              if(!x.width || !x.height) issues.push([route,'missing width/height',x]);
+              if(x.naturalWidth>=600 && (!x.srcset || !x.sizes)) issues.push([route,'missing srcset/sizes',x]);
+              if(x.top>=844 && x.loading!=='lazy') issues.push([route,'below-fold not lazy',x]);
+            }
+            console.log('IMAGE ROUTE',route,JSON.stringify(rows.filter(x=>x.src.includes('/assets/images/'))));
+            await page.close();
+          }
+          await browser.close();
+          console.log('IMAGE_ISSUES',JSON.stringify(issues,null,2));
+          process.exitCode = issues.length ? 3 : 0;
+          JS
+          CHROME="$CHROME" node audit.mjs || status=$?
+          if [ "${status:-0}" -eq 3 ]; then
+            echo 'IMAGE AUDIT FOUND ISSUES (reported above)'
+            exit 3
+          fi
+
+      - name: Lighthouse mobile Home Rooms VI EN
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --silent --no-save lighthouse >/dev/null 2>&1
+          CHROME=$(command -v google-chrome-stable || command -v google-chrome || command -v chromium || true)
+          test -n "$CHROME"
+          urls=(
+            'https://pinewoodhotel.vn/'
+            'https://pinewoodhotel.vn/phong/'
+            'https://pinewoodhotel.vn/en/'
+            'https://pinewoodhotel.vn/en/rooms/'
+          )
+          i=0
+          for url in "${urls[@]}"; do
+            i=$((i+1))
+            npx lighthouse "$url" --quiet --chrome-path="$CHROME" --chrome-flags='--headless --no-sandbox --disable-dev-shm-usage' --only-categories=performance,accessibility,best-practices,seo --output=json --output-path="/tmp/lh-$i.json"
+          done
+          python3 - <<'PY'
+          import json
+          for i,url in enumerate(['home-vi','rooms-vi','home-en','rooms-en'],1):
+            d=json.load(open(f'/tmp/lh-{i}.json'))
+            c=d['categories']; a=d['audits']
+            scores={k:round(c[k]['score']*100) for k in ['performance','accessibility','best-practices','seo']}
+            metrics={k:a[k].get('displayValue') for k in ['first-contentful-paint','largest-contentful-paint','cumulative-layout-shift','total-blocking-time']}
+            print('LIGHTHOUSE',url,scores,metrics)
+          PY
