@@ -1,3 +1,4 @@
+{% assign page_og_image = page.og_image | default: 'https://pinewoodhotel.vn/assets/images/pinewood-room-home.webp' %}
 <!doctype html>
 <html lang="{{ page.lang | default: 'vi' }}">
 <head>
@@ -12,14 +13,14 @@
   <meta property="og:title" content="{{ page.title | escape }}">
   <meta property="og:description" content="{{ page.description | escape }}">
   <meta property="og:url" content="{{ page.canonical }}">
-  <meta property="og:image" content="https://pinewoodhotel.vn/assets/images/pinewood-room-home.webp">
+  <meta property="og:image" content="{{ page_og_image }}">
   <meta property="og:image:alt" content="Pinewood Hotel Dalat">
   <meta property="og:locale" content="{% if page.lang == 'en' %}en_US{% else %}vi_VN{% endif %}">
   <meta property="og:locale:alternate" content="{% if page.lang == 'en' %}vi_VN{% else %}en_US{% endif %}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{{ page.title | escape }}">
   <meta name="twitter:description" content="{{ page.description | escape }}">
-  <meta name="twitter:image" content="https://pinewoodhotel.vn/assets/images/pinewood-room-home.webp">
+  <meta name="twitter:image" content="{{ page_og_image }}">
   <link rel="canonical" href="{{ page.canonical }}">
   <link rel="alternate" hreflang="vi" href="{{ page.alternate_vi }}">
   <link rel="alternate" hreflang="en" href="{{ page.alternate_en }}">
@@ -53,9 +54,10 @@
         "checkoutTime":"12:00",
         "availableLanguage":["vi","en"],
         "address":{"@type":"PostalAddress","streetAddress":"54 Đường Võ Trường Toản","addressLocality":"Đà Lạt","addressRegion":"Lâm Đồng","addressCountry":"VN"},
+        "geo":{"@type":"GeoCoordinates","latitude":11.9611181,"longitude":108.4512011},
         "sameAs":["https://www.instagram.com/pinewooddalat/","https://www.tiktok.com/@dalat.pinewood"],
-        "hasMap":"https://www.google.com/maps/dir/?api=1&destination=Pinewood%20Hotel%20Dalat%2C%2054%20%C4%90%C6%B0%E1%BB%9Dng%20V%C3%B5%20Tr%C6%B0%E1%BB%9Dng%20To%E1%BA%A3n%2C%20%C4%90%C3%A0%20L%E1%BA%A1t%2C%20L%C3%A2m%20%C4%90%E1%BB%93ng%2C%20Vi%E1%BB%87t%20Nam",
-        "contactPoint":{"@type":"ContactPoint","telephone":"+84785098686","contactType":"customer service","availableLanguage":["Vietnamese","English"]},
+        "hasMap":"https://www.google.com/maps/place/Kh%C3%A1ch+s%E1%BA%A1n+Pinewood/@11.9611181,108.4486208,1207m/data=!3m1!1e3!4m11!3m10!1s0x3171130010cadc19:0xdcb299e4322ab577!5m2!4m1!1i2!8m2!3d11.9611181!4d108.4512011!9m1!1b1!16s%2Fg%2F11njdj19vf",
+        "contactPoint":{"@type":"ContactPoint","telephone":"+84785098686","contactType":"customer service","availableLanguage":["vi","en"]},
         "amenityFeature":[
           {"@type":"LocationFeatureSpecification","name":"Free Wi-Fi","value":true},
           {"@type":"LocationFeatureSpecification","name":"Breakfast","value":true},
@@ -63,7 +65,7 @@
         ]
       },
       {"@type":"WebSite","@id":"https://pinewoodhotel.vn/#website","url":"https://pinewoodhotel.vn/","name":"Pinewood Hotel Dalat","publisher":{"@id":"https://pinewoodhotel.vn/#hotel"},"inLanguage":["vi","en"]},
-      {"@type":"WebPage","@id":"{{ page.canonical }}#webpage","url":"{{ page.canonical }}","name":{{ page.title | jsonify }},"description":{{ page.description | jsonify }},"inLanguage":"{{ page.lang }}","isPartOf":{"@id":"https://pinewoodhotel.vn/#website"},"about":{"@id":"https://pinewoodhotel.vn/#hotel"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://pinewoodhotel.vn/assets/images/pinewood-room-home.webp"}}{% if page.breadcrumb_name %},
+      {"@type":"WebPage","@id":"{{ page.canonical }}#webpage","url":"{{ page.canonical }}","name":{{ page.title | jsonify }},"description":{{ page.description | jsonify }},"inLanguage":"{{ page.lang }}","isPartOf":{"@id":"https://pinewoodhotel.vn/#website"},"about":{"@id":"https://pinewoodhotel.vn/#hotel"},"primaryImageOfPage":{"@type":"ImageObject","url":"{{ page_og_image }}"}}{% if page.breadcrumb_name %},
       {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"{% if page.lang == 'en' %}Home{% else %}Trang chủ{% endif %}","item":"{% if page.lang == 'en' %}https://pinewoodhotel.vn/en/{% else %}https://pinewoodhotel.vn/{% endif %}"},{"@type":"ListItem","position":2,"name":{{ page.breadcrumb_name | jsonify }},"item":"{{ page.canonical }}"}]}{% endif %}
     ]
   }
@@ -157,7 +159,7 @@
     <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
     <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 4 6 4 9s-1 6-4 9M12 3c-3 3-4 6-4 9s1 6 4 9"/></symbol>
   </svg>
-  <script src="/js/qr.js?v=20260905p1" defer></script><script src="/js/config.js" defer></script><script src="/js/content.js" defer></script><script src="/js/main.js?v=20260907p2" defer></script><script src="/js/marketing.js?v=20260904u" defer></script><script src="/js/service-photo-fix.js?v=20260907a" defer></script>
+  <script src="/js/qr.js?v=20260905p1" defer></script><script src="/js/config.js?v=20260907seo1" defer></script><script src="/js/content.js" defer></script><script src="/js/main.js?v=20260907p2" defer></script><script src="/js/marketing.js?v=20260904u" defer></script><script src="/js/local-seo.js?v=20260907seo1" defer></script><script src="/js/service-photo-fix.js?v=20260907a" defer></script>
   {% endunless %}
 </body>
 </html>
