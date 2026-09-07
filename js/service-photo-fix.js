@@ -1,6 +1,6 @@
 (() => {
   const normalize = value => (value || '/').replace(/\/+$/, '') || '/';
-  const imageSrc = '/assets/images/pinewood-room-comfort-1200.webp?v=20260907b';
+  const imageSrc = '/assets/images/pinewood-services-room.jpg?v=1';
 
   function patchServicePhoto() {
     const path = normalize(window.location.pathname);
