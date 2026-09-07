@@ -1,12 +1,13 @@
 enabled: true
 name_vi: Phòng Triple có ban công
 name_en: Triple Room with Balcony
+guest_count: 3
 size_m2: 42
-bed_vi: 1 giường Queen + 1 giường Twin · 3 người
-bed_en: 1 Queen bed + 1 Twin bed · 3 guests
+bed_vi: 1 giường Queen + 1 giường Twin
+bed_en: 1 Queen bed + 1 Twin bed
 view_vi: Hướng vườn
 view_en: Garden view
-summary_vi: Phòng ba người rộng rãi, có điều hòa, cách âm, minibar và tầm nhìn ra vườn.
+summary_vi: Cách bố trí linh hoạt cùng không gian rộng rãi giúp hạng phòng này trở thành lựa chọn thuận tiện cho những chuyến đi ba người.
 summary_en: A spacious air-conditioned triple room with soundproofing, a mini-bar and garden views.
 description_vi: >-
   Với diện tích 42 m² và cách bố trí một giường Queen cùng một giường Twin, hạng phòng Triple mang lại nhiều không gian sử dụng mà vẫn giữ được sự thoáng đãng. Ban công hướng vườn, khu vực ngồi và các tiện nghi trong phòng giúp việc nghỉ ngơi trở nên thuận tiện trong suốt thời gian lưu trú.
