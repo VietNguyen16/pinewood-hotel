@@ -41,6 +41,7 @@ robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
           <div class="rooms-facts" aria-label="Key room information">
             <span><strong>{{ room.size_m2 }}</strong> m²</span>
             <span>{{ room.bed_en }}</span>
+            {% if room.guest_count %}<span>{{ room.guest_count }} guests</span>{% endif %}
             <span>{{ room.view_en }}</span>
           </div>
           <p>{{ room.summary_en }}</p>
@@ -81,6 +82,7 @@ robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
         <div class="rooms-facts rooms-facts-detail">
           <span><strong>{{ room.size_m2 }}</strong> m²</span>
           <span>{{ room.bed_en }}</span>
+          {% if room.guest_count %}<span>{{ room.guest_count }} guests</span>{% endif %}
           <span>{{ room.view_en }}</span>
         </div>
       </div>
