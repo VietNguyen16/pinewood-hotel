@@ -58,7 +58,7 @@ robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
       <article class="rooms-card" id="room-card-{{ room_slug }}">
         {% if room.images and room.images != empty %}{% assign lead_image = room.images | first %}
         <a class="rooms-card-media" href="#room-{{ room_slug }}" data-room-open="{{ room_slug }}" aria-label="View details for {{ room.name_en | escape }}">
-          <img src="{{ lead_image }}" {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy" decoding="async"{% endif %} alt="{{ room.name_en | escape }} at Pinewood Hotel Dalat" style="object-position: {{ room.card_object_position | default: '50% 50%' | escape }}">
+          <img src="{{ lead_image }}" {% unless forloop.first %}loading="lazy" decoding="async"{% endunless %} alt="{{ room.name_en | escape }} at Pinewood Hotel Dalat" style="object-position: {{ room.card_object_position | default: '50% 50%' | escape }}">
           {% if room.images.size > 1 %}<span class="rooms-card-photo-count">{{ room.images.size }} photos</span>{% endif %}
         </a>
         {% endif %}
