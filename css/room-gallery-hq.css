@@ -14,22 +14,6 @@
   padding-bottom: 88px;
   background: #fbf7f0;
 }
-.rooms-section-head {
-  max-width: 800px;
-  margin: 0 0 38px;
-}
-.rooms-section-head h2 {
-  margin: 0 0 12px;
-  color: var(--pine-green);
-  font-size: clamp(30px, 4vw, 44px);
-  font-weight: 500;
-  line-height: 1.12;
-}
-.rooms-section-head p:last-child {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.72;
-}
 .rooms-card-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -405,7 +389,6 @@
 
 @media (max-width: 620px) {
   .rooms-listing-section { padding-top: 42px; padding-bottom: 58px; }
-  .rooms-section-head { margin-bottom: 26px; }
   .rooms-card-grid { gap: 18px; }
   .rooms-card { border-radius: 20px; }
   .rooms-card-copy { padding: 20px 18px 21px; }

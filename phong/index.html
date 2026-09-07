@@ -58,7 +58,7 @@ robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
       <article class="rooms-card" id="room-card-{{ room_slug }}">
         {% if room.images and room.images != empty %}{% assign lead_image = room.images | first %}
         <a class="rooms-card-media" href="#room-{{ room_slug }}" data-room-open="{{ room_slug }}" aria-label="Xem chi tiết {{ room.name_vi | escape }}">
-          <img src="{{ lead_image }}" {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy" decoding="async"{% endif %} alt="{{ room.name_vi | escape }} tại Pinewood Hotel Dalat" style="object-position: {{ room.card_object_position | default: '50% 50%' | escape }}">
+          <img src="{{ lead_image }}" {% unless forloop.first %}loading="lazy" decoding="async"{% endunless %} alt="{{ room.name_vi | escape }} tại Pinewood Hotel Dalat" style="object-position: {{ room.card_object_position | default: '50% 50%' | escape }}">
           {% if room.images.size > 1 %}<span class="rooms-card-photo-count">{{ room.images.size }} ảnh</span>{% endif %}
         </a>
         {% endif %}
@@ -152,6 +152,9 @@ robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
   </div>
 </section>
 
+{% assign has_room_images = false %}
+{% for room_slug in site.data.room_order %}{% assign room = site.data.room_types[room_slug] %}{% if room and room.enabled != false and room.images and room.images != empty %}{% assign has_room_images = true %}{% endif %}{% endfor %}
+{% if has_room_images %}
 <dialog class="room-lightbox" id="room-lightbox" aria-label="Trình xem ảnh phòng">
   <button class="room-lightbox-close" id="room-lightbox-close" type="button" aria-label="Đóng ảnh lớn">×</button>
   <button class="room-lightbox-nav room-lightbox-prev" id="room-lightbox-prev" type="button" aria-label="Ảnh trước">‹</button>
@@ -159,6 +162,7 @@ robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
   <button class="room-lightbox-nav room-lightbox-next" id="room-lightbox-next" type="button" aria-label="Ảnh tiếp theo">›</button>
   <p class="room-lightbox-caption" id="room-lightbox-caption"></p>
 </dialog>
+{% endif %}
 
 <link rel="stylesheet" href="/css/room-gallery-hq.css?v=20260907rooms5">
 <script src="/js/config.js?v=20260907seo1" defer></script>
