@@ -11,16 +11,17 @@
 
     const en = path === '/en/services';
     const image = band.querySelector('img');
-    if (image) {
-      image.src = imageSrc;
-      image.removeAttribute('srcset');
-      image.removeAttribute('sizes');
-      image.width = 1200;
-      image.height = 675;
-      image.alt = en
-        ? 'Pinewood Hotel Dalat room interior, beds and bathroom amenities'
-        : 'Không gian phòng nghỉ, giường và tiện nghi phòng tắm tại Pinewood Hotel Dalat';
-    }
+    if (!image || image.dataset.pinewoodServicePhoto === 'room-comfort') return;
+
+    image.dataset.pinewoodServicePhoto = 'room-comfort';
+    image.src = imageSrc;
+    image.removeAttribute('srcset');
+    image.removeAttribute('sizes');
+    image.width = 1200;
+    image.height = 675;
+    image.alt = en
+      ? 'Pinewood Hotel Dalat room interior, beds and bathroom amenities'
+      : 'Không gian phòng nghỉ, giường và tiện nghi phòng tắm tại Pinewood Hotel Dalat';
 
     const link = band.querySelector('figure > a');
     if (link) link.href = en ? '/en/rooms/' : '/phong/';
