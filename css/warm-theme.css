@@ -57,8 +57,33 @@ body {
   background: linear-gradient(180deg, #FFFDFA 0%, #F9F5EE 100%);
 }
 
+/* Use the same Pinewood forest artwork as Home for every SPA page hero. */
 .page-hero {
-  background: linear-gradient(180deg, #FAF6EF 0%, #FDFCFA 100%);
+  position: relative;
+  overflow: hidden;
+  background-color: var(--pine-warm-bg);
+  background-image: url('../assets/images/forest-hero.svg');
+  background-position: center calc(100% + 55px);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.page-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 24%,
+    rgba(255, 252, 246, .94),
+    rgba(251, 247, 239, .56) 42%,
+    rgba(247, 243, 234, .16)
+  );
+  pointer-events: none;
+}
+
+.page-hero-inner {
+  position: relative;
+  z-index: 1;
 }
 
 .wifi-box,
@@ -124,8 +149,33 @@ html body.marketing-page {
   background: var(--pine-warm-surface);
 }
 
+/* Standalone marketing pages (Rooms, Location, etc.) use the same forest hero as Home. */
 html body.marketing-page .marketing-hero {
-  background: linear-gradient(180deg, #FAF6EF 0%, #FDFCFA 100%);
+  position: relative;
+  overflow: hidden;
+  background-color: var(--pine-warm-bg);
+  background-image: url('../assets/images/forest-hero.svg');
+  background-position: center calc(100% + 55px);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+html body.marketing-page .marketing-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 24%,
+    rgba(255, 252, 246, .94),
+    rgba(251, 247, 239, .56) 42%,
+    rgba(247, 243, 234, .16)
+  );
+  pointer-events: none;
+}
+
+html body.marketing-page .marketing-hero .marketing-hero-inner {
+  position: relative;
+  z-index: 1;
 }
 
 .location-landmarks span,
@@ -148,7 +198,9 @@ body.marketing-page .room-gallery-image {
 }
 
 @media (max-width: 720px) {
-  .hero {
+  .hero,
+  .page-hero,
+  html body.marketing-page .marketing-hero {
     background-position: center calc(100% + 32px);
   }
 }
