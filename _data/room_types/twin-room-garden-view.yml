@@ -1,12 +1,13 @@
 enabled: true
 name_vi: Phòng Twin hướng vườn
 name_en: Twin Room with Garden View
+guest_count: 2
 size_m2: 26
-bed_vi: 2 giường Twin · 2 người
-bed_en: 2 Twin beds · 2 guests
+bed_vi: 2 giường Twin
+bed_en: 2 Twin beds
 view_vi: Hướng vườn
 view_en: Garden view
-summary_vi: Phòng Twin có điều hòa, ban công, phòng tắm riêng và tầm nhìn ra vườn.
+summary_vi: Hai giường riêng trong một không gian dễ chịu, phù hợp cho bạn bè hoặc hai khách muốn có sự thoải mái và riêng tư khi lưu trú.
 summary_en: An air-conditioned twin room with a balcony, private bathroom and garden views.
 description_vi: >-
   Hai giường Twin được bố trí trong không gian 26 m² với ban công nhìn ra khu vườn. Căn phòng hướng đến sự đơn giản và dễ chịu, với khu vực ngồi, điều hòa, TV, minibar cùng phòng tắm riêng đầy đủ tiện nghi cho nhu cầu lưu trú hằng ngày.
