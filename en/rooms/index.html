@@ -11,6 +11,38 @@ alt_url: /phong/
 breadcrumb_name: Rooms
 robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
 ---
+<script type="application/ld+json" id="room-types-schema">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+  {% assign room_schema_first = true %}
+  {% for room_slug in site.data.room_order %}{% assign room = site.data.room_types[room_slug] %}{% if room and room.enabled != false %}{% unless room_schema_first %},{% endunless %}
+    {
+      "@type":"HotelRoom",
+      "@id":"https://pinewoodhotel.vn/phong/#room-{{ room_slug }}",
+      "url":"https://pinewoodhotel.vn/en/rooms/#room-{{ room_slug }}",
+      "name":{{ room.name_en | jsonify }},
+      "alternateName":{{ room.name_vi | jsonify }},
+      "description":{{ room.description_en | jsonify }},
+      "containedInPlace":{"@id":"https://pinewoodhotel.vn/#hotel"},
+      "floorSize":{"@type":"QuantitativeValue","value":{{ room.size_m2 }},"unitCode":"MTK"},
+      "bed":{{ room.bed_en | jsonify }},
+      "occupancy":{"@type":"QuantitativeValue","value":{{ room.guest_count }},"unitText":"guests"},
+      "amenityFeature":[
+        {"@type":"LocationFeatureSpecification","name":{{ room.view_en | jsonify }},"value":true}
+        {% for item in room.bathroom_amenities %},{"@type":"LocationFeatureSpecification","name":{{ item.en | jsonify }},"value":true}{% endfor %}
+        {% for item in room.comfort_amenities %},{"@type":"LocationFeatureSpecification","name":{{ item.en | jsonify }},"value":true}{% endfor %}
+        {% for item in room.media_amenities %},{"@type":"LocationFeatureSpecification","name":{{ item.en | jsonify }},"value":true}{% endfor %}
+        {% for item in room.food_drink_amenities %},{"@type":"LocationFeatureSpecification","name":{{ item.en | jsonify }},"value":true}{% endfor %}
+        {% for item in room.room_features %},{"@type":"LocationFeatureSpecification","name":{{ item.en | jsonify }},"value":true}{% endfor %}
+        {% for item in room.safety_amenities %},{"@type":"LocationFeatureSpecification","name":{{ item.en | jsonify }},"value":true}{% endfor %}
+      ]
+    }
+  {% assign room_schema_first = false %}{% endif %}{% endfor %}
+  ]
+}
+</script>
+
 <section class="marketing-hero rooms-hero">
   <div class="shell marketing-hero-inner">
     <p class="eyebrow">ROOMS & SUITES</p>
@@ -129,5 +161,5 @@ robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
 </dialog>
 
 <link rel="stylesheet" href="/css/room-gallery-hq.css?v=20260907rooms5">
-<script src="/js/config.js" defer></script>
+<script src="/js/config.js?v=20260907seo1" defer></script>
 <script src="/js/room-gallery.js?v=20260907rooms4" defer></script>
