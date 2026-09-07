@@ -1,12 +1,13 @@
 enabled: true
 name_vi: Family Suite có ban công
 name_en: Family Suite with Balcony
+guest_count: 4
 size_m2: 45
-bed_vi: 3 giường · 4 người
-bed_en: 3 beds · 4 guests
+bed_vi: 3 giường
+bed_en: 3 beds
 view_vi: Hướng vườn & thành phố
 view_en: Garden & city views
-summary_vi: Phòng gia đình rộng rãi, có điều hòa, cách âm, minibar và tầm nhìn ra vườn lẫn thành phố.
+summary_vi: Không gian dành cho gia đình hoặc nhóm khách cần nhiều sự thoải mái hơn, với cách bố trí rộng rãi để mọi người có thể nghỉ ngơi cùng nhau.
 summary_en: A spacious air-conditioned family room with soundproofing, a mini-bar, and both garden and city views.
 description_vi: >-
   Family Suite là một trong những không gian rộng rãi nhất của Pinewood với diện tích 45 m² và ba giường. Căn phòng có ban công cùng tầm nhìn hướng vườn hoặc thành phố, đi kèm khu vực ngồi, minibar, điều hòa và hệ thống cách âm để mang lại sự thoải mái trong những kỳ nghỉ cần nhiều không gian hơn.
