@@ -80,9 +80,9 @@
           </div>
           <div class="seo-social-strip" aria-label="${en ? 'Reviews and official social links' : 'Đánh giá và mạng xã hội chính thức'}">
             <a href="${googleReviews}" target="_blank" rel="noopener noreferrer">${en ? 'View Google Maps reviews' : 'Xem đánh giá trên Google Maps'}</a>
-            <a href="${bookingReviews}" target="_blank" rel="noopener noreferrer">${en ? 'View guest reviews on Booking.com' : 'Xem đánh giá khách trên Booking.com'}</a>
             <a href="${instagram}" target="_blank" rel="me noopener noreferrer">Instagram</a>
             <a href="${tiktok}" target="_blank" rel="me noopener noreferrer">TikTok</a>
+            <a href="${bookingReviews}" target="_blank" rel="noopener noreferrer">${en ? 'View guest reviews on Booking.com' : 'Xem đánh giá khách trên Booking.com'}</a>
           </div>
         </div>
       </section>`;
