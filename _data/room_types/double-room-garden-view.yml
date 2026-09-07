@@ -1,12 +1,13 @@
 enabled: true
 name_vi: Phòng đôi hướng vườn
 name_en: Double Room with Garden View
+guest_count: 2
 size_m2: 26
-bed_vi: 1 giường Queen · 2 người
-bed_en: 1 Queen bed · 2 guests
+bed_vi: 1 giường Queen
+bed_en: 1 Queen bed
 view_vi: Hướng vườn
 view_en: Garden view
-summary_vi: Phòng đôi rộng rãi, có điều hòa, cách âm, lối vào riêng và tầm nhìn ra vườn.
+summary_vi: Một lựa chọn nhẹ nhàng cho kỳ nghỉ đôi, với ban công riêng và không gian yên tĩnh để thư giãn sau một ngày khám phá Đà Lạt.
 summary_en: A spacious air-conditioned double room with soundproofing, a private entrance and garden views.
 description_vi: >-
   Không gian 26 m² hướng ra khu vườn mang đến cảm giác nhẹ nhàng và riêng tư cho kỳ nghỉ tại Đà Lạt. Phòng có ban công, giường Queen, khu vực ngồi, minibar và khả năng cách âm, đi cùng phòng tắm riêng với đầy đủ những tiện nghi cần thiết.
