@@ -152,6 +152,9 @@ robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
   </div>
 </section>
 
+{% assign has_room_images = false %}
+{% for room_slug in site.data.room_order %}{% assign room = site.data.room_types[room_slug] %}{% if room and room.enabled != false and room.images and room.images != empty %}{% assign has_room_images = true %}{% endif %}{% endfor %}
+{% if has_room_images %}
 <dialog class="room-lightbox" id="room-lightbox" aria-label="Room photo viewer">
   <button class="room-lightbox-close" id="room-lightbox-close" type="button" aria-label="Close full image">×</button>
   <button class="room-lightbox-nav room-lightbox-prev" id="room-lightbox-prev" type="button" aria-label="Previous photo">‹</button>
@@ -159,6 +162,7 @@ robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
   <button class="room-lightbox-nav room-lightbox-next" id="room-lightbox-next" type="button" aria-label="Next photo">›</button>
   <p class="room-lightbox-caption" id="room-lightbox-caption"></p>
 </dialog>
+{% endif %}
 
 <link rel="stylesheet" href="/css/room-gallery-hq.css?v=20260907rooms5">
 <script src="/js/config.js?v=20260907seo1" defer></script>
