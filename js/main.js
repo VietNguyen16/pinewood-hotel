@@ -63,15 +63,23 @@
   function navItems(lang) {
     const t = CONTENT[lang].ui;
     const p = pathTable[lang];
+    const roomsLabel = lang === 'vi' ? 'Phòng' : 'Rooms';
+    const roomsPath = lang === 'vi' ? '/phong/' : '/en/rooms/';
     return [
-      ['home', t.home, p.home], ['rules', t.rules, p.rules], ['wifi', t.wifi, p.wifi], ['breakfast', t.breakfast, p.breakfast],
-      ['services', t.services, p.services], ['safety', t.safety, p.safety], ['contact', t.contact, p.contact]
+      ['home', t.home, p.home, true],
+      ['rooms', roomsLabel, roomsPath, false],
+      ['rules', t.rules, p.rules, true],
+      ['wifi', t.wifi, p.wifi, true],
+      ['breakfast', t.breakfast, p.breakfast, true],
+      ['services', t.services, p.services, true],
+      ['safety', t.safety, p.safety, true],
+      ['contact', t.contact, p.contact, true]
     ];
   }
 
   function renderNav() {
     const items = navItems(state.lang);
-    const navMarkup = items.map(([key,label,path]) => `<a href="${path}" data-route ${state.key === key ? 'aria-current="page"' : ''}>${esc(label)}</a>`).join('');
+    const navMarkup = items.map(([key, label, path, spaRoute]) => `<a href="${path}"${spaRoute ? ' data-route' : ''} ${state.key === key ? 'aria-current="page"' : ''}>${esc(label)}</a>`).join('');
     document.getElementById('desktop-nav').innerHTML = navMarkup;
     document.getElementById('mobile-nav').innerHTML = navMarkup +
       `<a href="${pathTable[state.lang].environment}" data-route>${esc(CONTENT[state.lang].ui.environment)}</a>` +
@@ -278,6 +286,7 @@
       home: renderHome, welcome: renderWelcome, rules: renderRules, wifi: renderWifi, breakfast: renderBreakfast,
       services: renderServices, safety: renderSafety, contact: renderContact, environment: renderEnvironment, fullInfo: renderFullInfo
     }[state.key] || renderHome;
+
     main.innerHTML = renderer(c);
     setQrSources();
     bindDynamicActions();
