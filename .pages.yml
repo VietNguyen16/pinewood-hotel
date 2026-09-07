@@ -1,3 +1,20 @@
+components:
+  bilingual_amenities:
+    type: object
+    list:
+      collapsible:
+        collapsed: true
+        summary: "{vi} / {en}"
+    fields:
+      - name: vi
+        label: Tiếng Việt
+        type: string
+        required: true
+      - name: en
+        label: English
+        type: string
+        required: true
+
 media:
   - name: double_room_garden_view
     label: Double Room with Garden View
@@ -58,43 +75,32 @@ content:
         type: file
         path: _data/room_types/double-room-garden-view.yml
         format: yaml
-        fields: &room_fields_double
-          - name: enabled
-            label: Hiển thị trên website
-            type: boolean
-          - name: name_vi
-            label: Tên tiếng Việt
-            type: string
-            required: true
-          - name: name_en
-            label: English name
-            type: string
-            required: true
-          - name: guests
-            label: Số khách
-            type: number
-            required: true
-          - name: bed_vi
-            label: Giường - tiếng Việt
-            type: string
-            required: true
-          - name: bed_en
-            label: Beds - English
-            type: string
-            required: true
-          - name: description_vi
-            label: Mô tả tiếng Việt (không bắt buộc)
-            type: text
-          - name: description_en
-            label: English description (optional)
-            type: text
+        fields:
+          - { name: enabled, label: Hiển thị trên website, type: boolean }
+          - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
+          - { name: name_en, label: English name, type: string, required: true }
+          - { name: size_m2, label: Diện tích (m²), type: number, required: true }
+          - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
+          - { name: bed_en, label: Beds - English, type: string, required: true }
+          - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
+          - { name: view_en, label: View - English, type: string, required: true }
+          - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
+          - { name: summary_en, label: Short summary - English, type: text, required: true }
+          - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
+          - { name: description_en, label: Full description - English, type: text, required: true }
+          - { name: card_object_position, label: Vị trí crop ảnh chính (CSS object-position), type: string, description: "Ví dụ: 50% 50%" }
+          - { name: bathroom_amenities, label: Tiện nghi phòng tắm, component: bilingual_amenities }
+          - { name: comfort_amenities, label: Phòng ngủ & tiện nghi, component: bilingual_amenities }
+          - { name: media_amenities, label: Media, component: bilingual_amenities }
+          - { name: food_drink_amenities, label: Đồ ăn & thức uống, component: bilingual_amenities }
+          - { name: room_features, label: Đặc điểm phòng, component: bilingual_amenities }
+          - { name: safety_amenities, label: An toàn, component: bilingual_amenities }
           - name: images
             label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
             type: image
             options:
               media: double_room_garden_view
-              multiple:
-                max: 12
+              multiple: { max: 12 }
               unique: true
               extensions: [jpg, jpeg, png, webp, avif]
               rename: safe
@@ -107,11 +113,22 @@ content:
           - { name: enabled, label: Hiển thị trên website, type: boolean }
           - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
           - { name: name_en, label: English name, type: string, required: true }
-          - { name: guests, label: Số khách, type: number, required: true }
+          - { name: size_m2, label: Diện tích (m²), type: number, required: true }
           - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
           - { name: bed_en, label: Beds - English, type: string, required: true }
-          - { name: description_vi, label: Mô tả tiếng Việt (không bắt buộc), type: text }
-          - { name: description_en, label: English description (optional), type: text }
+          - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
+          - { name: view_en, label: View - English, type: string, required: true }
+          - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
+          - { name: summary_en, label: Short summary - English, type: text, required: true }
+          - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
+          - { name: description_en, label: Full description - English, type: text, required: true }
+          - { name: card_object_position, label: Vị trí crop ảnh chính (CSS object-position), type: string }
+          - { name: bathroom_amenities, label: Tiện nghi phòng tắm, component: bilingual_amenities }
+          - { name: comfort_amenities, label: Phòng ngủ & tiện nghi, component: bilingual_amenities }
+          - { name: media_amenities, label: Media, component: bilingual_amenities }
+          - { name: food_drink_amenities, label: Đồ ăn & thức uống, component: bilingual_amenities }
+          - { name: room_features, label: Đặc điểm phòng, component: bilingual_amenities }
+          - { name: safety_amenities, label: An toàn, component: bilingual_amenities }
           - name: images
             label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
             type: image
@@ -125,11 +142,22 @@ content:
           - { name: enabled, label: Hiển thị trên website, type: boolean }
           - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
           - { name: name_en, label: English name, type: string, required: true }
-          - { name: guests, label: Số khách, type: number, required: true }
+          - { name: size_m2, label: Diện tích (m²), type: number, required: true }
           - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
           - { name: bed_en, label: Beds - English, type: string, required: true }
-          - { name: description_vi, label: Mô tả tiếng Việt (không bắt buộc), type: text }
-          - { name: description_en, label: English description (optional), type: text }
+          - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
+          - { name: view_en, label: View - English, type: string, required: true }
+          - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
+          - { name: summary_en, label: Short summary - English, type: text, required: true }
+          - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
+          - { name: description_en, label: Full description - English, type: text, required: true }
+          - { name: card_object_position, label: Vị trí crop ảnh chính (CSS object-position), type: string }
+          - { name: bathroom_amenities, label: Tiện nghi phòng tắm, component: bilingual_amenities }
+          - { name: comfort_amenities, label: Phòng ngủ & tiện nghi, component: bilingual_amenities }
+          - { name: media_amenities, label: Media, component: bilingual_amenities }
+          - { name: food_drink_amenities, label: Đồ ăn & thức uống, component: bilingual_amenities }
+          - { name: room_features, label: Đặc điểm phòng, component: bilingual_amenities }
+          - { name: safety_amenities, label: An toàn, component: bilingual_amenities }
           - name: images
             label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
             type: image
@@ -143,11 +171,22 @@ content:
           - { name: enabled, label: Hiển thị trên website, type: boolean }
           - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
           - { name: name_en, label: English name, type: string, required: true }
-          - { name: guests, label: Số khách, type: number, required: true }
+          - { name: size_m2, label: Diện tích (m²), type: number, required: true }
           - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
           - { name: bed_en, label: Beds - English, type: string, required: true }
-          - { name: description_vi, label: Mô tả tiếng Việt (không bắt buộc), type: text }
-          - { name: description_en, label: English description (optional), type: text }
+          - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
+          - { name: view_en, label: View - English, type: string, required: true }
+          - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
+          - { name: summary_en, label: Short summary - English, type: text, required: true }
+          - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
+          - { name: description_en, label: Full description - English, type: text, required: true }
+          - { name: card_object_position, label: Vị trí crop ảnh chính (CSS object-position), type: string }
+          - { name: bathroom_amenities, label: Tiện nghi phòng tắm, component: bilingual_amenities }
+          - { name: comfort_amenities, label: Phòng ngủ & tiện nghi, component: bilingual_amenities }
+          - { name: media_amenities, label: Media, component: bilingual_amenities }
+          - { name: food_drink_amenities, label: Đồ ăn & thức uống, component: bilingual_amenities }
+          - { name: room_features, label: Đặc điểm phòng, component: bilingual_amenities }
+          - { name: safety_amenities, label: An toàn, component: bilingual_amenities }
           - name: images
             label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
             type: image
@@ -161,11 +200,22 @@ content:
           - { name: enabled, label: Hiển thị trên website, type: boolean }
           - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
           - { name: name_en, label: English name, type: string, required: true }
-          - { name: guests, label: Số khách, type: number, required: true }
+          - { name: size_m2, label: Diện tích (m²), type: number, required: true }
           - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
           - { name: bed_en, label: Beds - English, type: string, required: true }
-          - { name: description_vi, label: Mô tả tiếng Việt (không bắt buộc), type: text }
-          - { name: description_en, label: English description (optional), type: text }
+          - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
+          - { name: view_en, label: View - English, type: string, required: true }
+          - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
+          - { name: summary_en, label: Short summary - English, type: text, required: true }
+          - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
+          - { name: description_en, label: Full description - English, type: text, required: true }
+          - { name: card_object_position, label: Vị trí crop ảnh chính (CSS object-position), type: string }
+          - { name: bathroom_amenities, label: Tiện nghi phòng tắm, component: bilingual_amenities }
+          - { name: comfort_amenities, label: Phòng ngủ & tiện nghi, component: bilingual_amenities }
+          - { name: media_amenities, label: Media, component: bilingual_amenities }
+          - { name: food_drink_amenities, label: Đồ ăn & thức uống, component: bilingual_amenities }
+          - { name: room_features, label: Đặc điểm phòng, component: bilingual_amenities }
+          - { name: safety_amenities, label: An toàn, component: bilingual_amenities }
           - name: images
             label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
             type: image
@@ -179,11 +229,22 @@ content:
           - { name: enabled, label: Hiển thị trên website, type: boolean }
           - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
           - { name: name_en, label: English name, type: string, required: true }
-          - { name: guests, label: Số khách, type: number, required: true }
+          - { name: size_m2, label: Diện tích (m²), type: number, required: true }
           - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
           - { name: bed_en, label: Beds - English, type: string, required: true }
-          - { name: description_vi, label: Mô tả tiếng Việt (không bắt buộc), type: text }
-          - { name: description_en, label: English description (optional), type: text }
+          - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
+          - { name: view_en, label: View - English, type: string, required: true }
+          - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
+          - { name: summary_en, label: Short summary - English, type: text, required: true }
+          - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
+          - { name: description_en, label: Full description - English, type: text, required: true }
+          - { name: card_object_position, label: Vị trí crop ảnh chính (CSS object-position), type: string }
+          - { name: bathroom_amenities, label: Tiện nghi phòng tắm, component: bilingual_amenities }
+          - { name: comfort_amenities, label: Phòng ngủ & tiện nghi, component: bilingual_amenities }
+          - { name: media_amenities, label: Media, component: bilingual_amenities }
+          - { name: food_drink_amenities, label: Đồ ăn & thức uống, component: bilingual_amenities }
+          - { name: room_features, label: Đặc điểm phòng, component: bilingual_amenities }
+          - { name: safety_amenities, label: An toàn, component: bilingual_amenities }
           - name: images
             label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
             type: image
@@ -197,11 +258,22 @@ content:
           - { name: enabled, label: Hiển thị trên website, type: boolean }
           - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
           - { name: name_en, label: English name, type: string, required: true }
-          - { name: guests, label: Số khách, type: number, required: true }
+          - { name: size_m2, label: Diện tích (m²), type: number, required: true }
           - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
           - { name: bed_en, label: Beds - English, type: string, required: true }
-          - { name: description_vi, label: Mô tả tiếng Việt (không bắt buộc), type: text }
-          - { name: description_en, label: English description (optional), type: text }
+          - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
+          - { name: view_en, label: View - English, type: string, required: true }
+          - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
+          - { name: summary_en, label: Short summary - English, type: text, required: true }
+          - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
+          - { name: description_en, label: Full description - English, type: text, required: true }
+          - { name: card_object_position, label: Vị trí crop ảnh chính (CSS object-position), type: string }
+          - { name: bathroom_amenities, label: Tiện nghi phòng tắm, component: bilingual_amenities }
+          - { name: comfort_amenities, label: Phòng ngủ & tiện nghi, component: bilingual_amenities }
+          - { name: media_amenities, label: Media, component: bilingual_amenities }
+          - { name: food_drink_amenities, label: Đồ ăn & thức uống, component: bilingual_amenities }
+          - { name: room_features, label: Đặc điểm phòng, component: bilingual_amenities }
+          - { name: safety_amenities, label: An toàn, component: bilingual_amenities }
           - name: images
             label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
             type: image
@@ -215,11 +287,22 @@ content:
           - { name: enabled, label: Hiển thị trên website, type: boolean }
           - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
           - { name: name_en, label: English name, type: string, required: true }
-          - { name: guests, label: Số khách, type: number, required: true }
+          - { name: size_m2, label: Diện tích (m²), type: number, required: true }
           - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
           - { name: bed_en, label: Beds - English, type: string, required: true }
-          - { name: description_vi, label: Mô tả tiếng Việt (không bắt buộc), type: text }
-          - { name: description_en, label: English description (optional), type: text }
+          - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
+          - { name: view_en, label: View - English, type: string, required: true }
+          - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
+          - { name: summary_en, label: Short summary - English, type: text, required: true }
+          - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
+          - { name: description_en, label: Full description - English, type: text, required: true }
+          - { name: card_object_position, label: Vị trí crop ảnh chính (CSS object-position), type: string }
+          - { name: bathroom_amenities, label: Tiện nghi phòng tắm, component: bilingual_amenities }
+          - { name: comfort_amenities, label: Phòng ngủ & tiện nghi, component: bilingual_amenities }
+          - { name: media_amenities, label: Media, component: bilingual_amenities }
+          - { name: food_drink_amenities, label: Đồ ăn & thức uống, component: bilingual_amenities }
+          - { name: room_features, label: Đặc điểm phòng, component: bilingual_amenities }
+          - { name: safety_amenities, label: An toàn, component: bilingual_amenities }
           - name: images
             label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
             type: image
