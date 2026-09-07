@@ -19,13 +19,8 @@ robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
   </div>
 </section>
 
-<section class="marketing-section rooms-listing-section" id="rooms-list" aria-labelledby="rooms-list-title">
+<section class="marketing-section rooms-listing-section" id="rooms-list" aria-label="Pinewood room types">
   <div class="shell">
-    <header class="rooms-section-head">
-      <p class="eyebrow">ROOM TYPES</p>
-      <h2 id="rooms-list-title">Explore Pinewood’s room types</h2>
-      <p>Explore each Pinewood room type with its own description, amenities and dedicated photo gallery.</p>
-    </header>
     <div class="rooms-card-grid">
       {% for room_slug in site.data.room_order %}{% assign room = site.data.room_types[room_slug] %}{% if room and room.enabled != false %}
       <article class="rooms-card" id="room-card-{{ room_slug }}">
