@@ -1,10 +1,13 @@
 (() => {
   const normalize = value => (value || '/').replace(/\/+$/, '') || '/';
-  const instagram = 'https://www.instagram.com/pinewooddalat/';
-  const tiktok = 'https://www.tiktok.com/@dalat.pinewood';
-  const googleReviews = 'https://www.google.com/maps/place/Kh%C3%A1ch+s%E1%BA%A1n+Pinewood/@11.9611181,108.4486208,1207m/data=!3m1!1e3!4m11!3m10!1s0x3171130010cadc19:0xdcb299e4322ab577!5m2!4m1!1i2!8m2!3d11.9611181!4d108.4512011!9m1!1b1!16s%2Fg%2F11njdj19vf?entry=ttu&g_ep=EgoyMDI2MDgzMS4wIKXMDSoASAFQAw%3D%3D';
+  const config = window.HOTEL_CONFIG || {};
+  const instagram = config.social?.instagram || '';
+  const tiktok = config.social?.tiktok || '';
+  const googleReviews = config.reviews?.googleMaps || '';
+  const bookingReviews = config.reviews?.booking || '';
   const roomPhoto = '/assets/images/pinewood-room-home.webp';
   const cafePhoto = '/assets/images/pinewood-breakfast-buffet-1600.webp';
+  const servicePhoto = '/assets/images/pinewood-services-room.jpg?v=1';
 
   function photoGallery(lang) {
     const en = lang === 'en';
@@ -42,14 +45,25 @@
             <a href="${instagram}" target="_blank" rel="me noopener noreferrer">Instagram · @pinewooddalat</a>
             <a href="${tiktok}" target="_blank" rel="me noopener noreferrer">TikTok · @dalat.pinewood</a>
             <a href="${googleReviews}" target="_blank" rel="noopener noreferrer">${en ? 'Google Maps reviews' : 'Đánh giá Google Maps'}</a>
+            <a href="${bookingReviews}" target="_blank" rel="noopener noreferrer">${en ? 'Booking.com guest reviews' : 'Đánh giá khách trên Booking.com'}</a>
           </div>
         </div>
       </section>`;
   }
 
+  function enhanceHomeLocationLink(lang) {
+    const address = document.querySelector('.home-directory .hotel-address');
+    if (!address || address.querySelector('.hotel-location-link')) return;
+    const link = document.createElement('a');
+    link.className = 'hotel-directions-link hotel-location-link';
+    link.href = lang === 'en' ? '/en/location/' : '/vi-tri/';
+    link.textContent = lang === 'en' ? 'Explore location & nearby places' : 'Xem vị trí & khu vực xung quanh';
+    address.appendChild(link);
+  }
+
   function servicePhotoMarkup(lang) {
     const en = lang === 'en';
-    return `<section class="service-photo-band" id="seo-service-photo"><div class="shell"><figure class="hotel-photo-card"><a href="${en ? '/en/rooms/' : '/phong/'}"><img src="${cafePhoto}" srcset="/assets/images/pinewood-breakfast-buffet-800.webp 800w, /assets/images/pinewood-breakfast-buffet-1600.webp 1600w" sizes="(max-width: 720px) 92vw, 600px" width="1600" height="900" loading="lazy" decoding="async" alt="${en ? 'Coffee, breakfast and fresh pastries at Pinewood Hotel Dalat in Da Lat' : 'Cà phê, bữa sáng và bánh tươi tại Pinewood Hotel Dalat ở Đà Lạt'}"><figcaption><strong>${en ? 'A relaxed part of your Pinewood stay' : 'Một khoảng nghỉ thư giãn tại Pinewood'}</strong>${en ? 'Discover hotel services, breakfast and the café experience, then explore the rooms for your stay.' : 'Khám phá dịch vụ, bữa sáng và trải nghiệm café, sau đó xem không gian phòng nghỉ cho kỳ lưu trú.'}</figcaption></a></figure></div></section>`;
+    return `<section class="service-photo-band" id="seo-service-photo"><div class="shell"><figure class="hotel-photo-card"><a href="${en ? '/en/rooms/' : '/phong/'}"><img src="${servicePhoto}" width="1200" height="675" loading="lazy" decoding="async" alt="${en ? 'Pinewood Hotel Dalat room interior, beds and bathroom amenities' : 'Không gian phòng nghỉ, giường và tiện nghi phòng tắm tại Pinewood Hotel Dalat'}"><figcaption><strong>${en ? 'Comfort prepared for your stay' : 'Tiện nghi được chuẩn bị cho kỳ nghỉ'}</strong>${en ? 'Thoughtful in-room amenities, comfortable beds and a well-equipped bathroom help make each stay at Pinewood feel easy and restful.' : 'Không gian phòng nghỉ, giường ngủ thoải mái và phòng tắm đầy đủ tiện nghi giúp kỳ lưu trú tại Pinewood trở nên dễ chịu và thư thái hơn.'}</figcaption></a></figure></div></section>`;
   }
 
   function contactFaqMarkup(lang) {
@@ -66,6 +80,7 @@
           </div>
           <div class="seo-social-strip" aria-label="${en ? 'Reviews and official social links' : 'Đánh giá và mạng xã hội chính thức'}">
             <a href="${googleReviews}" target="_blank" rel="noopener noreferrer">${en ? 'View Google Maps reviews' : 'Xem đánh giá trên Google Maps'}</a>
+            <a href="${bookingReviews}" target="_blank" rel="noopener noreferrer">${en ? 'View guest reviews on Booking.com' : 'Xem đánh giá khách trên Booking.com'}</a>
             <a href="${instagram}" target="_blank" rel="me noopener noreferrer">Instagram</a>
             <a href="${tiktok}" target="_blank" rel="me noopener noreferrer">TikTok</a>
           </div>
@@ -107,9 +122,10 @@
     const isHome = path === '/' || path === '/en';
     const isContact = path === '/lien-he' || path === '/en/contact';
 
-    if (isHome && !document.getElementById('seo-home-marketing')) {
+    if (isHome) {
       const lang = path === '/en' ? 'en' : 'vi';
-      main.insertAdjacentHTML('beforeend', homeMarkup(lang));
+      if (!document.getElementById('seo-home-marketing')) main.insertAdjacentHTML('beforeend', homeMarkup(lang));
+      enhanceHomeLocationLink(lang);
       clearFaqSchemas();
       return;
     }
