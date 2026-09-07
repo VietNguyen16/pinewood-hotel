@@ -1,12 +1,13 @@
 enabled: true
 name_vi: Phòng Twin hướng thành phố
 name_en: Twin Room with City View
+guest_count: 2
 size_m2: 26
-bed_vi: 2 giường Twin · 2 người
-bed_en: 2 Twin beds · 2 guests
+bed_vi: 2 giường Twin
+bed_en: 2 Twin beds
 view_vi: Hướng thành phố
 view_en: City view
-summary_vi: Phòng Twin có điều hòa, ban công, phòng tắm riêng và tầm nhìn ra thành phố.
+summary_vi: Một lựa chọn gọn gàng cho hai khách với hai giường riêng, ban công và góc nhìn về nhịp sống Đà Lạt bên ngoài.
 summary_en: An air-conditioned twin room with a balcony, private bathroom and city views.
 description_vi: >-
   Hạng Twin hướng thành phố kết hợp hai giường riêng với ban công và tầm nhìn ra cảnh quan đô thị Đà Lạt. Không gian 26 m² được bố trí đầy đủ khu vực ngồi, điều hòa, TV và minibar, phù hợp với phong cách lưu trú gọn gàng nhưng vẫn đảm bảo sự thoải mái.
