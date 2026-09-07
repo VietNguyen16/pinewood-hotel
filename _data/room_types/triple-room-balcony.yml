@@ -1,9 +1,86 @@
 enabled: true
 name_vi: Phòng Triple có ban công
 name_en: Triple Room with Balcony
-guests: 3
+size_m2: 42
 bed_vi: 1 giường đơn và 1 giường queen
 bed_en: 1 twin bed and 1 queen bed
-description_vi: ""
-description_en: ""
+view_vi: Hướng vườn
+view_en: Garden view
+summary_vi: Phòng ba người rộng rãi, có điều hòa, cách âm, minibar và tầm nhìn ra vườn.
+summary_en: A spacious air-conditioned triple room with soundproofing, a mini-bar and garden views.
+description_vi: >-
+  Phòng ba người có đồ vệ sinh cá nhân miễn phí và phòng tắm riêng với vòi sen, bidet và máy sấy tóc. Không gian rộng rãi có điều hòa, TV màn hình phẳng với các kênh vệ tinh, lối vào riêng, tường cách âm, minibar và tầm nhìn ra vườn. Phòng có 2 giường.
+description_en: >-
+  Offering free toiletries, this triple room includes a private bathroom with a shower, a bidet and a hairdryer. The spacious air-conditioned triple room offers a flat-screen TV with satellite channels, a private entrance, soundproof walls, a mini-bar as well as garden views. The unit offers 2 beds.
+card_object_position: 50% 50%
 images: []
+bathroom_amenities:
+  - vi: Đồ vệ sinh cá nhân miễn phí
+    en: Free toiletries
+  - vi: Bidet
+    en: Bidet
+  - vi: Bồn cầu
+    en: Toilet
+  - vi: Bồn tắm hoặc vòi sen
+    en: Bath or shower
+  - vi: Khăn tắm
+    en: Towels
+  - vi: Dép đi trong phòng
+    en: Slippers
+  - vi: Máy sấy tóc
+    en: Hairdryer
+  - vi: Giấy vệ sinh
+    en: Toilet paper
+comfort_amenities:
+  - vi: Điều hòa
+    en: Air conditioning
+  - vi: Ghế sofa
+    en: Sofa
+  - vi: Bộ đồ giường
+    en: Linens
+  - vi: Ổ cắm gần giường
+    en: Socket near the bed
+  - vi: Sàn lát gạch/đá cẩm thạch
+    en: Tile/marble floor
+  - vi: Bàn làm việc
+    en: Desk
+  - vi: Khu vực ghế ngồi
+    en: Seating area
+  - vi: Cách âm
+    en: Soundproofing
+  - vi: Lối vào riêng
+    en: Private entrance
+  - vi: Tủ quần áo
+    en: Wardrobe or closet
+  - vi: Giá treo quần áo
+    en: Clothes rack
+  - vi: Giá phơi quần áo
+    en: Drying rack for clothing
+  - vi: Điều hòa riêng cho phòng
+    en: Single-room AC for guest accommodation
+media_amenities:
+  - vi: TV
+    en: TV
+  - vi: Điện thoại
+    en: Telephone
+  - vi: Kênh truyền hình vệ tinh
+    en: Satellite channels
+  - vi: TV màn hình phẳng
+    en: Flat-screen TV
+food_drink_amenities:
+  - vi: Tủ lạnh
+    en: Refrigerator
+  - vi: Minibar
+    en: Minibar
+  - vi: Ấm đun nước điện
+    en: Electric kettle
+room_features:
+  - vi: Ban công
+    en: Balcony
+  - vi: Dịch vụ báo thức
+    en: Wake-up service
+  - vi: Không hút thuốc
+    en: No smoking
+safety_amenities:
+  - vi: Máy dò khí carbon monoxide
+    en: Carbon monoxide detector
