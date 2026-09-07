@@ -1,9 +1,86 @@
 enabled: true
 name_vi: Phòng Twin hướng thành phố
 name_en: Twin Room with City View
-guests: 2
+size_m2: 26
 bed_vi: 2 giường đơn
 bed_en: 2 twin beds
-description_vi: ""
-description_en: ""
+view_vi: Hướng thành phố
+view_en: City view
+summary_vi: Phòng Twin có điều hòa, ban công, phòng tắm riêng và tầm nhìn ra thành phố.
+summary_en: An air-conditioned twin room with a balcony, private bathroom and city views.
+description_vi: >-
+  Phòng Twin có điều hòa, TV màn hình phẳng với các kênh vệ tinh, phòng tắm riêng và ban công nhìn ra thành phố. Phòng có 2 giường.
+description_en: >-
+  This air-conditioned twin room includes a flat-screen TV with satellite channels, a private bathroom as well as a balcony with city views. The unit has 2 beds.
+card_object_position: 50% 50%
 images: []
+bathroom_amenities:
+  - vi: Đồ vệ sinh cá nhân miễn phí
+    en: Free toiletries
+  - vi: Bidet
+    en: Bidet
+  - vi: Bồn cầu
+    en: Toilet
+  - vi: Bồn tắm hoặc vòi sen
+    en: Bath or shower
+  - vi: Khăn tắm
+    en: Towels
+  - vi: Dép đi trong phòng
+    en: Slippers
+  - vi: Máy sấy tóc
+    en: Hairdryer
+  - vi: Giấy vệ sinh
+    en: Toilet paper
+comfort_amenities:
+  - vi: Điều hòa
+    en: Air conditioning
+  - vi: Ghế sofa
+    en: Sofa
+  - vi: Bộ đồ giường
+    en: Linens
+  - vi: Ổ cắm gần giường
+    en: Socket near the bed
+  - vi: Sàn lát gạch/đá cẩm thạch
+    en: Tile/marble floor
+  - vi: Bàn làm việc
+    en: Desk
+  - vi: Khu vực ghế ngồi
+    en: Seating area
+  - vi: Cách âm
+    en: Soundproofing
+  - vi: Lối vào riêng
+    en: Private entrance
+  - vi: Tủ quần áo
+    en: Wardrobe or closet
+  - vi: Giá treo quần áo
+    en: Clothes rack
+  - vi: Giá phơi quần áo
+    en: Drying rack for clothing
+  - vi: Điều hòa riêng cho phòng
+    en: Single-room AC for guest accommodation
+media_amenities:
+  - vi: TV
+    en: TV
+  - vi: Điện thoại
+    en: Telephone
+  - vi: Kênh truyền hình vệ tinh
+    en: Satellite channels
+  - vi: TV màn hình phẳng
+    en: Flat-screen TV
+food_drink_amenities:
+  - vi: Tủ lạnh
+    en: Refrigerator
+  - vi: Minibar
+    en: Minibar
+  - vi: Ấm đun nước điện
+    en: Electric kettle
+room_features:
+  - vi: Ban công
+    en: Balcony
+  - vi: Dịch vụ báo thức
+    en: Wake-up service
+  - vi: Không hút thuốc
+    en: No smoking
+safety_amenities:
+  - vi: Máy dò khí carbon monoxide
+    en: Carbon monoxide detector
