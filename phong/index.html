@@ -3,7 +3,7 @@ layout: app
 standalone: true
 lang: vi
 title: Phòng nghỉ | Pinewood Hotel Dalat
-description: Khám phá 8 hạng phòng tại Pinewood Hotel Dalat với diện tích, loại giường, hướng nhìn, tiện nghi và bảng giá khách lẻ hiện hành.
+description: Khám phá 8 hạng phòng tại Pinewood Hotel Dalat với diện tích, loại giường, hướng nhìn và tiện nghi rõ ràng.
 canonical: https://pinewoodhotel.vn/phong/
 alternate_vi: https://pinewoodhotel.vn/phong/
 alternate_en: https://pinewoodhotel.vn/en/rooms/
@@ -72,7 +72,6 @@ robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
             <span>{{ room.view_vi }}</span>
           </div>
           <p>{{ room.summary_vi }}</p>
-          {% if room.rate_low_vnd %}<div class="rooms-card-rate"><span>Giá</span><strong>{{ room.rate_low_vnd }} ₫</strong></div>{% endif %}
           <a class="rooms-card-cta" href="#room-{{ room_slug }}" data-room-open="{{ room_slug }}">Xem chi tiết phòng <span aria-hidden="true">→</span></a>
         </div>
       </article>
@@ -167,6 +166,6 @@ robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
 {% endif %}
 
 <link rel="stylesheet" href="/css/room-gallery-hq.css?v=20260907rooms5">
-<link rel="stylesheet" href="/css/room-pricing.css?v=20260908rates2">
-<script src="/js/config.js?v=20260907seo1" defer></script>
+<script src="/js/config.js?v=20260908fix1" defer></script>
 <script src="/js/room-gallery.js?v=20260907rooms4" defer></script>
+<script src="/js/site-runtime-fixes.js?v=20260908fix1" data-site-runtime-fixes-loader defer></script>
