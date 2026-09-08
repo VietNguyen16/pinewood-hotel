@@ -1,18 +1,23 @@
 enabled: true
-name_vi: Junior Suite hướng vườn
-name_en: Junior Suite with Garden View
+name_vi: Junior Suite hướng thành phố
+name_en: Junior Suite City View
+room_count: 4
 guest_count: 2
-size_m2: 38
-bed_vi: 1 giường Queen
-bed_en: 1 Queen bed
-view_vi: Hướng vườn
-view_en: Garden view
-summary_vi: Suite một phòng ngủ với khu vực ngồi riêng và nhiều khoảng thở hơn, dành cho những kỳ nghỉ muốn tận hưởng sự thư thái.
-summary_en: A one-bedroom suite with a separate seating area and extra space to relax, ideal for guests who prefer a more restful stay.
+size_m2: 30
+bed_vi: 1 giường lớn 1m8
+bed_en: 1 large bed (1.8 m)
+view_vi: Hướng thành phố
+view_en: City view
+rate_low_vnd: "800.000"
+rate_dec_2026_vnd: "800.000"
+rate_jan_feb_2027_vnd: "850.000"
+rate_holiday_tet_vnd: "1.250.000"
+summary_vi: Junior Suite 30 m² với 1 giường lớn 1m8, phòng khách riêng có sofa và cửa sổ hướng thành phố.
+summary_en: A 30 m² Junior Suite with one 1.8 m bed, a separate living room with a sofa and city views from the window.
 description_vi: >-
-  Rộng rãi hơn với diện tích 38 m², Junior Suite mang đến một khoảng nghỉ thoáng đãng cùng ban công và tầm nhìn hướng vườn. Không gian được bố trí thêm sofa và khu vực ngồi, tạo cảm giác thoải mái hơn cho những lúc muốn nghỉ ngơi ngay tại phòng.
+  Junior Suite City View có diện tích 30 m², bố trí 1 giường lớn 1m8, phòng khách riêng biệt có sofa và cửa sổ hướng thành phố.
 description_en: >-
-  Featuring a private entrance, this air-conditioned suite comprises 1 bedroom and 1 bathroom with a shower and a bidet. Boasting a balcony with garden views, this suite also provides soundproof walls and a flat-screen TV with satellite channels. The unit offers 1 bed.
+  The Junior Suite City View offers 30 m² of space with one 1.8 m bed, a separate living room with a sofa and a window overlooking the city.
 card_object_position: 50% 50%
 images: []
 bathroom_amenities:
@@ -76,10 +81,10 @@ food_drink_amenities:
   - vi: Ấm đun nước điện
     en: Electric kettle
 room_features:
-  - vi: Ban công
-    en: Balcony
-  - vi: Sân hiên
-    en: Patio
+  - vi: Cửa sổ
+    en: Window
+  - vi: Phòng khách riêng
+    en: Separate living room
   - vi: Dịch vụ báo thức
     en: Wake-up service
   - vi: Không hút thuốc
