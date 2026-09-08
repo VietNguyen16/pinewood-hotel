@@ -19,7 +19,8 @@ description_vi: >-
 description_en: >-
   The Pinewood Suite City View offers 78 m² of space with one 1.8 m bed, a separate living room, a bathtub and a balcony overlooking the city.
 card_object_position: 50% 50%
-images: []
+images:
+  - /assets/images/rooms/pinewood-suite-city-view/pinewood-hotel-dalat-pinewood-suite-city-view.avif
 bathroom_amenities:
   - vi: Bồn tắm
     en: Bath
