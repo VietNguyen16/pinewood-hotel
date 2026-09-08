@@ -45,9 +45,29 @@ window.HOTEL_CONFIG = Object.freeze({
   }
 });
 
+const pinewoodPath = (window.location.pathname || '/').replace(/\/+$/, '') || '/';
+if (pinewoodPath === '/' || pinewoodPath === '/en') {
+  document.body.classList.add('homepage-render-pending');
+  if (!document.getElementById('pinewood-home-render-guard')) {
+    const guard = document.createElement('style');
+    guard.id = 'pinewood-home-render-guard';
+    guard.textContent = 'body.homepage-render-pending #main-content{visibility:hidden!important}body.home-reference-ready #main-content{visibility:visible!important}';
+    document.head.appendChild(guard);
+  }
+}
+
 if (!document.querySelector('script[data-homepage-ux-loader]')) {
   const homepageUx = document.createElement('script');
   homepageUx.src = '/js/homepage-ux.js?v=20260908ux1';
   homepageUx.dataset.homepageUxLoader = 'true';
+  homepageUx.async = false;
   document.head.appendChild(homepageUx);
+}
+
+if (!document.querySelector('script[data-site-runtime-fixes-loader]')) {
+  const runtimeFixes = document.createElement('script');
+  runtimeFixes.src = '/js/site-runtime-fixes.js?v=20260908fix1';
+  runtimeFixes.dataset.siteRuntimeFixesLoader = 'true';
+  runtimeFixes.async = false;
+  document.head.appendChild(runtimeFixes);
 }
