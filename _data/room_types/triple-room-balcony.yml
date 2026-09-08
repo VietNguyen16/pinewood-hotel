@@ -19,7 +19,8 @@ description_vi: >-
 description_en: >-
   The Triple Suite offers 45 m² of space with one 1.8 m bed and one 1.2 m single bed, a balcony and a layout suited to three guests.
 card_object_position: 50% 50%
-images: []
+images:
+  - /assets/images/rooms/triple-suite-garden-view/pinewood-hotel-dalat-triple-suite-garden-view.avif
 bathroom_amenities:
   - vi: Đồ vệ sinh cá nhân miễn phí
     en: Free toiletries
