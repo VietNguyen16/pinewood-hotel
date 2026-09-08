@@ -51,6 +51,17 @@ const pinewoodIsHomePath = value => {
   return path === '/' || path === '/en';
 };
 
+const pinewoodInitialPath = pinewoodNormalizePath(window.location.pathname);
+if (pinewoodInitialPath === '/') {
+  try {
+    if (localStorage.getItem('pinewood-language') === 'en') {
+      window.location.replace('/en/');
+    }
+  } catch (error) {
+    // Continue with the Vietnamese homepage when storage is unavailable.
+  }
+}
+
 const pinewoodMain = document.getElementById('main-content');
 if (pinewoodIsHomePath(window.location.pathname) && pinewoodMain?.querySelector('.home-reference')) {
   const descriptor = Object.getOwnPropertyDescriptor(Element.prototype, 'innerHTML');
