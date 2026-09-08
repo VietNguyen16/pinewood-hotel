@@ -1,20 +1,26 @@
 enabled: true
-name_vi: King Suite có ban công
-name_en: King Suite with Balcony
+name_vi: Pinewood Suite hướng thành phố
+name_en: Pinewood Suite City View
+room_count: 2
 guest_count: 2
-size_m2: 40
-bed_vi: 1 giường King
-bed_en: 1 King bed
+size_m2: 78
+bed_vi: 1 giường lớn 1m8
+bed_en: 1 large bed (1.8 m)
 view_vi: Hướng thành phố
 view_en: City view
-summary_vi: Một không gian nghỉ rộng rãi với giường King, ban công riêng và phòng tắm có bồn tắm, mang lại trải nghiệm thoải mái hơn trong mỗi kỳ lưu trú.
-summary_en: A spacious retreat with a King bed, private balcony and a bathroom with a bathtub, designed for a more comfortable stay.
+rate_low_vnd: "1.100.000"
+rate_dec_2026_vnd: "1.100.000"
+rate_jan_feb_2027_vnd: "1.150.000"
+rate_holiday_tet_vnd: "1.550.000"
+summary_vi: Pinewood Suite 78 m² với 1 giường lớn 1m8, phòng khách riêng, bồn tắm và ban công hướng thành phố.
+summary_en: A 78 m² Pinewood Suite with one 1.8 m bed, a separate living room, a bathtub and a balcony with city views.
 description_vi: >-
-  Điểm nổi bật của King Suite là không gian 40 m², giường King và ban công nhìn về phía thành phố. Phòng tắm riêng có cả bồn tắm và vòi sen, kết hợp cùng khu vực ngồi, minibar và khả năng cách âm để mang lại trải nghiệm lưu trú thoải mái và trọn vẹn hơn.
+  Pinewood Suite City View có diện tích 78 m², bố trí 1 giường lớn 1m8, phòng khách riêng biệt, bồn tắm và ban công hướng thành phố.
 description_en: >-
-  Boasting a private entrance, this air-conditioned suite includes 1 bedroom and 1 bathroom with a bath and a shower. Featuring a balcony with city views, this suite also offers soundproof walls and a flat-screen TV with satellite channels. The unit has 1 bed.
+  The Pinewood Suite City View offers 78 m² of space with one 1.8 m bed, a separate living room, a bathtub and a balcony overlooking the city.
 card_object_position: 50% 50%
-images: []
+images:
+  - /assets/images/rooms/pinewood-suite-city-view/pinewood-hotel-dalat-pinewood-suite-city-view.avif
 bathroom_amenities:
   - vi: Bồn tắm
     en: Bath
@@ -80,6 +86,8 @@ food_drink_amenities:
 room_features:
   - vi: Ban công
     en: Balcony
+  - vi: Phòng khách riêng
+    en: Separate living room
   - vi: Dịch vụ báo thức
     en: Wake-up service
   - vi: Không hút thuốc

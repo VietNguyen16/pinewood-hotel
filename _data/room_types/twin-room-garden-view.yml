@@ -1,20 +1,26 @@
 enabled: true
-name_vi: Phòng Twin hướng vườn
-name_en: Twin Room with Garden View
+name_vi: Phòng Deluxe Twin hướng vườn
+name_en: Deluxe Garden View Twin
+room_count: 4
 guest_count: 2
-size_m2: 26
-bed_vi: 2 giường Twin
-bed_en: 2 Twin beds
+size_m2: 25
+bed_vi: 2 giường đơn, mỗi giường 1m2
+bed_en: 2 single beds, 1.2 m each
 view_vi: Hướng vườn
 view_en: Garden view
-summary_vi: Hai giường riêng trong một không gian dễ chịu, phù hợp cho bạn bè hoặc hai khách muốn có sự thoải mái và riêng tư khi lưu trú.
-summary_en: Two separate beds in a comfortable setting, ideal for friends or two guests who prefer extra privacy during their stay.
+rate_low_vnd: "650.000"
+rate_dec_2026_vnd: "650.000"
+rate_jan_feb_2027_vnd: "700.000"
+rate_holiday_tet_vnd: "1.100.000"
+summary_vi: Phòng Deluxe Twin 25 m² với 2 giường đơn 1m2, ban công và hướng sân vườn.
+summary_en: A 25 m² Deluxe Twin room with two 1.2 m single beds, a balcony and garden views.
 description_vi: >-
-  Hai giường Twin được bố trí trong không gian 26 m² với ban công nhìn ra khu vườn. Căn phòng hướng đến sự đơn giản và dễ chịu, với khu vực ngồi, điều hòa, TV, minibar cùng phòng tắm riêng đầy đủ tiện nghi cho nhu cầu lưu trú hằng ngày.
+  Hạng Deluxe Garden View Twin có diện tích 25 m², bố trí 2 giường đơn, mỗi giường 1m2 và có ban công hướng sân vườn.
 description_en: >-
-  This air-conditioned twin room includes a flat-screen TV with satellite channels, a private bathroom as well as a balcony with garden views. The unit offers 2 beds.
+  The Deluxe Garden View Twin offers 25 m² of space with two 1.2 m single beds and a balcony overlooking the garden.
 card_object_position: 50% 50%
-images: []
+images:
+  - /assets/images/rooms/deluxe-twin-views/pinewood-hotel-dalat-deluxe-twin.avif
 bathroom_amenities:
   - vi: Đồ vệ sinh cá nhân miễn phí
     en: Free toiletries

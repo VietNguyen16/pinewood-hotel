@@ -1,20 +1,26 @@
 enabled: true
-name_vi: Phòng Triple có ban công
-name_en: Triple Room with Balcony
+name_vi: Triple Suite hướng vườn
+name_en: Triple Suite Garden View
+room_count: 3
 guest_count: 3
-size_m2: 42
-bed_vi: 1 giường Queen + 1 giường Twin
-bed_en: 1 Queen bed + 1 Twin bed
+size_m2: 45
+bed_vi: 1 giường lớn 1m8 + 1 giường 1m2
+bed_en: 1 large bed (1.8 m) + 1 single bed (1.2 m)
 view_vi: Hướng vườn
 view_en: Garden view
-summary_vi: Cách bố trí linh hoạt cùng không gian rộng rãi giúp hạng phòng này trở thành lựa chọn thuận tiện cho những chuyến đi ba người.
-summary_en: A flexible and spacious layout that makes this room a convenient choice for three guests travelling together.
+rate_low_vnd: "950.000"
+rate_dec_2026_vnd: "950.000"
+rate_jan_feb_2027_vnd: "1.000.000"
+rate_holiday_tet_vnd: "1.400.000"
+summary_vi: Triple Suite 45 m² với 1 giường lớn 1m8 và 1 giường 1m2, có ban công.
+summary_en: A 45 m² Triple Suite with one 1.8 m bed and one 1.2 m single bed, plus a balcony.
 description_vi: >-
-  Với diện tích 42 m² và cách bố trí một giường Queen cùng một giường Twin, hạng phòng Triple mang lại nhiều không gian sử dụng mà vẫn giữ được sự thoáng đãng. Ban công hướng vườn, khu vực ngồi và các tiện nghi trong phòng giúp việc nghỉ ngơi trở nên thuận tiện trong suốt thời gian lưu trú.
+  Triple Suite có diện tích 45 m², bố trí 1 giường lớn 1m8 và 1 giường 1m2, có ban công và không gian phù hợp cho 3 khách.
 description_en: >-
-  Offering free toiletries, this triple room includes a private bathroom with a shower, a bidet and a hairdryer. The spacious air-conditioned triple room offers a flat-screen TV with satellite channels, a private entrance, soundproof walls, a mini-bar as well as garden views. The unit offers 2 beds.
+  The Triple Suite offers 45 m² of space with one 1.8 m bed and one 1.2 m single bed, a balcony and a layout suited to three guests.
 card_object_position: 50% 50%
-images: []
+images:
+  - /assets/images/rooms/triple-suite-garden-view/pinewood-hotel-dalat-triple-suite-garden-view.avif
 bathroom_amenities:
   - vi: Đồ vệ sinh cá nhân miễn phí
     en: Free toiletries

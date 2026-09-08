@@ -16,52 +16,40 @@ components:
         required: true
 
 media:
-  - name: double_room_garden_view
-    label: Double Room with Garden View
-    input: assets/images/rooms/double-room-garden-view
-    output: /assets/images/rooms/double-room-garden-view
+  - name: deluxe_double_views
+    label: Deluxe Double - City & Garden
+    input: assets/images/rooms/deluxe-double-views
+    output: /assets/images/rooms/deluxe-double-views
     rename: safe
     categories: [image]
-  - name: deluxe_double_or_twin_room
-    label: Deluxe Double or Twin Room
-    input: assets/images/rooms/deluxe-double-or-twin-room
-    output: /assets/images/rooms/deluxe-double-or-twin-room
+  - name: deluxe_twin_views
+    label: Deluxe Twin - City & Garden
+    input: assets/images/rooms/deluxe-twin-views
+    output: /assets/images/rooms/deluxe-twin-views
     rename: safe
     categories: [image]
-  - name: junior_suite_garden_view
-    label: Junior Suite with Garden View
-    input: assets/images/rooms/junior-suite-garden-view
-    output: /assets/images/rooms/junior-suite-garden-view
+  - name: junior_suite_city_view
+    label: Junior Suite City View
+    input: assets/images/rooms/junior-suite-city-view
+    output: /assets/images/rooms/junior-suite-city-view
     rename: safe
     categories: [image]
-  - name: king_suite_balcony
-    label: King Suite with Balcony
-    input: assets/images/rooms/king-suite-balcony
-    output: /assets/images/rooms/king-suite-balcony
+  - name: pinewood_suite_city_view
+    label: Pinewood Suite City View
+    input: assets/images/rooms/pinewood-suite-city-view
+    output: /assets/images/rooms/pinewood-suite-city-view
     rename: safe
     categories: [image]
-  - name: triple_room_balcony
-    label: Triple Room with Balcony
-    input: assets/images/rooms/triple-room-balcony
-    output: /assets/images/rooms/triple-room-balcony
+  - name: triple_suite_garden_view
+    label: Triple Suite Garden View
+    input: assets/images/rooms/triple-suite-garden-view
+    output: /assets/images/rooms/triple-suite-garden-view
     rename: safe
     categories: [image]
-  - name: family_suite_balcony
-    label: Family Suite with Balcony
-    input: assets/images/rooms/family-suite-balcony
-    output: /assets/images/rooms/family-suite-balcony
-    rename: safe
-    categories: [image]
-  - name: twin_room_garden_view
-    label: Twin Room with Garden View
-    input: assets/images/rooms/twin-room-garden-view
-    output: /assets/images/rooms/twin-room-garden-view
-    rename: safe
-    categories: [image]
-  - name: twin_room_city_view
-    label: Twin Room with City View
-    input: assets/images/rooms/twin-room-city-view
-    output: /assets/images/rooms/twin-room-city-view
+  - name: family_suite_city_view
+    label: Family Suite City View
+    input: assets/images/rooms/family-suite-city-view
+    output: /assets/images/rooms/family-suite-city-view
     rename: safe
     categories: [image]
 
@@ -70,21 +58,26 @@ content:
     label: Hạng phòng
     type: group
     items:
-      - name: double_room_garden_view
-        label: Double Room with Garden View
+      - name: deluxe_city_view_double
+        label: Deluxe City View Double
         type: file
-        path: _data/room_types/double-room-garden-view.yml
+        path: _data/room_types/deluxe-double-or-twin-room.yml
         format: yaml
         fields:
           - { name: enabled, label: Hiển thị trên website, type: boolean }
           - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
           - { name: name_en, label: English name, type: string, required: true }
+          - { name: room_count, label: Số lượng phòng, type: number, required: true }
           - { name: guest_count, label: Số khách, type: number, required: true }
           - { name: size_m2, label: Diện tích (m²), type: number, required: true }
           - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
           - { name: bed_en, label: Beds - English, type: string, required: true }
           - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
           - { name: view_en, label: View - English, type: string, required: true }
+          - { name: rate_low_vnd, label: Giá thấp điểm (tháng 9, 10, 11) - VND, type: string, required: true }
+          - { name: rate_dec_2026_vnd, label: Giá tháng 12/2026 - VND, type: string, required: true }
+          - { name: rate_jan_feb_2027_vnd, label: Giá tháng 1 + 2/2027 - VND, type: string, required: true }
+          - { name: rate_holiday_tet_vnd, label: Giá Lễ/Tết - VND, type: string, required: true, description: "Áp dụng 01-02/01/2027 và 05-14/02/2027" }
           - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
           - { name: summary_en, label: Short summary - English, type: text, required: true }
           - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
@@ -99,194 +92,10 @@ content:
           - name: images
             label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
             type: image
-            options:
-              media: double_room_garden_view
-              multiple: { max: 12 }
-              unique: true
-              extensions: [jpg, jpeg, png, webp, avif]
-              rename: safe
-      - name: deluxe_double_or_twin_room
-        label: Deluxe Double or Twin Room
-        type: file
-        path: _data/room_types/deluxe-double-or-twin-room.yml
-        format: yaml
-        fields:
-          - { name: enabled, label: Hiển thị trên website, type: boolean }
-          - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
-          - { name: name_en, label: English name, type: string, required: true }
-          - { name: guest_count, label: Số khách, type: number, required: true }
-          - { name: size_m2, label: Diện tích (m²), type: number, required: true }
-          - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
-          - { name: bed_en, label: Beds - English, type: string, required: true }
-          - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
-          - { name: view_en, label: View - English, type: string, required: true }
-          - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
-          - { name: summary_en, label: Short summary - English, type: text, required: true }
-          - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
-          - { name: description_en, label: Full description - English, type: text, required: true }
-          - { name: card_object_position, label: Vị trí crop ảnh chính (CSS object-position), type: string }
-          - { name: bathroom_amenities, label: Tiện nghi phòng tắm, component: bilingual_amenities }
-          - { name: comfort_amenities, label: Phòng ngủ & tiện nghi, component: bilingual_amenities }
-          - { name: media_amenities, label: Media, component: bilingual_amenities }
-          - { name: food_drink_amenities, label: Đồ ăn & thức uống, component: bilingual_amenities }
-          - { name: room_features, label: Đặc điểm phòng, component: bilingual_amenities }
-          - { name: safety_amenities, label: An toàn, component: bilingual_amenities }
-          - name: images
-            label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
-            type: image
-            options: { media: deluxe_double_or_twin_room, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }
-      - name: junior_suite_garden_view
-        label: Junior Suite with Garden View
-        type: file
-        path: _data/room_types/junior-suite-garden-view.yml
-        format: yaml
-        fields:
-          - { name: enabled, label: Hiển thị trên website, type: boolean }
-          - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
-          - { name: name_en, label: English name, type: string, required: true }
-          - { name: guest_count, label: Số khách, type: number, required: true }
-          - { name: size_m2, label: Diện tích (m²), type: number, required: true }
-          - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
-          - { name: bed_en, label: Beds - English, type: string, required: true }
-          - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
-          - { name: view_en, label: View - English, type: string, required: true }
-          - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
-          - { name: summary_en, label: Short summary - English, type: text, required: true }
-          - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
-          - { name: description_en, label: Full description - English, type: text, required: true }
-          - { name: card_object_position, label: Vị trí crop ảnh chính (CSS object-position), type: string }
-          - { name: bathroom_amenities, label: Tiện nghi phòng tắm, component: bilingual_amenities }
-          - { name: comfort_amenities, label: Phòng ngủ & tiện nghi, component: bilingual_amenities }
-          - { name: media_amenities, label: Media, component: bilingual_amenities }
-          - { name: food_drink_amenities, label: Đồ ăn & thức uống, component: bilingual_amenities }
-          - { name: room_features, label: Đặc điểm phòng, component: bilingual_amenities }
-          - { name: safety_amenities, label: An toàn, component: bilingual_amenities }
-          - name: images
-            label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
-            type: image
-            options: { media: junior_suite_garden_view, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }
-      - name: king_suite_balcony
-        label: King Suite with Balcony
-        type: file
-        path: _data/room_types/king-suite-balcony.yml
-        format: yaml
-        fields:
-          - { name: enabled, label: Hiển thị trên website, type: boolean }
-          - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
-          - { name: name_en, label: English name, type: string, required: true }
-          - { name: guest_count, label: Số khách, type: number, required: true }
-          - { name: size_m2, label: Diện tích (m²), type: number, required: true }
-          - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
-          - { name: bed_en, label: Beds - English, type: string, required: true }
-          - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
-          - { name: view_en, label: View - English, type: string, required: true }
-          - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
-          - { name: summary_en, label: Short summary - English, type: text, required: true }
-          - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
-          - { name: description_en, label: Full description - English, type: text, required: true }
-          - { name: card_object_position, label: Vị trí crop ảnh chính (CSS object-position), type: string }
-          - { name: bathroom_amenities, label: Tiện nghi phòng tắm, component: bilingual_amenities }
-          - { name: comfort_amenities, label: Phòng ngủ & tiện nghi, component: bilingual_amenities }
-          - { name: media_amenities, label: Media, component: bilingual_amenities }
-          - { name: food_drink_amenities, label: Đồ ăn & thức uống, component: bilingual_amenities }
-          - { name: room_features, label: Đặc điểm phòng, component: bilingual_amenities }
-          - { name: safety_amenities, label: An toàn, component: bilingual_amenities }
-          - name: images
-            label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
-            type: image
-            options: { media: king_suite_balcony, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }
-      - name: triple_room_balcony
-        label: Triple Room with Balcony
-        type: file
-        path: _data/room_types/triple-room-balcony.yml
-        format: yaml
-        fields:
-          - { name: enabled, label: Hiển thị trên website, type: boolean }
-          - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
-          - { name: name_en, label: English name, type: string, required: true }
-          - { name: guest_count, label: Số khách, type: number, required: true }
-          - { name: size_m2, label: Diện tích (m²), type: number, required: true }
-          - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
-          - { name: bed_en, label: Beds - English, type: string, required: true }
-          - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
-          - { name: view_en, label: View - English, type: string, required: true }
-          - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
-          - { name: summary_en, label: Short summary - English, type: text, required: true }
-          - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
-          - { name: description_en, label: Full description - English, type: text, required: true }
-          - { name: card_object_position, label: Vị trí crop ảnh chính (CSS object-position), type: string }
-          - { name: bathroom_amenities, label: Tiện nghi phòng tắm, component: bilingual_amenities }
-          - { name: comfort_amenities, label: Phòng ngủ & tiện nghi, component: bilingual_amenities }
-          - { name: media_amenities, label: Media, component: bilingual_amenities }
-          - { name: food_drink_amenities, label: Đồ ăn & thức uống, component: bilingual_amenities }
-          - { name: room_features, label: Đặc điểm phòng, component: bilingual_amenities }
-          - { name: safety_amenities, label: An toàn, component: bilingual_amenities }
-          - name: images
-            label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
-            type: image
-            options: { media: triple_room_balcony, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }
-      - name: family_suite_balcony
-        label: Family Suite with Balcony
-        type: file
-        path: _data/room_types/family-suite-balcony.yml
-        format: yaml
-        fields:
-          - { name: enabled, label: Hiển thị trên website, type: boolean }
-          - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
-          - { name: name_en, label: English name, type: string, required: true }
-          - { name: guest_count, label: Số khách, type: number, required: true }
-          - { name: size_m2, label: Diện tích (m²), type: number, required: true }
-          - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
-          - { name: bed_en, label: Beds - English, type: string, required: true }
-          - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
-          - { name: view_en, label: View - English, type: string, required: true }
-          - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
-          - { name: summary_en, label: Short summary - English, type: text, required: true }
-          - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
-          - { name: description_en, label: Full description - English, type: text, required: true }
-          - { name: card_object_position, label: Vị trí crop ảnh chính (CSS object-position), type: string }
-          - { name: bathroom_amenities, label: Tiện nghi phòng tắm, component: bilingual_amenities }
-          - { name: comfort_amenities, label: Phòng ngủ & tiện nghi, component: bilingual_amenities }
-          - { name: media_amenities, label: Media, component: bilingual_amenities }
-          - { name: food_drink_amenities, label: Đồ ăn & thức uống, component: bilingual_amenities }
-          - { name: room_features, label: Đặc điểm phòng, component: bilingual_amenities }
-          - { name: safety_amenities, label: An toàn, component: bilingual_amenities }
-          - name: images
-            label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
-            type: image
-            options: { media: family_suite_balcony, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }
-      - name: twin_room_garden_view
-        label: Twin Room with Garden View
-        type: file
-        path: _data/room_types/twin-room-garden-view.yml
-        format: yaml
-        fields:
-          - { name: enabled, label: Hiển thị trên website, type: boolean }
-          - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
-          - { name: name_en, label: English name, type: string, required: true }
-          - { name: guest_count, label: Số khách, type: number, required: true }
-          - { name: size_m2, label: Diện tích (m²), type: number, required: true }
-          - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
-          - { name: bed_en, label: Beds - English, type: string, required: true }
-          - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
-          - { name: view_en, label: View - English, type: string, required: true }
-          - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
-          - { name: summary_en, label: Short summary - English, type: text, required: true }
-          - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
-          - { name: description_en, label: Full description - English, type: text, required: true }
-          - { name: card_object_position, label: Vị trí crop ảnh chính (CSS object-position), type: string }
-          - { name: bathroom_amenities, label: Tiện nghi phòng tắm, component: bilingual_amenities }
-          - { name: comfort_amenities, label: Phòng ngủ & tiện nghi, component: bilingual_amenities }
-          - { name: media_amenities, label: Media, component: bilingual_amenities }
-          - { name: food_drink_amenities, label: Đồ ăn & thức uống, component: bilingual_amenities }
-          - { name: room_features, label: Đặc điểm phòng, component: bilingual_amenities }
-          - { name: safety_amenities, label: An toàn, component: bilingual_amenities }
-          - name: images
-            label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
-            type: image
-            options: { media: twin_room_garden_view, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }
-      - name: twin_room_city_view
-        label: Twin Room with City View
+            options: { media: deluxe_double_views, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }
+
+      - name: deluxe_city_view_twin
+        label: Deluxe City View Twin
         type: file
         path: _data/room_types/twin-room-city-view.yml
         format: yaml
@@ -294,12 +103,17 @@ content:
           - { name: enabled, label: Hiển thị trên website, type: boolean }
           - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
           - { name: name_en, label: English name, type: string, required: true }
+          - { name: room_count, label: Số lượng phòng, type: number, required: true }
           - { name: guest_count, label: Số khách, type: number, required: true }
           - { name: size_m2, label: Diện tích (m²), type: number, required: true }
           - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
           - { name: bed_en, label: Beds - English, type: string, required: true }
           - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
           - { name: view_en, label: View - English, type: string, required: true }
+          - { name: rate_low_vnd, label: Giá thấp điểm (tháng 9, 10, 11) - VND, type: string, required: true }
+          - { name: rate_dec_2026_vnd, label: Giá tháng 12/2026 - VND, type: string, required: true }
+          - { name: rate_jan_feb_2027_vnd, label: Giá tháng 1 + 2/2027 - VND, type: string, required: true }
+          - { name: rate_holiday_tet_vnd, label: Giá Lễ/Tết - VND, type: string, required: true, description: "Áp dụng 01-02/01/2027 và 05-14/02/2027" }
           - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
           - { name: summary_en, label: Short summary - English, type: text, required: true }
           - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
@@ -314,4 +128,220 @@ content:
           - name: images
             label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
             type: image
-            options: { media: twin_room_city_view, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }
+            options: { media: deluxe_twin_views, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }
+
+      - name: deluxe_garden_view_double
+        label: Deluxe Garden View Double
+        type: file
+        path: _data/room_types/double-room-garden-view.yml
+        format: yaml
+        fields:
+          - { name: enabled, label: Hiển thị trên website, type: boolean }
+          - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
+          - { name: name_en, label: English name, type: string, required: true }
+          - { name: room_count, label: Số lượng phòng, type: number, required: true }
+          - { name: guest_count, label: Số khách, type: number, required: true }
+          - { name: size_m2, label: Diện tích (m²), type: number, required: true }
+          - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
+          - { name: bed_en, label: Beds - English, type: string, required: true }
+          - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
+          - { name: view_en, label: View - English, type: string, required: true }
+          - { name: rate_low_vnd, label: Giá thấp điểm (tháng 9, 10, 11) - VND, type: string, required: true }
+          - { name: rate_dec_2026_vnd, label: Giá tháng 12/2026 - VND, type: string, required: true }
+          - { name: rate_jan_feb_2027_vnd, label: Giá tháng 1 + 2/2027 - VND, type: string, required: true }
+          - { name: rate_holiday_tet_vnd, label: Giá Lễ/Tết - VND, type: string, required: true, description: "Áp dụng 01-02/01/2027 và 05-14/02/2027" }
+          - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
+          - { name: summary_en, label: Short summary - English, type: text, required: true }
+          - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
+          - { name: description_en, label: Full description - English, type: text, required: true }
+          - { name: card_object_position, label: Vị trí crop ảnh chính (CSS object-position), type: string }
+          - { name: bathroom_amenities, label: Tiện nghi phòng tắm, component: bilingual_amenities }
+          - { name: comfort_amenities, label: Phòng ngủ & tiện nghi, component: bilingual_amenities }
+          - { name: media_amenities, label: Media, component: bilingual_amenities }
+          - { name: food_drink_amenities, label: Đồ ăn & thức uống, component: bilingual_amenities }
+          - { name: room_features, label: Đặc điểm phòng, component: bilingual_amenities }
+          - { name: safety_amenities, label: An toàn, component: bilingual_amenities }
+          - name: images
+            label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
+            type: image
+            options: { media: deluxe_double_views, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }
+
+      - name: deluxe_garden_view_twin
+        label: Deluxe Garden View Twin
+        type: file
+        path: _data/room_types/twin-room-garden-view.yml
+        format: yaml
+        fields:
+          - { name: enabled, label: Hiển thị trên website, type: boolean }
+          - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
+          - { name: name_en, label: English name, type: string, required: true }
+          - { name: room_count, label: Số lượng phòng, type: number, required: true }
+          - { name: guest_count, label: Số khách, type: number, required: true }
+          - { name: size_m2, label: Diện tích (m²), type: number, required: true }
+          - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
+          - { name: bed_en, label: Beds - English, type: string, required: true }
+          - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
+          - { name: view_en, label: View - English, type: string, required: true }
+          - { name: rate_low_vnd, label: Giá thấp điểm (tháng 9, 10, 11) - VND, type: string, required: true }
+          - { name: rate_dec_2026_vnd, label: Giá tháng 12/2026 - VND, type: string, required: true }
+          - { name: rate_jan_feb_2027_vnd, label: Giá tháng 1 + 2/2027 - VND, type: string, required: true }
+          - { name: rate_holiday_tet_vnd, label: Giá Lễ/Tết - VND, type: string, required: true, description: "Áp dụng 01-02/01/2027 và 05-14/02/2027" }
+          - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
+          - { name: summary_en, label: Short summary - English, type: text, required: true }
+          - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
+          - { name: description_en, label: Full description - English, type: text, required: true }
+          - { name: card_object_position, label: Vị trí crop ảnh chính (CSS object-position), type: string }
+          - { name: bathroom_amenities, label: Tiện nghi phòng tắm, component: bilingual_amenities }
+          - { name: comfort_amenities, label: Phòng ngủ & tiện nghi, component: bilingual_amenities }
+          - { name: media_amenities, label: Media, component: bilingual_amenities }
+          - { name: food_drink_amenities, label: Đồ ăn & thức uống, component: bilingual_amenities }
+          - { name: room_features, label: Đặc điểm phòng, component: bilingual_amenities }
+          - { name: safety_amenities, label: An toàn, component: bilingual_amenities }
+          - name: images
+            label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
+            type: image
+            options: { media: deluxe_twin_views, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }
+
+      - name: junior_suite_city_view
+        label: Junior Suite City View
+        type: file
+        path: _data/room_types/junior-suite-garden-view.yml
+        format: yaml
+        fields:
+          - { name: enabled, label: Hiển thị trên website, type: boolean }
+          - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
+          - { name: name_en, label: English name, type: string, required: true }
+          - { name: room_count, label: Số lượng phòng, type: number, required: true }
+          - { name: guest_count, label: Số khách, type: number, required: true }
+          - { name: size_m2, label: Diện tích (m²), type: number, required: true }
+          - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
+          - { name: bed_en, label: Beds - English, type: string, required: true }
+          - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
+          - { name: view_en, label: View - English, type: string, required: true }
+          - { name: rate_low_vnd, label: Giá thấp điểm (tháng 9, 10, 11) - VND, type: string, required: true }
+          - { name: rate_dec_2026_vnd, label: Giá tháng 12/2026 - VND, type: string, required: true }
+          - { name: rate_jan_feb_2027_vnd, label: Giá tháng 1 + 2/2027 - VND, type: string, required: true }
+          - { name: rate_holiday_tet_vnd, label: Giá Lễ/Tết - VND, type: string, required: true, description: "Áp dụng 01-02/01/2027 và 05-14/02/2027" }
+          - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
+          - { name: summary_en, label: Short summary - English, type: text, required: true }
+          - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
+          - { name: description_en, label: Full description - English, type: text, required: true }
+          - { name: card_object_position, label: Vị trí crop ảnh chính (CSS object-position), type: string }
+          - { name: bathroom_amenities, label: Tiện nghi phòng tắm, component: bilingual_amenities }
+          - { name: comfort_amenities, label: Phòng ngủ & tiện nghi, component: bilingual_amenities }
+          - { name: media_amenities, label: Media, component: bilingual_amenities }
+          - { name: food_drink_amenities, label: Đồ ăn & thức uống, component: bilingual_amenities }
+          - { name: room_features, label: Đặc điểm phòng, component: bilingual_amenities }
+          - { name: safety_amenities, label: An toàn, component: bilingual_amenities }
+          - name: images
+            label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
+            type: image
+            options: { media: junior_suite_city_view, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }
+
+      - name: pinewood_suite_city_view
+        label: Pinewood Suite City View
+        type: file
+        path: _data/room_types/king-suite-balcony.yml
+        format: yaml
+        fields:
+          - { name: enabled, label: Hiển thị trên website, type: boolean }
+          - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
+          - { name: name_en, label: English name, type: string, required: true }
+          - { name: room_count, label: Số lượng phòng, type: number, required: true }
+          - { name: guest_count, label: Số khách, type: number, required: true }
+          - { name: size_m2, label: Diện tích (m²), type: number, required: true }
+          - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
+          - { name: bed_en, label: Beds - English, type: string, required: true }
+          - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
+          - { name: view_en, label: View - English, type: string, required: true }
+          - { name: rate_low_vnd, label: Giá thấp điểm (tháng 9, 10, 11) - VND, type: string, required: true }
+          - { name: rate_dec_2026_vnd, label: Giá tháng 12/2026 - VND, type: string, required: true }
+          - { name: rate_jan_feb_2027_vnd, label: Giá tháng 1 + 2/2027 - VND, type: string, required: true }
+          - { name: rate_holiday_tet_vnd, label: Giá Lễ/Tết - VND, type: string, required: true, description: "Áp dụng 01-02/01/2027 và 05-14/02/2027" }
+          - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
+          - { name: summary_en, label: Short summary - English, type: text, required: true }
+          - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
+          - { name: description_en, label: Full description - English, type: text, required: true }
+          - { name: card_object_position, label: Vị trí crop ảnh chính (CSS object-position), type: string }
+          - { name: bathroom_amenities, label: Tiện nghi phòng tắm, component: bilingual_amenities }
+          - { name: comfort_amenities, label: Phòng ngủ & tiện nghi, component: bilingual_amenities }
+          - { name: media_amenities, label: Media, component: bilingual_amenities }
+          - { name: food_drink_amenities, label: Đồ ăn & thức uống, component: bilingual_amenities }
+          - { name: room_features, label: Đặc điểm phòng, component: bilingual_amenities }
+          - { name: safety_amenities, label: An toàn, component: bilingual_amenities }
+          - name: images
+            label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
+            type: image
+            options: { media: pinewood_suite_city_view, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }
+
+      - name: triple_suite_garden_view
+        label: Triple Suite Garden View
+        type: file
+        path: _data/room_types/triple-room-balcony.yml
+        format: yaml
+        fields:
+          - { name: enabled, label: Hiển thị trên website, type: boolean }
+          - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
+          - { name: name_en, label: English name, type: string, required: true }
+          - { name: room_count, label: Số lượng phòng, type: number, required: true }
+          - { name: guest_count, label: Số khách, type: number, required: true }
+          - { name: size_m2, label: Diện tích (m²), type: number, required: true }
+          - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
+          - { name: bed_en, label: Beds - English, type: string, required: true }
+          - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
+          - { name: view_en, label: View - English, type: string, required: true }
+          - { name: rate_low_vnd, label: Giá thấp điểm (tháng 9, 10, 11) - VND, type: string, required: true }
+          - { name: rate_dec_2026_vnd, label: Giá tháng 12/2026 - VND, type: string, required: true }
+          - { name: rate_jan_feb_2027_vnd, label: Giá tháng 1 + 2/2027 - VND, type: string, required: true }
+          - { name: rate_holiday_tet_vnd, label: Giá Lễ/Tết - VND, type: string, required: true, description: "Áp dụng 01-02/01/2027 và 05-14/02/2027" }
+          - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
+          - { name: summary_en, label: Short summary - English, type: text, required: true }
+          - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
+          - { name: description_en, label: Full description - English, type: text, required: true }
+          - { name: card_object_position, label: Vị trí crop ảnh chính (CSS object-position), type: string }
+          - { name: bathroom_amenities, label: Tiện nghi phòng tắm, component: bilingual_amenities }
+          - { name: comfort_amenities, label: Phòng ngủ & tiện nghi, component: bilingual_amenities }
+          - { name: media_amenities, label: Media, component: bilingual_amenities }
+          - { name: food_drink_amenities, label: Đồ ăn & thức uống, component: bilingual_amenities }
+          - { name: room_features, label: Đặc điểm phòng, component: bilingual_amenities }
+          - { name: safety_amenities, label: An toàn, component: bilingual_amenities }
+          - name: images
+            label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
+            type: image
+            options: { media: triple_suite_garden_view, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }
+
+      - name: family_suite_city_view
+        label: Family Suite City View
+        type: file
+        path: _data/room_types/family-suite-balcony.yml
+        format: yaml
+        fields:
+          - { name: enabled, label: Hiển thị trên website, type: boolean }
+          - { name: name_vi, label: Tên tiếng Việt, type: string, required: true }
+          - { name: name_en, label: English name, type: string, required: true }
+          - { name: room_count, label: Số lượng phòng, type: number, required: true }
+          - { name: guest_count, label: Số khách, type: number, required: true }
+          - { name: size_m2, label: Diện tích (m²), type: number, required: true }
+          - { name: bed_vi, label: Giường - tiếng Việt, type: string, required: true }
+          - { name: bed_en, label: Beds - English, type: string, required: true }
+          - { name: view_vi, label: Hướng nhìn - tiếng Việt, type: string, required: true }
+          - { name: view_en, label: View - English, type: string, required: true }
+          - { name: rate_low_vnd, label: Giá thấp điểm (tháng 9, 10, 11) - VND, type: string, required: true }
+          - { name: rate_dec_2026_vnd, label: Giá tháng 12/2026 - VND, type: string, required: true }
+          - { name: rate_jan_feb_2027_vnd, label: Giá tháng 1 + 2/2027 - VND, type: string, required: true }
+          - { name: rate_holiday_tet_vnd, label: Giá Lễ/Tết - VND, type: string, required: true, description: "Áp dụng 01-02/01/2027 và 05-14/02/2027" }
+          - { name: summary_vi, label: Mô tả ngắn - tiếng Việt, type: text, required: true }
+          - { name: summary_en, label: Short summary - English, type: text, required: true }
+          - { name: description_vi, label: Mô tả chi tiết - tiếng Việt, type: text, required: true }
+          - { name: description_en, label: Full description - English, type: text, required: true }
+          - { name: card_object_position, label: Vị trí crop ảnh chính (CSS object-position), type: string }
+          - { name: bathroom_amenities, label: Tiện nghi phòng tắm, component: bilingual_amenities }
+          - { name: comfort_amenities, label: Phòng ngủ & tiện nghi, component: bilingual_amenities }
+          - { name: media_amenities, label: Media, component: bilingual_amenities }
+          - { name: food_drink_amenities, label: Đồ ăn & thức uống, component: bilingual_amenities }
+          - { name: room_features, label: Đặc điểm phòng, component: bilingual_amenities }
+          - { name: safety_amenities, label: An toàn, component: bilingual_amenities }
+          - name: images
+            label: Hình ảnh - kéo thả, ảnh đầu tiên là ảnh chính
+            type: image
+            options: { media: family_suite_city_view, multiple: { max: 12 }, unique: true, extensions: [jpg, jpeg, png, webp, avif], rename: safe }

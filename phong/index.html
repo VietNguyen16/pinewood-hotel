@@ -3,7 +3,7 @@ layout: app
 standalone: true
 lang: vi
 title: Phòng nghỉ | Pinewood Hotel Dalat
-description: Khám phá 8 hạng phòng tại Pinewood Hotel Dalat với diện tích, loại giường, hướng nhìn, tiện nghi và hình ảnh do khách sạn quản lý.
+description: Khám phá 8 hạng phòng tại Pinewood Hotel Dalat với diện tích, loại giường, hướng nhìn, tiện nghi và bảng giá khách lẻ hiện hành.
 canonical: https://pinewoodhotel.vn/phong/
 alternate_vi: https://pinewoodhotel.vn/phong/
 alternate_en: https://pinewoodhotel.vn/en/rooms/
@@ -72,6 +72,7 @@ robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
             <span>{{ room.view_vi }}</span>
           </div>
           <p>{{ room.summary_vi }}</p>
+          {% if room.rate_low_vnd %}<div class="rooms-card-rate"><span>Giá thấp điểm</span><strong>{{ room.rate_low_vnd }} ₫</strong></div>{% endif %}
           <a class="rooms-card-cta" href="#room-{{ room_slug }}" data-room-open="{{ room_slug }}">Xem chi tiết phòng <span aria-hidden="true">→</span></a>
         </div>
       </article>
@@ -110,6 +111,7 @@ robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
           <span><strong>{{ room.size_m2 }}</strong> m²</span>
           <span>{{ room.bed_vi }}</span>
           {% if room.guest_count %}<span>{{ room.guest_count }} người</span>{% endif %}
+          {% if room.room_count %}<span>{{ room.room_count }} phòng</span>{% endif %}
           <span>{{ room.view_vi }}</span>
         </div>
       </div>
@@ -118,6 +120,8 @@ robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
         <h3 id="intro-{{ room_slug }}">Giới thiệu</h3>
         <p>{{ room.description_vi }}</p>
       </section>
+
+      {% include room-rates.html room=room slug=room_slug lang='vi' %}
 
       <section class="room-amenities-visible" aria-labelledby="bathroom-{{ room_slug }}">
         <h3 id="bathroom-{{ room_slug }}">Tiện nghi phòng tắm</h3>
@@ -165,5 +169,6 @@ robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
 {% endif %}
 
 <link rel="stylesheet" href="/css/room-gallery-hq.css?v=20260907rooms5">
+<link rel="stylesheet" href="/css/room-pricing.css?v=20260908rates1">
 <script src="/js/config.js?v=20260907seo1" defer></script>
 <script src="/js/room-gallery.js?v=20260907rooms4" defer></script>

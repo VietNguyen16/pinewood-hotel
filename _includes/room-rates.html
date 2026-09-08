@@ -1,0 +1,12 @@
+{% assign rate_room = include.room %}
+{% assign rate_lang = include.lang | default: 'vi' %}
+<section class="room-rate-card" aria-labelledby="rates-{{ include.slug }}">
+  <h3 id="rates-{{ include.slug }}">{% if rate_lang == 'en' %}Room rates{% else %}Giá phòng{% endif %}</h3>
+  <p class="room-rate-note">{% if rate_lang == 'en' %}Retail rates from the current Pinewood rate sheet. Please contact the hotel to confirm the applicable rate and room status for your stay dates.{% else %}Giá khách lẻ theo bảng giá hiện hành của Pinewood. Vui lòng liên hệ khách sạn để xác nhận mức giá áp dụng và tình trạng phòng cho ngày lưu trú.{% endif %}</p>
+  <div class="room-rate-grid">
+    <div class="room-rate-item"><span>{% if rate_lang == 'en' %}Low season · September, October, November{% else %}Thấp điểm · Tháng 9, 10, 11{% endif %}</span><strong>{% if rate_lang == 'en' %}VND {{ rate_room.rate_low_vnd | replace: '.', ',' }}{% else %}{{ rate_room.rate_low_vnd }} ₫{% endif %}</strong></div>
+    <div class="room-rate-item"><span>{% if rate_lang == 'en' %}December 2026{% else %}Tháng 12/2026{% endif %}</span><strong>{% if rate_lang == 'en' %}VND {{ rate_room.rate_dec_2026_vnd | replace: '.', ',' }}{% else %}{{ rate_room.rate_dec_2026_vnd }} ₫{% endif %}</strong></div>
+    <div class="room-rate-item"><span>{% if rate_lang == 'en' %}January + February 2027{% else %}Tháng 1 + 2/2027{% endif %}</span><strong>{% if rate_lang == 'en' %}VND {{ rate_room.rate_jan_feb_2027_vnd | replace: '.', ',' }}{% else %}{{ rate_room.rate_jan_feb_2027_vnd }} ₫{% endif %}</strong></div>
+    <div class="room-rate-item"><span>{% if rate_lang == 'en' %}Holiday / Tet · Jan 1–2 and Feb 5–14, 2027{% else %}Lễ, Tết · 01–02/01 và 05–14/02/2027{% endif %}</span><strong>{% if rate_lang == 'en' %}VND {{ rate_room.rate_holiday_tet_vnd | replace: '.', ',' }}{% else %}{{ rate_room.rate_holiday_tet_vnd }} ₫{% endif %}</strong></div>
+  </div>
+</section>
