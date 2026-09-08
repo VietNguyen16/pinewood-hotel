@@ -72,7 +72,7 @@ robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
             <span>{{ room.view_en }}</span>
           </div>
           <p>{{ room.summary_en }}</p>
-          {% if room.rate_low_vnd %}<div class="rooms-card-rate"><span>Low-season rate</span><strong>VND {{ room.rate_low_vnd | replace: '.', ',' }}</strong></div>{% endif %}
+          {% if room.rate_low_vnd %}<div class="rooms-card-rate"><span>Price</span><strong>VND {{ room.rate_low_vnd | replace: '.', ',' }}</strong></div>{% endif %}
           <a class="rooms-card-cta" href="#room-{{ room_slug }}" data-room-open="{{ room_slug }}">View room details <span aria-hidden="true">→</span></a>
         </div>
       </article>
@@ -121,8 +121,6 @@ robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
         <p>{{ room.description_en }}</p>
       </section>
 
-      {% include room-rates.html room=room slug=room_slug lang='en' %}
-
       <section class="room-amenities-visible" aria-labelledby="bathroom-{{ room_slug }}">
         <h3 id="bathroom-{{ room_slug }}">Bathroom amenities</h3>
         <ul class="room-amenity-grid">
@@ -140,7 +138,7 @@ robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
       </div>
 
       <div class="room-detail-actions">
-        <a class="room-book-cta" href="/en/contact/" data-room-cta data-contact-fallback="/en/contact/">BOOK NOW <span aria-hidden="true">→</span></a>
+        <a class="room-book-cta" href="/en/?room={{ room_slug }}#home-booking-estimator">BOOK NOW <span aria-hidden="true">→</span></a>
         <a class="room-secondary-link" href="/en/location/">View location</a>
         <a class="room-secondary-link" href="/en/services/">View services</a>
       </div>
@@ -169,6 +167,6 @@ robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
 {% endif %}
 
 <link rel="stylesheet" href="/css/room-gallery-hq.css?v=20260907rooms5">
-<link rel="stylesheet" href="/css/room-pricing.css?v=20260908rates1">
+<link rel="stylesheet" href="/css/room-pricing.css?v=20260908rates2">
 <script src="/js/config.js?v=20260907seo1" defer></script>
 <script src="/js/room-gallery.js?v=20260907rooms4" defer></script>

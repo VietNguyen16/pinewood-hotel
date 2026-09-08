@@ -44,3 +44,10 @@ window.HOTEL_CONFIG = Object.freeze({
     url: ""
   }
 });
+
+if (!document.querySelector('script[data-homepage-ux-loader]')) {
+  const homepageUx = document.createElement('script');
+  homepageUx.src = '/js/homepage-ux.js?v=20260908ux1';
+  homepageUx.dataset.homepageUxLoader = 'true';
+  document.head.appendChild(homepageUx);
+}
