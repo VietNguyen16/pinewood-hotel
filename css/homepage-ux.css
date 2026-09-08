@@ -1,0 +1,193 @@
+/* Pinewood booking-navigation, date-format and homepage room-carousel refinements. */
+body.home-reference-page [data-home-header-booking],
+body.home-reference-page [data-home-mobile-booking] {
+  display: none !important;
+}
+
+.subpage-booking-link {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: var(--pine-brown);
+  color: #fff !important;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+  box-shadow: 0 10px 26px rgba(28,20,13,.14);
+  transition: transform .2s ease, filter .2s ease;
+}
+.subpage-booking-link:hover {
+  color: #fff !important;
+  background: var(--pine-brown) !important;
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+}
+.marketing-static-nav .subpage-booking-link {
+  padding-inline: 16px;
+  color: #fff !important;
+  background: var(--pine-brown);
+}
+.mobile-nav .subpage-booking-link {
+  margin-top: 6px;
+  color: #fff !important;
+  background: var(--pine-brown);
+  text-align: center;
+}
+
+.homepage-date-control {
+  position: relative;
+  width: 100%;
+}
+.home-reference-booking-field .homepage-date-display {
+  padding-right: 46px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .01em;
+}
+.home-reference-booking-field .homepage-date-display[aria-invalid="true"] {
+  border-color: #b64e3e;
+  box-shadow: 0 0 0 3px rgba(182,78,62,.16);
+}
+.homepage-date-button {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  width: 38px;
+  height: 38px;
+  display: inline-grid;
+  place-items: center;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #1d2e26;
+  cursor: pointer;
+}
+.homepage-date-button:hover,
+.homepage-date-button:focus-visible {
+  background: rgba(12,53,34,.08);
+  outline: none;
+}
+.homepage-date-button svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.home-reference-booking-field .homepage-native-date {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+}
+
+.home-reference-room-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin: -8px 0 14px;
+}
+.home-reference-room-control {
+  width: 42px;
+  height: 42px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid rgba(178,142,105,.34);
+  border-radius: 999px;
+  background: #fffdf9;
+  color: var(--pine-green);
+  font-size: 19px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(67,48,30,.055);
+  transition: transform .2s ease, background .2s ease, opacity .2s ease;
+}
+.home-reference-room-control:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: #f4ecdf;
+}
+.home-reference-room-control:focus-visible {
+  outline: 2px solid #b98a60;
+  outline-offset: 2px;
+}
+.home-reference-room-control:disabled {
+  opacity: .32;
+  cursor: default;
+}
+.home-reference-room-grid[data-home-room-track="true"] {
+  display: grid !important;
+  grid-template-columns: none !important;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 36px) / 3);
+  grid-auto-rows: 1fr;
+  gap: 18px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 1px 8px;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.home-reference-room-grid[data-home-room-track="true"]::-webkit-scrollbar {
+  display: none;
+}
+.home-reference-room-grid[data-home-room-track="true"] .home-reference-room-card {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+}
+
+@media (max-width: 1100px) {
+  .header-actions > .subpage-booking-link { display: none; }
+  .home-reference-room-grid[data-home-room-track="true"] {
+    grid-auto-columns: calc((100% - 18px) / 2);
+  }
+}
+
+@media (max-width: 760px) {
+  .marketing-static-nav .subpage-booking-link {
+    flex-basis: auto;
+    padding: 8px 12px;
+    font-size: 10px;
+  }
+  .home-reference-room-controls {
+    justify-content: flex-start;
+    margin-top: 0;
+  }
+  .home-reference-room-grid[data-home-room-track="true"] {
+    grid-auto-columns: min(86vw, 420px);
+  }
+}
+
+@media (max-width: 430px) {
+  .home-reference-room-grid[data-home-room-track="true"] {
+    grid-auto-columns: 88vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .subpage-booking-link,
+  .home-reference-room-control {
+    transition: none;
+  }
+  .home-reference-room-grid[data-home-room-track="true"] {
+    scroll-behavior: auto;
+  }
+}
