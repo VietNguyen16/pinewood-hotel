@@ -8,41 +8,8 @@ alternate_vi: https://pinewoodhotel.vn/
 alternate_en: https://pinewoodhotel.vn/en/
 robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
 ---
-<style id="homepage-inline-render-guard">#main-content{visibility:hidden}</style>
-<script>
-document.body.classList.add('homepage-render-pending');
-if (!document.getElementById('pinewood-home-render-guard')) {
-  const guard = document.createElement('style');
-  guard.id = 'pinewood-home-render-guard';
-  guard.textContent = 'body.homepage-render-pending #main-content{visibility:hidden!important}body.home-reference-ready #main-content{visibility:visible!important}';
-  document.head.appendChild(guard);
-}
-if (!document.querySelector('script[data-site-runtime-fixes-loader]')) {
-  const runtimeFixes = document.createElement('script');
-  runtimeFixes.src = '/js/site-runtime-fixes.js?v=20260908fix1';
-  runtimeFixes.dataset.siteRuntimeFixesLoader = 'true';
-  runtimeFixes.async = false;
-  document.head.appendChild(runtimeFixes);
-}
-</script>
-<noscript><style>#main-content{visibility:visible!important}</style></noscript>
-<section class="static-seo-fallback">
-  <div class="shell">
-    <article class="content-card">
-      <p class="eyebrow">PINEWOOD HOTEL DALAT</p>
-      <h1>Pinewood Hotel Dalat</h1>
-      <p>Pinewood Hotel Dalat tọa lạc tại 54 Đường Võ Trường Toản, Lâm Viên - Đà Lạt. Khách sạn hiện có 50 phòng thuộc 8 hạng phòng, từ Deluxe đến các hạng Suite, với thông tin rõ ràng về diện tích, giường, hướng nhìn và tiện nghi.</p>
-      <p>Khách có thể chọn ngày lưu trú, hạng phòng và số khách trên trang chủ rồi gửi yêu cầu đặt phòng. Pinewood sẽ kiểm tra và xác nhận tình trạng phòng sau khi nhận yêu cầu.</p>
-      <p>Khách lưu trú được hỗ trợ Wi-Fi trong phòng và khu vực công cộng, bữa sáng tại nhà hàng từ 06:30 đến 09:00 cùng hỗ trợ từ Lễ tân.</p>
-      <div class="seo-social-strip" aria-label="Vị trí, phòng nghỉ, liên hệ và đánh giá khách hàng của Pinewood">
-        <a href="/phong/">Xem 8 hạng phòng</a>
-        <a href="/vi-tri/">Vị trí & chỉ đường</a>
-        <a href="/lien-he/">Liên hệ đặt phòng</a>
-        <a href="https://www.instagram.com/pinewooddalat/" target="_blank" rel="me noopener noreferrer">Instagram · @pinewooddalat</a>
-        <a href="https://www.tiktok.com/@dalat.pinewood" target="_blank" rel="me noopener noreferrer">TikTok · @dalat.pinewood</a>
-        <a href="https://www.google.com/maps/place/Kh%C3%A1ch+s%E1%BA%A1n+Pinewood/@11.9611181,108.4486208,1207m/data=!3m1!1e3!4m11!3m10!1s0x3171130010cadc19:0xdcb299e4322ab577!5m2!4m1!1i2!8m2!3d11.9611181!4d108.4512011!9m1!1b1!16s%2Fg%2F11njdj19vf" target="_blank" rel="noopener noreferrer">Đánh giá Google Maps</a>
-        <a href="https://www.booking.com/hotel/vn/pinewood-dalat.html" target="_blank" rel="noopener noreferrer">Đánh giá khách trên Booking.com</a>
-      </div>
-    </article>
-  </div>
-</section>
+<link rel="stylesheet" href="/css/home-reference.css?v=20260908h2" data-home-reference-styles>
+<link rel="stylesheet" href="/css/homepage-ux.css?v=20260908ux1" data-homepage-ux-styles>
+<script>document.body.classList.add('home-reference-page');</script>
+{% include home-reference-static.html lang='vi' %}
+<script src="/js/home-static.js?v=20260908static1" defer></script>
