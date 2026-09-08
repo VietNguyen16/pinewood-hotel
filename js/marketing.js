@@ -47,6 +47,10 @@
       link.dataset.homeMobileBooking = 'true';
       link.href = '#home-booking-estimator';
       link.textContent = lang === 'en' ? 'Book now' : 'Đặt phòng';
+      link.addEventListener('click', () => {
+        const menuButton = document.getElementById('menu-button');
+        if (menuButton?.getAttribute('aria-expanded') === 'true') menuButton.click();
+      });
       mobile.appendChild(link);
     }
   }
@@ -92,6 +96,7 @@
     const name = en ? room.name_en : room.name_vi;
     const bed = en ? room.bed_en : room.bed_vi;
     const summary = en ? room.summary_en : room.summary_vi;
+    const view = en ? room.view_en : room.view_vi;
     const guests = `${room.guest_count} ${en ? (Number(room.guest_count) === 1 ? 'guest' : 'guests') : 'người'}`;
     const detail = `${en ? '/en/rooms/' : '/phong/'}#room-${encodeURIComponent(room.slug)}`;
     const alt = en ? `${name} at Pinewood Hotel Dalat` : `${name} tại Pinewood Hotel Dalat`;
@@ -108,6 +113,7 @@
             <span>${esc(room.size_m2)} m²</span>
             <span>${esc(bed)}</span>
             <span>${esc(guests)}</span>
+            <span>${esc(view)}</span>
           </div>
           <p class="home-reference-room-summary">${esc(summary)}</p>
           <a class="home-reference-room-link" href="${detail}">${esc(en ? 'View details' : 'Xem chi tiết')} <span aria-hidden="true">→</span></a>
@@ -230,7 +236,7 @@
     const today = isoToday();
 
     checkIn.min = today;
-    if (!checkIn.value) checkIn.value = today;
+    if (!checkIn.value) checkIn.value = addIsoDays(today, 1);
     checkOut.min = addIsoDays(checkIn.value, 1);
     if (!checkOut.value || checkOut.value <= checkIn.value) checkOut.value = addIsoDays(checkIn.value, 1);
 
@@ -533,7 +539,9 @@
     ensureHomeStyles();
     let section = document.getElementById('booking-request');
     if (!section) {
-      main.insertAdjacentHTML('afterbegin', bookingRequestMarkup(lang, request));
+      const hero = main.querySelector('.page-hero');
+      if (hero) hero.insertAdjacentHTML('afterend', bookingRequestMarkup(lang, request));
+      else main.insertAdjacentHTML('afterbegin', bookingRequestMarkup(lang, request));
       section = document.getElementById('booking-request');
       bindBookingCopy(section, lang, request.message);
       window.requestAnimationFrame(() => section?.scrollIntoView({ block: 'start' }));
