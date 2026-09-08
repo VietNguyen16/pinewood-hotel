@@ -84,12 +84,10 @@
     }
   }
 
-  function formatIsoDate(value, lang) {
+  function formatIsoDate(value) {
     const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value || '');
     if (!match) return value || '';
-    return lang === 'en'
-      ? `${match[3]}/${match[2]}/${match[1]}`
-      : `${match[3]}/${match[2]}/${match[1]}`;
+    return `${match[3]}/${match[2]}/${match[1]}`;
   }
 
   function bookingRequestFromUrl() {
@@ -109,8 +107,8 @@
           '',
           'I would like to request a room booking with the following details:',
           `- Room type: ${roomName}`,
-          `- Check-in: ${formatIsoDate(checkIn, lang)}`,
-          `- Check-out: ${formatIsoDate(checkOut, lang)}`,
+          `- Check-in: ${formatIsoDate(checkIn)}`,
+          `- Check-out: ${formatIsoDate(checkOut)}`,
           nights ? `- Nights: ${nights}` : null,
           guests ? `- Guests: ${guests}` : null,
           '',
@@ -121,8 +119,8 @@
           '',
           'Tôi muốn hỏi đặt phòng với thông tin sau:',
           `- Hạng phòng: ${roomName}`,
-          `- Nhận phòng: ${formatIsoDate(checkIn, lang)}`,
-          `- Trả phòng: ${formatIsoDate(checkOut, lang)}`,
+          `- Nhận phòng: ${formatIsoDate(checkIn)}`,
+          `- Trả phòng: ${formatIsoDate(checkOut)}`,
           nights ? `- Số đêm: ${nights}` : null,
           guests ? `- Số khách: ${guests}` : null,
           '',
@@ -188,8 +186,20 @@
   function markNewHomeReady() {
     if (!isHome()) return false;
     if (!document.querySelector('.home-reference')) return false;
+
     disableSpaRoutingOnNewHome();
     document.querySelectorAll('[data-booking-contact]').forEach(stripEstimateFromBookingLink);
+
+    const bookingSection = document.querySelector('.home-reference-booking-section');
+    if (bookingSection) {
+      bookingSection.setAttribute(
+        'aria-label',
+        pageLang() === 'en' ? 'Choose stay dates and prepare a booking request' : 'Chọn ngày lưu trú và chuẩn bị yêu cầu đặt phòng'
+      );
+    }
+    document.querySelector('.home-reference-booking-summary')?.remove();
+
+    document.getElementById('homepage-inline-render-guard')?.remove();
     document.body.classList.remove('homepage-render-pending');
     document.body.classList.add('home-reference-ready');
     return true;
