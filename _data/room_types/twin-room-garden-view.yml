@@ -19,7 +19,8 @@ description_vi: >-
 description_en: >-
   The Deluxe Garden View Twin offers 25 m² of space with two 1.2 m single beds and a balcony overlooking the garden.
 card_object_position: 50% 50%
-images: []
+images:
+  - /assets/images/rooms/deluxe-twin-views/pinewood-hotel-dalat-deluxe-twin.avif
 bathroom_amenities:
   - vi: Đồ vệ sinh cá nhân miễn phí
     en: Free toiletries
