@@ -19,7 +19,8 @@ description_vi: >-
 description_en: >-
   The Family Suite City View offers 45 m² of space with two 1.8 m beds, a sofa, a balcony and city views.
 card_object_position: 50% 50%
-images: []
+images:
+  - /assets/images/rooms/family-suite-city-view/pinewood-hotel-dalat-family-suite-city-view.avif
 bathroom_amenities:
   - vi: Đồ vệ sinh cá nhân miễn phí
     en: Free toiletries
