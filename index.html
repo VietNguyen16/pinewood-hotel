@@ -9,6 +9,22 @@ alternate_en: https://pinewoodhotel.vn/en/
 robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
 ---
 <style id="homepage-inline-render-guard">#main-content{visibility:hidden}</style>
+<script>
+document.body.classList.add('homepage-render-pending');
+if (!document.getElementById('pinewood-home-render-guard')) {
+  const guard = document.createElement('style');
+  guard.id = 'pinewood-home-render-guard';
+  guard.textContent = 'body.homepage-render-pending #main-content{visibility:hidden!important}body.home-reference-ready #main-content{visibility:visible!important}';
+  document.head.appendChild(guard);
+}
+if (!document.querySelector('script[data-site-runtime-fixes-loader]')) {
+  const runtimeFixes = document.createElement('script');
+  runtimeFixes.src = '/js/site-runtime-fixes.js?v=20260908fix1';
+  runtimeFixes.dataset.siteRuntimeFixesLoader = 'true';
+  runtimeFixes.async = false;
+  document.head.appendChild(runtimeFixes);
+}
+</script>
 <noscript><style>#main-content{visibility:visible!important}</style></noscript>
 <section class="static-seo-fallback">
   <div class="shell">
