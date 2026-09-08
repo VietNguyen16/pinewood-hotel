@@ -19,7 +19,8 @@ description_vi: >-
 description_en: >-
   The Deluxe City View Double offers 25 m² of space with one 1.8 m bed and a balcony overlooking the city.
 card_object_position: 50% 50%
-images: []
+images:
+  - /assets/images/rooms/deluxe-double-views/pinewood-hotel-dalat-deluxe-double.avif
 bathroom_amenities:
   - vi: Đồ vệ sinh cá nhân miễn phí
     en: Free toiletries
