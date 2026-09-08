@@ -19,7 +19,8 @@ description_vi: >-
 description_en: >-
   The Junior Suite City View offers 30 m² of space with one 1.8 m bed, a separate living room with a sofa and a window overlooking the city.
 card_object_position: 50% 50%
-images: []
+images:
+  - /assets/images/rooms/junior-suite-city-view/pinewood-hotel-dalat-junior-suite-city-view.avif
 bathroom_amenities:
   - vi: Đồ vệ sinh cá nhân miễn phí
     en: Free toiletries
