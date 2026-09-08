@@ -18,10 +18,6 @@ permalink: /home-rooms.json
     "view_en": {{ room.view_en | jsonify }},
     "summary_vi": {{ room.summary_vi | jsonify }},
     "summary_en": {{ room.summary_en | jsonify }},
-    "rate_low_vnd": {{ room.rate_low_vnd | jsonify }},
-    "rate_dec_2026_vnd": {{ room.rate_dec_2026_vnd | jsonify }},
-    "rate_jan_feb_2027_vnd": {{ room.rate_jan_feb_2027_vnd | jsonify }},
-    "rate_holiday_tet_vnd": {{ room.rate_holiday_tet_vnd | jsonify }},
     "image": {% if room.images and room.images != empty %}{{ room.images | first | jsonify }}{% else %}null{% endif %},
     "object_position": {{ room.card_object_position | default: '50% 50%' | jsonify }}
   }{% unless forloop.last %},{% endunless %}
