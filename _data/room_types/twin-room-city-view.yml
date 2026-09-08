@@ -1,6 +1,6 @@
 enabled: true
 name_vi: Phòng Deluxe Twin hướng thành phố
-name_en: Deluxe City View Twin
+name_en: Deluxe Twin City View
 room_count: 4
 guest_count: 2
 size_m2: 25
@@ -12,12 +12,12 @@ rate_low_vnd: "600.000"
 rate_dec_2026_vnd: "600.000"
 rate_jan_feb_2027_vnd: "650.000"
 rate_holiday_tet_vnd: "1.050.000"
-summary_vi: Phòng Deluxe Twin 25 m² với 2 giường đơn 1m2, ban công và hướng thành phố.
-summary_en: A 25 m² Deluxe Twin room with two 1.2 m single beds, a balcony and city views.
+summary_vi: Hai giường riêng cùng góc nhìn thành phố, dành cho những chuyến đi cần sự thoải mái mà vẫn giữ được không gian riêng.
+summary_en: Twin beds with city views, offering comfort and personal space for two travellers.
 description_vi: >-
-  Hạng Deluxe City View Twin có diện tích 25 m², bố trí 2 giường đơn, mỗi giường 1m2 và có ban công hướng thành phố.
+  Deluxe Twin hướng thành phố được bố trí hai giường riêng, thích hợp cho bạn bè, đồng nghiệp hoặc hai khách muốn có không gian ngủ độc lập. Căn phòng mang đến cảm giác cân bằng giữa sự tiện nghi và riêng tư, với khung cảnh thành phố hiện diện ngay bên ngoài.
 description_en: >-
-  The Deluxe City View Twin offers 25 m² of space with two 1.2 m single beds and a balcony overlooking the city.
+  The Deluxe Twin City View features two separate beds, making it well suited to friends, colleagues or guests who prefer individual sleeping space. The room balances practicality with privacy, while the city view adds a lively Da Lat backdrop to the stay.
 card_object_position: 50% 50%
 images:
   - /assets/images/rooms/deluxe-twin-views/pinewood-hotel-dalat-deluxe-twin.avif
