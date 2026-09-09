@@ -17,6 +17,18 @@
 
   const pad = value => String(value).padStart(2, '0');
   const toIsoLocal = date => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+  const hotelToday = date => {
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Asia/Ho_Chi_Minh',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).formatToParts(date).reduce((values, part) => {
+      if (part.type !== 'literal') values[part.type] = part.value;
+      return values;
+    }, {});
+    return `${parts.year}-${parts.month}-${parts.day}`;
+  };
   const addDays = (iso, days) => {
     const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
     if (!match) return '';
@@ -133,6 +145,7 @@
     if (nights > 0) target.searchParams.set('nights', String(nights));
     target.hash = 'booking-request';
     link.href = `${target.pathname}${target.search}${target.hash}`;
+    return link.href;
   }
 
   function initBooking() {
@@ -144,7 +157,7 @@
     const checkOutField = initDateField('checkout');
     if (!checkInField || !checkOutField) return;
 
-    const today = toIsoLocal(new Date());
+    const today = hotelToday(new Date());
     checkInField.native.min = today;
     if (!checkInField.native.value) checkInField.native.value = addDays(today, 1);
     checkOutField.native.min = addDays(checkInField.native.value, 1);
@@ -169,6 +182,74 @@
     };
 
     ['input', 'change'].forEach(type => form.addEventListener(type, () => window.requestAnimationFrame(syncDates)));
+
+    const validation = form.querySelector('[data-booking-validation]');
+    const bookingLink = form.querySelector('[data-booking-contact]');
+    const clearValidation = () => {
+      checkInField.display.removeAttribute('aria-invalid');
+      checkOutField.display.removeAttribute('aria-invalid');
+      if (validation) {
+        validation.hidden = true;
+        validation.textContent = '';
+      }
+    };
+    const showValidation = (message, invalidFields) => {
+      invalidFields.forEach(field => field.display.setAttribute('aria-invalid', 'true'));
+      if (validation) {
+        validation.textContent = message;
+        validation.hidden = false;
+      }
+      invalidFields[0]?.display.focus();
+    };
+    const validateCurrentDates = () => {
+      const checkIn = displayToIso(checkInField.display.value);
+      const checkOut = displayToIso(checkOutField.display.value);
+      const invalidFields = [];
+
+      if (!checkIn || checkIn < today) invalidFields.push(checkInField);
+      if (!checkOut) invalidFields.push(checkOutField);
+      if (invalidFields.length) {
+        return {
+          valid: false,
+          invalidFields,
+          message: lang === 'en'
+            ? 'Enter valid check-in and check-out dates in dd/mm/yyyy format.'
+            : 'Vui lòng nhập ngày nhận và trả phòng hợp lệ theo định dạng dd/mm/yyyy.'
+        };
+      }
+      if (checkOut <= checkIn) {
+        return {
+          valid: false,
+          invalidFields: [checkOutField],
+          message: lang === 'en'
+            ? 'Check-out must be after check-in.'
+            : 'Ngày trả phòng phải sau ngày nhận phòng.'
+        };
+      }
+      return { valid: true, checkIn, checkOut };
+    };
+    const navigateWithCurrentDates = event => {
+      event.preventDefault();
+      clearValidation();
+      const result = validateCurrentDates();
+      if (!result.valid) {
+        showValidation(result.message, result.invalidFields);
+        return;
+      }
+
+      checkInField.native.value = result.checkIn;
+      checkOutField.native.value = result.checkOut;
+      checkOutField.native.min = addDays(result.checkIn, 1);
+      checkInField.sync();
+      checkOutField.sync();
+      const destination = buildBookingHref();
+      if (destination) window.location.assign(destination);
+    };
+
+    bookingLink?.addEventListener('click', navigateWithCurrentDates);
+    form.addEventListener('input', event => {
+      if (event.target.matches('.homepage-date-display')) clearValidation();
+    });
     syncDates();
 
     if (window.location.hash === '#home-booking-estimator') {

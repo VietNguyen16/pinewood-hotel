@@ -180,6 +180,13 @@ body.home-reference-page .menu-button span {
   transition: transform .2s ease, filter .2s ease;
 }
 .home-reference-booking-submit:hover { transform: translateY(-1px); filter: brightness(1.04); }
+.home-reference-booking-validation {
+  margin: 12px 2px 0;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+}
 .home-reference-booking-summary {
   display: flex;
   align-items: center;

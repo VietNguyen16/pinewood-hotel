@@ -5,7 +5,8 @@
   const tiktok = config.social?.tiktok || '';
   const googleReviews = config.reviews?.googleMaps || '';
   const bookingReviews = config.reviews?.booking || '';
-  const servicePhoto = '/assets/images/pinewood-services-room.jpg?v=1';
+  const servicePhoto = '/assets/images/pinewood-services-room-1600.webp';
+  const servicePhotoSrcset = '/assets/images/pinewood-services-room-800.webp 800w, /assets/images/pinewood-services-room-1600.webp 1600w';
   const HOME_STYLES = '/css/home-reference.css?v=20260908h2';
   const HOME_ROOMS_ENDPOINT = '/home-rooms.json';
   const BOOKING_SOURCE = 'homepage-estimator';
@@ -401,6 +402,7 @@
   async function renderHomeReference(lang, main) {
     ensureHomeStyles();
     syncHomeHeader(lang);
+    if (main.querySelector('[data-static-home="true"]')) return;
     const expectedPath = normalize(location.pathname);
     const items = await getHomeRooms();
     if (normalize(location.pathname) !== expectedPath || (expectedPath !== '/' && expectedPath !== '/en')) return;
@@ -411,7 +413,7 @@
 
   function servicePhotoMarkup(lang) {
     const en = lang === 'en';
-    return `<section class="service-photo-band" id="seo-service-photo"><div class="shell"><figure class="hotel-photo-card"><a href="${en ? '/en/rooms/' : '/phong/'}"><img src="${servicePhoto}" width="1200" height="675" loading="lazy" decoding="async" alt="${en ? 'Pinewood Hotel Dalat room interior, beds and bathroom amenities' : 'Không gian phòng nghỉ, giường và tiện nghi phòng tắm tại Pinewood Hotel Dalat'}"><figcaption><strong>${en ? 'Comfort prepared for your stay' : 'Tiện nghi được chuẩn bị cho kỳ nghỉ'}</strong>${en ? 'Thoughtful in-room amenities, comfortable beds and a well-equipped bathroom help make each stay at Pinewood feel easy and restful.' : 'Không gian phòng nghỉ, giường ngủ thoải mái và phòng tắm đầy đủ tiện nghi giúp kỳ lưu trú tại Pinewood trở nên dễ chịu và thư thái hơn.'}</figcaption></a></figure></div></section>`;
+    return `<section class="service-photo-band" id="seo-service-photo"><div class="shell"><figure class="hotel-photo-card"><a href="${en ? '/en/rooms/' : '/phong/'}"><img src="${servicePhoto}" srcset="${servicePhotoSrcset}" sizes="(max-width: 720px) 92vw, 1200px" width="1600" height="900" loading="lazy" decoding="async" alt="${en ? 'Pinewood Hotel Dalat room interior, beds and bathroom amenities' : 'Không gian phòng nghỉ, giường và tiện nghi phòng tắm tại Pinewood Hotel Dalat'}"><figcaption><strong>${en ? 'Comfort prepared for your stay' : 'Tiện nghi được chuẩn bị cho kỳ nghỉ'}</strong>${en ? 'Thoughtful in-room amenities, comfortable beds and a well-equipped bathroom help make each stay at Pinewood feel easy and restful.' : 'Không gian phòng nghỉ, giường ngủ thoải mái và phòng tắm đầy đủ tiện nghi giúp kỳ lưu trú tại Pinewood trở nên dễ chịu và thư thái hơn.'}</figcaption></a></figure></div></section>`;
   }
 
   function contactFaqMarkup(lang) {
