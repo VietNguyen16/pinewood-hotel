@@ -18,8 +18,8 @@ window.HOTEL_CONFIG = Object.freeze({
     longitude: 108.4512011
   }),
   slogan: {
-    vi: "Ngủ ngon - Ấm áp - Đậm chất Đà Lạt",
-    en: "Sleep Well - Stay Warm - Feel Dalat"
+    vi: "Ngủ ngon · Ấm áp · Đậm chất Đà Lạt",
+    en: "Sleep Well · Stay Warm · Feel Dalat"
   },
   experienceImage: "assets/images/pinewood-experience.webp",
   phoneDisplay: "0785 098 686",
