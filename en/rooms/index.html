@@ -24,6 +24,7 @@ robots: index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1
       "name":{{ room.name_en | jsonify }},
       "alternateName":{{ room.name_vi | jsonify }},
       "description":{{ room.description_en | jsonify }},
+      {% if room.images and room.images != empty %}"image":"https://pinewoodhotel.vn{{ room.images | first }}",{% endif %}
       "containedInPlace":{"@id":"https://pinewoodhotel.vn/#hotel"},
       "floorSize":{"@type":"QuantitativeValue","value":{{ room.size_m2 }},"unitCode":"MTK"},
       "bed":{{ room.bed_en | jsonify }},
