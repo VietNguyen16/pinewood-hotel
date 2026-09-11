@@ -2,7 +2,9 @@
 
 **Purpose:** provider-neutral architecture for a future PMS / booking engine / channel manager integration. Documentation only; no provider is connected by this document.
 
-**Repository source snapshot:** `main` at `54bc749ffda26dcacee82e95b84314ed85c0251d`.
+**Repository source snapshot:** `main` at `b064d91992e8d6f83a6e8322a0593aedc5f3afe1`.
+
+**Business baseline:** core PMS data was business-verified on 2026-09-11. See `PROPERTY_MASTER_DATA.md` and `DATA_CONFLICT_REGISTER.md` for the confirmed property, inventory, room, and amenity baseline.
 
 ## Current state
 
@@ -11,18 +13,21 @@
 - The current homepage has an enquiry-oriented booking UI with check-in, check-out, room, and guest inputs, plus a contact fallback.
 - Room pages use the current Pinewood room slugs as stable internal identifiers.
 - There is no real-time inventory sync, vendor API, payment gateway, or PMS connection in the current website.
+- Business-confirmed PMS inventory baseline: **50 physical / 48 sellable / 2 permanently blocked rooms**.
 
 This specification must not be interpreted as evidence that availability, rates, or reservations are currently synchronized.
 
 ## Integration principles
 
 1. Keep Pinewood room slugs as the website-side canonical room identifiers.
-2. Maintain an explicit mapping from Pinewood slug to vendor room ID; never infer vendor IDs.
+2. Maintain an explicit mapping from Pinewood slug to vendor room type ID; never infer vendor IDs.
 3. Never place API secrets, private tokens, webhook signing secrets, payment secrets, PMS credentials, or privileged keys in GitHub Pages HTML/JS/configuration.
 4. Keep Phone, Zalo, and Contact enquiry available as operational fallbacks.
 5. Treat current repository rate fields as website data, not as a future live rate source unless the hotel explicitly approves that role.
 6. Treat vendor/PMS availability and reservation state as authoritative only after a verified integration is live.
-7. Any future implementation must use a separate branch and PR and must pass the production QA checklist.
+7. Use the business-confirmed sellable inventory baseline, not the website physical-room total, when preparing future PMS inventory.
+8. Keep exact blocked physical room numbers and private blocking reasons outside the public repository.
+9. Any future implementation must use a separate branch and PR and must pass the production QA checklist.
 
 ## Supported future integration modes
 
@@ -114,27 +119,35 @@ These parameters form the provider-neutral Pinewood contract. A vendor adapter m
 
 The current homepage uses a single `guests` field. Do **not** silently reinterpret that value as `adults`, `children`, or their sum. A future integration must explicitly define the migration from the current guest selector to the canonical party model.
 
-## Future room mapping
+## Provider-neutral PMS inventory baseline
 
-Vendor IDs are intentionally unassigned until a real provider is selected and the mapping is verified in that provider’s inventory.
+The table below is the business-approved category-level inventory baseline for vendor evaluation. Physical counts follow the current eight-category room catalog; business confirmation established 48 sellable rooms and the two blocked categories. No exact blocked room numbers are published here.
 
-| Pinewood room slug | Vendor room ID |
-| --- | --- |
-| `deluxe-double-or-twin-room` | `UNASSIGNED` |
-| `twin-room-city-view` | `UNASSIGNED` |
-| `double-room-garden-view` | `UNASSIGNED` |
-| `twin-room-garden-view` | `UNASSIGNED` |
-| `junior-suite-garden-view` | `UNASSIGNED` |
-| `king-suite-balcony` | `UNASSIGNED` |
-| `triple-room-balcony` | `UNASSIGNED` |
-| `family-suite-balcony` | `UNASSIGNED` |
+| Internal room slug | Current VI name | Current EN name | Physical count | Sellable count | Permanently blocked count | Vendor room type ID | Status |
+| --- | --- | --- | ---: | ---: | ---: | --- | --- |
+| `deluxe-double-or-twin-room` | Phòng Deluxe Double hướng thành phố | Deluxe Double City View | 12 | 12 | 0 | `UNASSIGNED` | **CONFIRMED PMS BASELINE** |
+| `twin-room-city-view` | Phòng Deluxe Twin hướng thành phố | Deluxe Twin City View | 4 | 4 | 0 | `UNASSIGNED` | **CONFIRMED PMS BASELINE** |
+| `double-room-garden-view` | Phòng Deluxe Double hướng vườn | Deluxe Double Garden View | 16 | 15 | 1 | `UNASSIGNED` | **CONFIRMED PMS BASELINE** |
+| `twin-room-garden-view` | Phòng Deluxe Twin hướng vườn | Deluxe Twin Garden View | 4 | 4 | 0 | `UNASSIGNED` | **CONFIRMED PMS BASELINE** |
+| `junior-suite-garden-view` | Junior Suite hướng thành phố | Junior Suite City View | 4 | 4 | 0 | `UNASSIGNED` | **CONFIRMED PMS BASELINE** |
+| `king-suite-balcony` | Pinewood Suite hướng thành phố | Pinewood Suite City View | 2 | 2 | 0 | `UNASSIGNED` | **CONFIRMED PMS BASELINE** |
+| `triple-room-balcony` | Triple Suite hướng vườn | Triple Suite Garden View | 3 | 3 | 0 | `UNASSIGNED` | **CONFIRMED PMS BASELINE** |
+| `family-suite-balcony` | Family Suite hướng thành phố | Family Suite City View | 5 | 4 | 1 | `UNASSIGNED` | **CONFIRMED PMS BASELINE** |
+| **TOTAL** |  |  | **50** | **48** | **2** |  | **RECONCILED** |
+
+Vendor room type IDs are intentionally `UNASSIGNED` until a real PMS/booking provider is selected and the mapping is verified in that provider’s inventory.
+
+Exact physical room numbers and private blocking reasons are not public master data. If a future PMS import requires room-level identifiers, keep them in:
+
+`KEEP IN PRIVATE PMS INVENTORY MAPPING`
 
 Mapping rules:
 
 - Match by business-approved room identity, not by similar-looking text alone.
 - Legacy Pinewood slugs must not be renamed merely to resemble vendor names.
-- Record vendor room ID, vendor room name, mapping approval date, and approver during implementation.
-- A missing/ambiguous mapping must block automated booking for that room and fall back to direct contact.
+- Record vendor room type ID, vendor room name, mapping approval date, and approver during implementation.
+- A missing/ambiguous vendor mapping must block automated booking for that room category and fall back to direct contact.
+- Do not infer rates, restrictions, or live availability from these inventory counts.
 
 ## Availability flow
 
@@ -146,6 +159,8 @@ Mapping rules:
 6. Return only normalized availability needed by the UI.
 7. If vendor response is unavailable, invalid, timed out, or unmapped, do not invent availability. Present fallback contact channels.
 
+The confirmed sellable counts are inventory setup baseline values, **not live availability**.
+
 ## Rate flow
 
 1. Rates displayed as live bookable prices must come from the approved live booking source after integration.
@@ -153,6 +168,8 @@ Mapping rules:
 3. Never infer a live price from stale HTML/YAML values when the vendor is intended to own live rates.
 4. If a rate cannot be confirmed, label it as unavailable for online confirmation and use fallback contact.
 5. Final charge shown at booking creation must match the provider/backend response used for the reservation request.
+
+No rate is established or changed by this PMS baseline document.
 
 ## Booking creation
 
@@ -214,6 +231,8 @@ Fallback messaging must not claim that a booking was created unless a confirmed 
 - No API secrets in GitHub Pages.
 - No credentials in repository files, query strings, browser storage, or analytics events.
 - No raw payment card data handled by the static frontend.
+- No guest data or staff personal data in public documentation.
+- No exact blocked physical room numbers, door/access codes, or confidential blocking reasons in public documentation.
 - Prefer vendor-hosted/tokenized payment or a PCI-appropriate backend design.
 - Use HTTPS only.
 - Validate and encode all outbound parameters.
@@ -221,10 +240,17 @@ Fallback messaging must not claim that a booking was created unless a confirmed 
 - Log operational identifiers, not unnecessary PII.
 - Define data retention and deletion before storing reservation/customer data.
 
+## PMS baseline status
+
+`CORE PMS DATA VERIFIED`
+
+The category-level property/inventory baseline is ready for vendor evaluation. This does **not** mean a provider has been selected, vendor room IDs have been assigned, live rates/availability exist, or an integration is approved for production.
+
 ## Go-live gates for a future provider
 
-- Property master data business-approved.
-- All eight room mappings assigned and verified.
+- Use the business-confirmed property master data.
+- Verify all eight `UNASSIGNED` vendor room type IDs against the selected provider before enabling automated booking.
+- Create and protect any required private room-level inventory mapping outside the public repository.
 - Inventory/rate ownership documented.
 - Cancellation/modification rules verified.
 - Sandbox/test credentials available server-side where applicable.
