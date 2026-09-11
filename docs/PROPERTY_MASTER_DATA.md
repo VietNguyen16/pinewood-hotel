@@ -2,70 +2,117 @@
 
 **Purpose:** operations/integration reference only. This file does not change production behavior and does not connect any third-party service.
 
-**Repository source snapshot:** `main` at `54bc749ffda26dcacee82e95b84314ed85c0251d`.
+**Repository source snapshot:** `main` at `b064d91992e8d6f83a6e8322a0593aedc5f3afe1`.
+
+**Business verification baseline:** confirmed during the Pinewood Hotel Dalat business-data verification session on 2026-09-11. Where a business-confirmed value differs from the current website state, the business-confirmed value is the PMS/integration baseline until the website is separately updated through an approved production change.
 
 ## Source-of-truth rule
 
-The current repository is authoritative for the **website state** captured in this document. Before any PMS, booking engine, channel manager, CRM, payment, GA4, or Zalo integration writes data to an external system, business-critical property facts should be re-confirmed by Pinewood Hotel Dalat. Do not substitute OTA/listing data for hotel-approved master data.
+The repository remains authoritative for the **current website state**. Business-confirmed values in this document are authoritative for the **PMS-readiness baseline**. OTA, marketplace, map, social, review, or other third-party listing data must not replace hotel-approved master data.
 
-Where the repository does not establish a value, or where business confirmation is still required, use exactly:
+Where business confirmation is still required, use exactly:
 
 `NEEDS BUSINESS VERIFICATION`
 
 ## Property identity and contact data
 
-| Field | Current website value |
-| --- | --- |
-| Hotel name | Pinewood Hotel Dalat |
-| Production website | `https://pinewoodhotel.vn` |
-| Address VI | 54 Đường Võ Trường Toản, Lâm Viên - Đà Lạt, Lâm Đồng, Việt Nam |
-| Address EN | 54 Vo Truong Toan Street, Lam Vien - Da Lat, Lam Dong, Vietnam |
-| Phone display | `0785 098 686` |
-| Phone E.164 | `+84785098686` |
-| `tel:` target | `tel:+84785098686` |
-| Email | `info@pinewoodhotel.vn` |
-| Latitude | `11.9611181` |
-| Longitude | `108.4512011` |
-| Google Maps place URL | `https://www.google.com/maps/place/Kh%C3%A1ch+s%E1%BA%A1n+Pinewood/@11.9611181,108.4486208,1207m/data=!3m1!1e3!4m11!3m10!1s0x3171130010cadc19:0xdcb299e4322ab577!5m2!4m1!1i2!8m2!3d11.9611181!4d108.4512011!9m1!1b1!16s%2Fg%2F11njdj19vf` |
-| Google Maps directions URL | `https://www.google.com/maps/dir/?api=1&destination=Pinewood%20Hotel%20Dalat%2C%2054%20%C4%90%C6%B0%E1%BB%9Dng%20V%C3%B5%20Tr%C6%B0%E1%BB%9Dng%20To%E1%BA%A3n%2C%20%C4%90%C3%A0%20L%E1%BA%A1t%2C%20L%C3%A2m%20%C4%90%E1%BB%93ng%2C%20Vi%E1%BB%87t%20Nam` |
-| Zalo number | `0785098686` |
-| Zalo URL | `https://zalo.me/0785098686` |
-| Standard check-in | `14:00` |
-| Standard check-out | `12:00` |
-| Breakfast | `06:30–09:00` |
-| Wi-Fi SSID | `Pinewood Hotel Dalat` |
-| Reception extension / in-room dial | `0` |
-| Official slogan VI | `Ngủ ngon · Ấm áp · Đậm chất Đà Lạt` |
-| Official slogan EN | `Sleep Well · Stay Warm · Feel Dalat` |
+| Field | Current website value | PMS/business baseline | Status |
+| --- | --- | --- | --- |
+| Hotel name | Pinewood Hotel Dalat | Pinewood Hotel Dalat | Current website identity |
+| Production website | `https://pinewoodhotel.vn` | `https://pinewoodhotel.vn` | Current website identity |
+| Address VI | 54 Đường Võ Trường Toản, Lâm Viên - Đà Lạt, Lâm Đồng, Việt Nam | Same as current website | Current website state |
+| Address EN | 54 Vo Truong Toan Street, Lam Vien - Da Lat, Lam Dong, Vietnam | Same as current website | Current website state |
+| Phone display | `0785 098 686` | `0785 098 686` | **CONFIRMED** |
+| Phone E.164 | `+84785098686` | `+84785098686` | **CONFIRMED** |
+| `tel:` target | `tel:+84785098686` | `tel:+84785098686` | **CONFIRMED** |
+| Email | `info@pinewoodhotel.vn` | `info@pinewoodhotel.vn` | **CONFIRMED** |
+| Latitude | `11.9611181` | Same as current website | Current website state |
+| Longitude | `108.4512011` | Same as current website | Current website state |
+| Standard check-in | `14:00` | `14:00` | **CONFIRMED** |
+| Standard check-out | `12:00` | `12:00` | **CONFIRMED** |
+| Breakfast | `06:30–09:00` | `06:30–09:30` | **CONFIRMED — WEBSITE UPDATE REQUIRED SEPARATELY** |
+| Wi-Fi SSID | `Pinewood Hotel Dalat` | Same as current website | Current website state |
+| Reception extension / in-room dial | `0` | Same as current website | Current website state |
+| Official slogan VI | `Ngủ ngon · Ấm áp · Đậm chất Đà Lạt` | Same as current website | Current website state |
+| Official slogan EN | `Sleep Well · Stay Warm · Feel Dalat` | Same as current website | Current website state |
+| Official star classification | Not currently published in structured data | **3 stars / 3 sao** | **CONFIRMED by business** |
 
-### Credential boundary
+### Credential and privacy boundary
 
-The current configuration contains a Wi-Fi password placeholder (`***`). It is **not** a verified credential and is intentionally not copied into this property master. API keys, passwords, payment secrets, access tokens, PMS credentials, and other secrets must never be stored in this public repository.
+Do not store API keys, passwords, payment secrets, access tokens, PMS credentials, door/access codes, guest data, staff personal data, exact confidential blocking reasons, or other private operational secrets in this repository.
 
-## Current room types
+Exact physical room numbers for permanently blocked rooms are intentionally excluded from public documentation. If a future PMS requires room-level mapping, keep those identifiers in:
 
-The current room catalog is ordered by `_data/room_order.yml`. The following eight room types are enabled in the current YAML source.
+`KEEP IN PRIVATE PMS INVENTORY MAPPING`
 
-| Internal slug | VI name | EN name | Area | Bed configuration | Guest capacity | View | Current source file |
+## Current room types and confirmed room data
+
+The current room catalog is ordered by `_data/room_order.yml`. The following eight room types are enabled in the current YAML source. Area, bed configuration, and guest capacity were business-confirmed during the verification session.
+
+| Internal slug | VI name | EN name | Area | Bed configuration | Guest capacity | View | Status |
 | --- | --- | --- | ---: | --- | ---: | --- | --- |
-| `deluxe-double-or-twin-room` | Phòng Deluxe Double hướng thành phố | Deluxe Double City View | 25 m² | VI: 1 giường lớn 1m8 / EN: 1 large bed (1.8 m) | 2 | VI: Hướng thành phố / EN: City view | `_data/room_types/deluxe-double-or-twin-room.yml` |
-| `twin-room-city-view` | Phòng Deluxe Twin hướng thành phố | Deluxe Twin City View | 25 m² | VI: 2 giường đơn, mỗi giường 1m2 / EN: 2 single beds, 1.2 m each | 2 | VI: Hướng thành phố / EN: City view | `_data/room_types/twin-room-city-view.yml` |
-| `double-room-garden-view` | Phòng Deluxe Double hướng vườn | Deluxe Double Garden View | 25 m² | VI: 1 giường lớn 1m8 / EN: 1 large bed (1.8 m) | 2 | VI: Hướng vườn / EN: Garden view | `_data/room_types/double-room-garden-view.yml` |
-| `twin-room-garden-view` | Phòng Deluxe Twin hướng vườn | Deluxe Twin Garden View | 25 m² | VI: 2 giường đơn, mỗi giường 1m2 / EN: 2 single beds, 1.2 m each | 2 | VI: Hướng vườn / EN: Garden view | `_data/room_types/twin-room-garden-view.yml` |
-| `junior-suite-garden-view` | Junior Suite hướng thành phố | Junior Suite City View | 30 m² | VI: 1 giường lớn 1m8 / EN: 1 large bed (1.8 m) | 2 | VI: Hướng thành phố / EN: City view | `_data/room_types/junior-suite-garden-view.yml` |
-| `king-suite-balcony` | Pinewood Suite hướng thành phố | Pinewood Suite City View | 78 m² | VI: 1 giường lớn 1m8 / EN: 1 large bed (1.8 m) | 2 | VI: Hướng thành phố / EN: City view | `_data/room_types/king-suite-balcony.yml` |
-| `triple-room-balcony` | Triple Suite hướng vườn | Triple Suite Garden View | 45 m² | VI: 1 giường lớn 1m8 + 1 giường 1m2 / EN: 1 large bed (1.8 m) + 1 single bed (1.2 m) | 3 | VI: Hướng vườn / EN: Garden view | `_data/room_types/triple-room-balcony.yml` |
-| `family-suite-balcony` | Family Suite hướng thành phố | Family Suite City View | 45 m² | VI: 2 giường lớn 1m8 / EN: 2 large beds (1.8 m each) | 4 | VI: Hướng thành phố / EN: City view | `_data/room_types/family-suite-balcony.yml` |
+| `deluxe-double-or-twin-room` | Phòng Deluxe Double hướng thành phố | Deluxe Double City View | 25 m² | VI: 1 giường lớn 1m8 / EN: 1 large bed (1.8 m) | 2 | VI: Hướng thành phố / EN: City view | **CONFIRMED** |
+| `twin-room-city-view` | Phòng Deluxe Twin hướng thành phố | Deluxe Twin City View | 25 m² | VI: 2 giường đơn, mỗi giường 1m2 / EN: 2 single beds, 1.2 m each | 2 | VI: Hướng thành phố / EN: City view | **CONFIRMED** |
+| `double-room-garden-view` | Phòng Deluxe Double hướng vườn | Deluxe Double Garden View | 25 m² | VI: 1 giường lớn 1m8 / EN: 1 large bed (1.8 m) | 2 | VI: Hướng vườn / EN: Garden view | **CONFIRMED** |
+| `twin-room-garden-view` | Phòng Deluxe Twin hướng vườn | Deluxe Twin Garden View | 25 m² | VI: 2 giường đơn, mỗi giường 1m2 / EN: 2 single beds, 1.2 m each | 2 | VI: Hướng vườn / EN: Garden view | **CONFIRMED** |
+| `junior-suite-garden-view` | Junior Suite hướng thành phố | Junior Suite City View | 30 m² | VI: 1 giường lớn 1m8 / EN: 1 large bed (1.8 m) | 2 | VI: Hướng thành phố / EN: City view | **CONFIRMED** |
+| `king-suite-balcony` | Pinewood Suite hướng thành phố | Pinewood Suite City View | 78 m² | VI: 1 giường lớn 1m8 / EN: 1 large bed (1.8 m) | 2 | VI: Hướng thành phố / EN: City view | **CONFIRMED** |
+| `triple-room-balcony` | Triple Suite hướng vườn | Triple Suite Garden View | 45 m² | VI: 1 giường lớn 1m8 + 1 giường 1m2 / EN: 1 large bed (1.8 m) + 1 single bed (1.2 m) | 3 | VI: Hướng vườn / EN: Garden view | **CONFIRMED** |
+| `family-suite-balcony` | Family Suite hướng thành phố | Family Suite City View | 45 m² | VI: 2 giường lớn 1m8 / EN: 2 large beds (1.8 m each) | 4 | VI: Hướng thành phố / EN: City view | **CONFIRMED** |
 
 ### Internal identifier rule
 
-The internal slugs are integration keys, not customer-facing descriptions. Some legacy slugs no longer describe the current room name/view literally (for example `junior-suite-garden-view` currently maps to **Junior Suite City View**). Future integrations must map from the slug to the approved external room ID explicitly; do not infer room meaning from the slug text and do not rename slugs without a migration plan.
+The internal slugs are integration keys, not customer-facing descriptions. Some legacy slugs no longer describe the current room name/view literally. Future integrations must map from the slug to the approved external room ID explicitly; do not infer room meaning from the slug text and do not rename slugs without a migration plan.
 
-## Current inventory note
+## Confirmed PMS inventory baseline
 
-The current room YAML stores `room_count` values of 12, 4, 16, 4, 4, 2, 3, and 5, which total **50 rooms**. The current Hotel structured data also states `numberOfRooms: 50`, and current website copy references 50 rooms. This is internally consistent for the website snapshot, but the physical/sellable inventory must be confirmed before a PMS or channel-manager import:
+The website room YAML physical counts remain 12, 4, 16, 4, 4, 2, 3, and 5. Business verification confirmed 50 physical rooms, 48 sellable rooms, and 2 permanently blocked rooms. The blocked category mapping is one Deluxe Double Garden View and one Family Suite City View.
 
-`NEEDS BUSINESS VERIFICATION`
+| Room category | Physical count | Sellable count | Permanently blocked count | Status |
+| --- | ---: | ---: | ---: | --- |
+| Deluxe Double City View | 12 | 12 | 0 | **CONFIRMED BASELINE** |
+| Deluxe Twin City View | 4 | 4 | 0 | **CONFIRMED BASELINE** |
+| Deluxe Double Garden View | 16 | 15 | 1 | **CONFIRMED BASELINE** |
+| Deluxe Twin Garden View | 4 | 4 | 0 | **CONFIRMED BASELINE** |
+| Junior Suite City View | 4 | 4 | 0 | **CONFIRMED BASELINE** |
+| Pinewood Suite City View | 2 | 2 | 0 | **CONFIRMED BASELINE** |
+| Triple Suite Garden View | 3 | 3 | 0 | **CONFIRMED BASELINE** |
+| Family Suite City View | 5 | 4 | 1 | **CONFIRMED BASELINE** |
+| **TOTAL** | **50** | **48** | **2** | **RECONCILED** |
+
+Do not publish exact blocked room numbers or blocking reasons. Room-level PMS identifiers belong only in the private PMS inventory mapping when a real provider is selected.
+
+## Confirmed amenity baseline
+
+The `Commercial / scope status` column uses only the explicit PMS-relevant statuses requested for this baseline. A dash means no additional pricing/scope label is required for the confirmed availability statement.
+
+| Amenity / service | Availability | Commercial / scope status | Verification |
+| --- | --- | --- | --- |
+| Breakfast | Yes | **FREE — included as standard** | **CONFIRMED** |
+| Parking | Yes | **FREE** | **CONFIRMED** |
+| Restaurant | Yes | — | **CONFIRMED** |
+| 24-hour reception | Yes | — | **CONFIRMED** |
+| Wi-Fi | Yes | **FREE** | **CONFIRMED** |
+| Elevator | Yes | — | **CONFIRMED** |
+| Luggage storage | Yes | — | **CONFIRMED** |
+| Housekeeping | Yes | — | **CONFIRMED** |
+| Laundry | Yes | **PAID** | **CONFIRMED** |
+| Airport transfer | Yes | **PAID** | **CONFIRMED** |
+| Motorbike/car rental | No | **NOT APPLICABLE** | **CONFIRMED** |
+| Minibar | Yes | **PAID** | **CONFIRMED** |
+| Kettle | Yes | — | **CONFIRMED** |
+| Hair dryer | Yes | — | **CONFIRMED** |
+| TV | Yes | — | **CONFIRMED** |
+| In-room safe / két sắt | No | **NOT APPLICABLE** | **CONFIRMED** |
+| Balcony | Yes where offered | **ROOM-SPECIFIC** | **CONFIRMED** |
+| Garden | Yes | — | **CONFIRMED** |
+| Other verified hotel services | None declared in this verification session | **NOT APPLICABLE** | **CONFIRMED** |
+
+## PMS baseline status
+
+`CORE PMS DATA VERIFIED`
+
+This baseline is ready for provider/vendor evaluation. Vendor room type IDs remain unassigned until a real PMS/booking provider is selected and verified.
 
 ## Primary repository sources
 
